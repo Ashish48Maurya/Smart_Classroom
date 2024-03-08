@@ -4,6 +4,7 @@ const Student = require('../models/Student')
 const Teacher = require('../models/Teacher')
 const jwt = require('jsonwebtoken')
 const Admin = require('../models/Admin')
+const Classroom = require('../models/Classroom')
 const authmiddleware = require('../middleware/authmiddleware')
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
@@ -34,7 +35,7 @@ const sendMail = async (options) => {
     }
 }
 
-router.post('/registerStudent',authmiddleware(Admin), async (req, res) => {
+router.post('/registerStudent', authmiddleware(Admin), async (req, res) => {
     const { fullname, department, password, email, phoneNo, sapID } = req.body;
     if (!email || !fullname || !password) {
         console.log('Please add all the fields');
@@ -82,7 +83,7 @@ router.post('/registerStudent',authmiddleware(Admin), async (req, res) => {
 })
 
 
-router.post('/registerFaculty',authmiddleware(Admin), async (req, res) => {
+router.post('/registerFaculty', authmiddleware(Admin), async (req, res) => {
     const { fullname, department, subject, password, email, phoneNo, teacherID } = req.body;
 
     if (!email || !fullname || !password) {
@@ -257,14 +258,92 @@ router.put('/resetPassword/:USER/:token/:id', async (req, res) => {
                 return res.status(200).json({ message: "Password Changed Successfully!!!", user: makeUpdate });
             }
         } catch (err) {
-            console.error(err);
             return res.status(500).json({ error: "Internal server error" });
-        }   
+        }
     }
     else {
         return res.status(404).json({ message: "Unauthorized User" });
     }
 })
+
+
+router.patch('/update_info/:id/:USER', async (req, res) => {
+    const { id, USER } = req.params;
+    const updateFields = req.body;
+    try {
+        if ('password' in updateFields) {
+            const hashedPassword = await bcrypt.hash(updateFields.password, 10);
+            updateFields.password = hashedPassword;
+        }
+
+        switch (USER.toLowerCase()) {
+            case 'teacher':
+                updatedUser = await Teacher.findOneAndUpdate(
+                    { _id: id },
+                    { $set: updateFields },
+                    { useFindAndModify: false, new: true }
+                );
+                break;
+            case 'student':
+                updatedUser = await Student.findOneAndUpdate(
+                    { _id: id },
+                    { $set: updateFields },
+                    { useFindAndModify: false, new: true }
+                );
+                break;
+            case 'admin':
+                updatedUser = await Admin.findOneAndUpdate(
+                    { _id: id },
+                    { $set: updateFields },
+                    { useFindAndModify: false, new: true }
+                );
+                break;
+            default:
+                return res.status(400).json({ error: "Invalid USER parameter" });
+        }
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "Failed To Update, User Not Found" });
+        }
+
+        return res.status(200).json({ "Updated_User_info": updatedUser });
+    } catch (err) {
+        return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+    }
+});
+
+
+router.patch('/update_user_info/:id/:USER', async (req, res) => {
+    const { id, USER } = req.params;
+    const updateFields = req.body;
+    try {
+        switch (USER.toLowerCase()) {
+            case 'teacher':
+                updatedUser = await Teacher.findOneAndUpdate(
+                    { _id: id },
+                    { $set: updateFields },
+                    { useFindAndModify: false, new: true }
+                );
+                break;
+            case 'student':
+                updatedUser = await Student.findOneAndUpdate(
+                    { _id: id },
+                    { $set: updateFields },
+                    { useFindAndModify: false, new: true }
+                );
+                break;
+            default:
+                return res.status(400).json({ error: "Invalid USER parameter" });
+        }
+
+        if (!updatedUser) {
+            return res.status(404).json({ error: "Failed To Update, User Not Found" });
+        }
+        return res.status(200).json({ message:"User Updated Successfully!" , Updated_User_info: updatedUser });
+    } catch (err) {
+        return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+    }
+});
 
 
 router.get('/Student', authmiddleware(Student), (req, res) => {
@@ -298,5 +377,93 @@ router.get('/Teacher', authmiddleware(Teacher), (req, res) => {
         console.log(error)
     }
 })
+
+router.get('/get_students', async (req, res) => {
+    try {
+        const data = await Student.find({});
+        res.status(200).json({ msg: data })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.get('/get_teachers', async (req, res) => {
+    try {
+        const data = await Teacher.find({});
+        res.status(200).json({ msg: data })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.get('/get_classrooms', authmiddleware({ Teacher, Admin }), async (req, res) => {
+    try {
+        const data = await Classroom.find({});
+        res.status(200).json({ msg: data })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.patch('/update_class/:id', authmiddleware(Admin), async (req, res) => {
+    const { id } = req.params;
+    const updateFields = req.body;
+    try {
+        const updatedClassroom = await Classroom.findOneAndUpdate(
+            { _id: id },
+            { $set: updateFields },
+            { useFindAndModify: false, new: true }
+        );
+
+        if (!updatedClassroom) {
+            return res.status(404).json({ error: "Classroom not found" });
+        }
+
+        return res.status(200).json({ Updated_Classroom: updatedClassroom });
+    } catch (err) {
+        return res.status(500).json({ error: `Internal Server Error -> ${err}` });
+    }
+})
+
+
+
+router.get('/class/:id', authmiddleware(Admin), async (req, res) => {
+    const { id } = req.params;
+    try {
+        const data = await Classroom.findById(id);
+        res.status(200).json({ msg: data })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) => {
+    try {
+        const { strength } = req.params;
+
+        if (isNaN(strength)) {
+            return res.status(400).json({ error: "Strength parameter must be a valid number" });
+        }
+
+        const classrooms = await Classroom.find({
+            isReserved: false,
+            strength: { $gte: strength }
+        }).select('classroom_no strength facility isReserved');
+
+
+        if (classrooms.length === 0) {
+            console.log("No classes found with isReserved set to false");
+            return res.status(404).json({ error: "No classes found" });
+        }
+
+        console.log("Classes with isReserved set to false:", classrooms);
+        res.status(200).json({ classrooms });
+    } catch (e) {
+        console.error("Error:", e);
+        res.status(500).json({ error: "Internal server error" });
+    }
+})
+
 
 module.exports = router;

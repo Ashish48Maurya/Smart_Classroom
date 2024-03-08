@@ -5,24 +5,24 @@ const Schema = mongoose.Schema;
 const adminSchema = new Schema({
     fullname: {
         type: String,
-        default:"Admin Tiwari"
+        default: "Admin Tiwari"
     },
     password: {
         type: String,
         // default:"Admin123"
-        default:"$2a$12$Ss3ajoW7d/shXCUXCYJ/DOUp1j3Cr2r.K6BOed118CCPY1L5k0fQC"
+        default: "$2a$12$Ss3ajoW7d/shXCUXCYJ/DOUp1j3Cr2r.K6BOed118CCPY1L5k0fQC"
     },
-    user:{
+    user: {
         type: String,
         default: "Admin",
     },
-    email:{
+    email: {
         type: String,
-        default:"Admin123@gmail.com"
+        default: "Admin123@gmail.com"
     },
-    phoneNo:{
+    phoneNo: {
         type: Number,
-        default:9382714560
+        default: 9382714560
     }
 });
 
