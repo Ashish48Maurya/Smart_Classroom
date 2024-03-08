@@ -34,6 +34,10 @@ const teacherSchema = new Schema({
     phoneNo:{
         type: Number,
         required: true,
+    },
+    joiningDate:{
+        type:Date,
+        default:Date.now,
     }
 });
 

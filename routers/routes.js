@@ -36,7 +36,7 @@ const sendMail = async (options) => {
 }
 
 router.post('/registerStudent', authmiddleware(Admin), async (req, res) => {
-    const { fullname, department, password, email, phoneNo, sapID } = req.body;
+    const { fullname, department, password, email, phoneNo, sapID, subjects } = req.body;
     if (!email || !fullname || !password) {
         console.log('Please add all the fields');
         return res.status(422).json({ error: "Please add all the fields" });
@@ -57,7 +57,8 @@ router.post('/registerStudent', authmiddleware(Admin), async (req, res) => {
             email,
             phoneNo,
             sapID,
-            password: hashedPassword
+            password: hashedPassword,
+            subjects: subjects.map(subject => ({ name: subject })),
         });
 
         user.save().then(async user => {
@@ -313,6 +314,45 @@ router.patch('/update_info/:id/:USER', async (req, res) => {
 });
 
 
+router.post('/markAttendance/:studentId', async (req, res) => {
+    const { studentId } = req.params;
+    const { subjectName } = req.body;
+
+    try {
+        const student = await Student.findById(studentId);
+
+        if (!student) {
+            return res.status(404).json({ "error": "Student not found" });
+        }
+
+        const subject = student.subjects.find(subj => subj.name === subjectName);
+
+        if (!subject) {
+            return res.status(404).json({ "error": `Subject "${subjectName}" not found for the student` });
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+
+        const existingAttendanceRecord = subject.attendance.find(record => record.date.toISOString().split('T')[0] === today);
+
+        if (existingAttendanceRecord) {
+            return res.status(400).json({ "error": "Attendance already marked for today" });
+        }
+
+        subject.attendance.push({
+            date: new Date(),
+            count: subject.attendance.length + 1,
+        });
+
+        await student.save();
+
+        return res.status(200).json({ "message": "Attendance marked successfully" });
+    } catch (err) {
+        return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+    }
+});
+
+
 router.patch('/update_user_info/:id/:USER', async (req, res) => {
     const { id, USER } = req.params;
     const updateFields = req.body;
@@ -464,6 +504,55 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
         res.status(500).json({ error: "Internal server error" });
     }
 })
+
+
+router.get('/studentAttendance/:studentId', async (req, res) => {
+    const { studentId } = req.params;
+    try {
+        const student = await Student.findById(studentId);
+        if (!student) {
+            return res.status(404).json({ "error": "Student not found" });
+        }
+        const attendanceData = student.subjects.map(subject => {
+            // const presentDayAttendance = subject.attendance.filter(record => record.date.toISOString().split('T')[0] === today);
+            return {
+                name: subject.name,
+                attendance: subject.attendance,
+            };
+        })
+
+        return res.status(200).json({ "attendanceData": attendanceData });
+    } catch (err) {
+        return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+    }
+});
+
+
+router.get('/faculty/students/:branch/:yearOfStudy', async (req, res) => {
+    const { branch, yearOfStudy } = req.params;
+
+    try {
+        const students = await Student.find({
+            department: branch,
+            yearOfStudy: yearOfStudy
+        });
+
+        if (!students || students.length === 0) {
+            return res.status(404).json({ "error": "No students found for the specified branch and year" });
+        }
+
+        const studentList = students.map(student => ({
+            _id: student._id,
+            fullname: student.fullname,
+            sapID: student.sapID,
+        }));
+
+        return res.status(200).json({ "studentList": studentList });
+    } catch (err) {
+        return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+    }
+});
+
 
 
 module.exports = router;

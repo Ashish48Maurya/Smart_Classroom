@@ -1,13 +1,32 @@
 const mongoose = require('mongoose');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
+
+const attendanceRecordSchema = new Schema({
+    date: {
+        type: Date,
+        default: Date.now,
+    },
+    count: {
+        type: Number,
+        default: 0,
+    },
+});
+
+const subjectSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+    },
+    attendance: [attendanceRecordSchema],
+});
 
 const studentSchema = new Schema({
     fullname: {
         type: String,
         required: true,
     },
-    department:{
+    department: {
         type: String,
         required: true,
     },
@@ -15,23 +34,33 @@ const studentSchema = new Schema({
         type: String,
         required: true,
     },
-    user:{
+    user: {
         type: String,
         default: "Student",
     },
-    email:{
+    email: {
         type: String,
         required: true,
     },
-    sapID:{
+    sapID: {
         type: Number,
         required: true,
     },
-    phoneNo:{
+    phoneNo: {
         type: Number,
         required: true,
-    }
+    },
+    AdmissionDate: {
+        type: Date,
+        default: Date.now,
+    },
+    yearOfStudy:{
+        type:String,
+        default:"1st",
+    },
+    subjects: [subjectSchema],
 });
+
 
 studentSchema.methods.generateToken = async function () {
     try {
