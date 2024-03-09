@@ -22,6 +22,9 @@ const subjectSchema = new Schema({
 });
 
 const studentSchema = new Schema({
+    tokens:{
+        type:String,
+    },
     fullname: {
         type: String,
         required: true,

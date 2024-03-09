@@ -8,6 +8,7 @@ const Classroom = require('../models/Classroom')
 const authmiddleware = require('../middleware/authmiddleware')
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+const { getMessaging } = require('firebase-admin');
 
 const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -132,6 +133,7 @@ router.post('/registerFaculty', authmiddleware(Admin), async (req, res) => {
 router.post('/login/:USER', async (req, res) => {
     const { email, password } = req.body;
     const { USER } = req.params;
+    const deviceToken = req.query.deviceToken;
 
     if (!email || !password) {
         return res.status(422).json({ error: "Please provide a valid email and password" });
@@ -146,6 +148,11 @@ router.post('/login/:USER', async (req, res) => {
                 break;
             case 'student':
                 user = await Student.findOne({ email });
+                if (!user) {
+                    return res.status(422).json({ error: "Invalid username or password" });
+                }
+                user.tokens = deviceToken;
+                await user.save();
                 break;
             case 'admin':
                 user = await Admin.findOne({ email });
@@ -177,6 +184,7 @@ router.post('/login/:USER', async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 })
+
 
 router.get('/forgetPass/:email/:USER', async (req, res) => {
     const { USER, email } = req.params;
@@ -268,7 +276,7 @@ router.put('/resetPassword/:USER/:token/:id', async (req, res) => {
 })
 
 
-//User updating there own information (e.g) email , phoneNo
+
 router.patch('/update_info/:id/:USER', async (req, res) => {
     const { id, USER } = req.params;
     const updateFields = req.body;
@@ -315,7 +323,7 @@ router.patch('/update_info/:id/:USER', async (req, res) => {
 });
 
 
-router.post('/markAttendance/:studentId',authmiddleware(Teacher), async (req, res) => {
+router.post('/markAttendance/:studentId', authmiddleware(Teacher), async (req, res) => {
     const { studentId } = req.params;
     const { subjectName } = req.body;
 
@@ -355,7 +363,7 @@ router.post('/markAttendance/:studentId',authmiddleware(Teacher), async (req, re
 
 
 //Admin Updating Users Info (e.g) year if study
-router.patch('/update_user_info/:id/:USER',authmiddleware(Admin), async (req, res) => {
+router.patch('/update_user_info/:id/:USER', authmiddleware(Admin), async (req, res) => {
     const { id, USER } = req.params;
     const updateFields = req.body;
     try {
@@ -381,7 +389,7 @@ router.patch('/update_user_info/:id/:USER',authmiddleware(Admin), async (req, re
         if (!updatedUser) {
             return res.status(404).json({ error: "Failed To Update, User Not Found" });
         }
-        return res.status(200).json({ message:"User Updated Successfully!" , Updated_User_info: updatedUser });
+        return res.status(200).json({ message: "User Updated Successfully!", Updated_User_info: updatedUser });
     } catch (err) {
         return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
     }
@@ -438,7 +446,7 @@ router.get('/get_teachers', async (req, res) => {
     }
 })
 
-router.get('/get_classrooms', authmiddleware([ 'Teacher', 'Admin' ]), async (req, res) => {
+router.get('/get_classrooms', authmiddleware(['Teacher', 'Admin']), async (req, res) => {
     try {
         const data = await Classroom.find({});
         res.status(200).json({ msg: data })
@@ -530,7 +538,7 @@ router.get('/studentAttendance/:studentId', async (req, res) => {
 });
 
 
-router.get('/faculty/students/:branch/:yearOfStudy',authmiddleware([ 'Teacher', 'Admin' ]), async (req, res) => {
+router.get('/faculty/students/:branch/:yearOfStudy', authmiddleware(['Teacher', 'Admin']), async (req, res) => {
     const { branch, yearOfStudy } = req.params;
 
     try {
@@ -552,6 +560,33 @@ router.get('/faculty/students/:branch/:yearOfStudy',authmiddleware([ 'Teacher', 
         return res.status(200).json({ "studentList": studentList });
     } catch (err) {
         return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+    }
+});
+
+
+router.post('/sendNotification', async (req, res) => {
+    try {
+        const { branch, year, data } = req.body;
+        const students = await Student.find({ branch, year }, 'tokens');
+
+        const registrationTokens = students.flatMap(student => student.tokens);
+
+        if (!registrationTokens || registrationTokens.length === 0) {
+            return res.status(400).send('No registration tokens found for the students');
+        }
+
+        const message = {
+            data,
+            tokens: registrationTokens,
+        };
+
+        const response = await getMessaging().sendMulticast(message);
+
+        console.log('Successfully sent message:', response);
+        res.status(200).send('Successfully sent message');
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).send('Error sending message');
     }
 });
 

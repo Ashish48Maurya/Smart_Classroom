@@ -2,11 +2,13 @@ require('dotenv').config();
 const express = require("express");
 const app = express();
 const router = require("./routers/routes");
+const bodyParser = require('body-parser')
 // const Admin = require('./models/Admin');
 const mongoConnect = require('./db')
 const PORT = 8000;
 app.use(express.json());
 app.use("/api/test", router);
+app.use(bodyParser.json());
 
 mongoConnect(process.env.MONGO_URL).then(async () => {
 
