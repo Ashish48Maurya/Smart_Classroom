@@ -5,8 +5,12 @@ const router = require("./routers/routes");
 // const Admin = require('./models/Admin');
 const mongoConnect = require('./db')
 const PORT = 8000;
+const cors = require("cors");
+
+app.use(cors())
 app.use(express.json());
-app.use("/api/test", router);
+app.use(require("./routers/routes")); //Ludo idar ye daalna tha jo maine daala hai tune router toh banaya lekin usko use nahi kiya index.js me call karke
+
 
 mongoConnect(process.env.MONGO_URL).then(async () => {
 
