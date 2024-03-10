@@ -609,7 +609,10 @@ router.post('/sendNotification', async (req, res) => {
         }
 
         const message = {
-            data,
+            data: {
+                title: data.title,
+                body: data.body,
+            },
             tokens: registrationTokens,
         };
 

@@ -10,17 +10,16 @@ export default function Login() {
     const navigate = useNavigate();
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
+    const [deviceToken,setDeviceToken] = useState('');
 
     async function requestPermission() {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-          // Generate Token
-          const token = await getToken(messaging, {
+          const dtoken = await getToken(messaging, {
             vapidKey:
               "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
           });
-          console.log("Token Gen", token);
-          // Send this token  to server ( db)
+          setDeviceToken(dtoken);
         } else if (permission === "denied") {
           alert("You denied for the notification");
         }
@@ -38,7 +37,7 @@ export default function Login() {
         }
 
         try {
-            const response = await fetch(`${backend_api}/login/${person}`, {
+            const response = await fetch(`${backend_api}/login/${person}?deviceToken=${deviceToken}`, {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
