@@ -74,7 +74,7 @@ export default function Login() {
                         <option value="Admin">Admin</option>
                     </select>
                     <hr />
-                    <div className="butt0n-block">
+                    <div className="button-block">
                         <button type="submit">Login</button>
                     </div>
                 </form>
