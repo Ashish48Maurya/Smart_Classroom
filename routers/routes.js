@@ -8,8 +8,8 @@ const Classroom = require('../models/Classroom')
 const authmiddleware = require('../middleware/authmiddleware')
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
-const FCM = require('fcm-node');
-const fcm = new FCM(process.env.SERVERKEY);
+const admin = require('firebase-admin');
+
 
 const transporter = nodemailer.createTransport({
     service: "Gmail",
@@ -617,23 +617,37 @@ router.get('/sendNotification', async (req, res) => {
         //     tokens: registrationTokens,
         // };
 
-        const message = {
-            data: {
-                title: "title",
-                body: "body",
-            },
-            tokens: "fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO",
+        
+
+       
+
+
+
+        const serviceAccount = require('./firebase.json')
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+        });
+
+
+        const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
+
+
+        const payload = {
+            notification: {
+                title: 'Test Notification',
+                body: 'This is a test notification from your backend server.'
+            }
         };
 
-        fcm.send(message, function (err, response) {
-            if (err) {
-                console.error('Error sending message:', err);
-                res.status(500).send('Error sending message');
-            } else {
-                console.log('FCM Response:', response);
-                res.status(200).send('Successfully sent message');
-            }
-        });
+
+        admin.messaging().sendToDevice(deviceToken, payload)
+            .then((response) => {
+                console.log('Successfully sent test notification:', response);
+            })
+            .catch((error) => {
+                console.error('Error sending test notification:', error);
+            });
+
     } catch (error) {
         console.error('Error sending message1:', error);
         res.status(500).send('Error sending message');

@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
 import { useNavigate } from 'react-router-dom';
@@ -10,24 +10,25 @@ export default function Login() {
     const navigate = useNavigate();
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
-    const [deviceToken,setDeviceToken] = useState('');
+    const [deviceToken, setDeviceToken] = useState('');
 
     async function requestPermission() {
         const permission = await Notification.requestPermission();
         if (permission === "granted") {
-          const dtoken = await getToken(messaging, {
-            vapidKey:
-              "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
-          });
-          setDeviceToken(dtoken);
+            const dtoken = await getToken(messaging, {
+                vapidKey:
+                    "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
+            });
+            setDeviceToken(dtoken);
+            console.log(dtoken)
         } else if (permission === "denied") {
-          alert("You denied for the notification");
+            alert("You denied for the notification");
         }
-      }
-    
-      useEffect(() => {
+    }
+
+    useEffect(() => {
         requestPermission();
-      }, []);
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
