@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
-import { useAuth } from './store/auth';
+import React, { useState , useEffect} from 'react'
+import Navbar from './Navbar'
+import { useAuth } from './store/auth'
+import { useNavigate } from 'react-router-dom';
+import { messaging } from "./firebase";
+import { getToken } from "firebase/messaging";
 
 export default function Login() {
     const { person, storeTokenInLS, backend_api, setPerson } = useAuth();
     const navigate = useNavigate();
     const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
+    const [deviceToken,setDeviceToken] = useState('');
+
+    async function requestPermission() {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          const dtoken = await getToken(messaging, {
+            vapidKey:
+              "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
+          });
+          setDeviceToken(dtoken);
+        } else if (permission === "denied") {
+          alert("You denied for the notification");
+        }
+      }
+    
+      useEffect(() => {
+        requestPermission();
+      }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +37,7 @@ export default function Login() {
         }
 
         try {
-            const response = await fetch(`${backend_api}/login/${person}`, {
+            const response = await fetch(`${backend_api}/login/${person}?deviceToken=${deviceToken}`, {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",

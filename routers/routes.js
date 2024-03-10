@@ -564,6 +564,39 @@ router.get('/faculty/students/:branch/:yearOfStudy', authmiddleware(['Teacher', 
 });
 
 
+router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (req, res) => {
+    const { title, description, dueDate, subject } = req.body;
+    const { year, branch } = req.params;
+    const teacherId = req.userID;
+
+    try {
+        const teacher = await Teacher.findById(teacherId);
+
+        if (!teacher) {
+            return res.status(404).json({ error: 'Teacher not found' });
+        }
+
+        const students = await Student.find({ year, branch });
+
+        if (students.length === 0) {
+            return res.status(404).json({ error: 'No students found for the specified year and branch' });
+        }
+
+        const assignment = { title, description, dueDate,subject, createdBy: teacherId };
+
+        for (const student of students) {
+            student.assignments.push(assignment);
+            await student.save();
+        }
+
+        return res.status(200).json({ message: 'Assignment given successfully' });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
 router.post('/sendNotification', async (req, res) => {
     try {
         const { branch, year, data } = req.body;
@@ -576,7 +609,10 @@ router.post('/sendNotification', async (req, res) => {
         }
 
         const message = {
-            data,
+            data: {
+                title: data.title,
+                body: data.body,
+            },
             tokens: registrationTokens,
         };
 
@@ -589,7 +625,5 @@ router.post('/sendNotification', async (req, res) => {
         res.status(500).send('Error sending message');
     }
 });
-
-
 
 module.exports = router;
