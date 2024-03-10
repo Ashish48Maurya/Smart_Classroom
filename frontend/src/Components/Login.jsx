@@ -1,13 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState , useEffect} from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
 import { useNavigate } from 'react-router-dom';
+import { messaging } from "./firebase";
+import { getToken } from "firebase/messaging";
 
 export default function Login() {
     const { person, storeTokenInLS, backend_api } = useAuth();
     const navigate = useNavigate();
     const [mail, setmail] = useState('');
     const [password, setPassword] = useState('');
+
+    async function requestPermission() {
+        const permission = await Notification.requestPermission();
+        if (permission === "granted") {
+          // Generate Token
+          const token = await getToken(messaging, {
+            vapidKey:
+              "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
+          });
+          console.log("Token Gen", token);
+          // Send this token  to server ( db)
+        } else if (permission === "denied") {
+          alert("You denied for the notification");
+        }
+      }
+    
+      useEffect(() => {
+        requestPermission();
+      }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

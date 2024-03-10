@@ -10,7 +10,7 @@ const cors = require("cors");
 
 app.use(cors())
 app.use(express.json());
-app.use(require("./routers/routes")); //Ludo idar ye daalna tha jo maine daala hai tune router toh banaya lekin usko use nahi kiya index.js me call karke
+app.use(require("./routers/routes")); 
 
 app.use(bodyParser.json());
 
