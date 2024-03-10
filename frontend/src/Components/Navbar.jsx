@@ -45,10 +45,12 @@ export default function Navbar({ user }) {
                                             <><li className="nav-item">
                                                 <Link className="nav-link active" aria-current="page" to='/manage'>Manage</Link>
                                             </li>
-                                                <li>
-                                                    <Link className='button' style={{ maxHeight: "min-content" }} to='/studentregister'>Register Student</Link>
-                                                    <Link className="button" type="button" style={{ maxHeight: "min-content" }} to='/teacherregister'>Register Teacher</Link>
+                                                <li className="nav-item">
+                                                    <Link className='nav-link active' style={{ maxHeight: "min-content" }} to='/studentregister'>Register Student</Link>
                                                 </li>
+                                                <li className="nav-item">
+                                                    <Link className="nav-link active" type="button" style={{ maxHeight: "min-content" }} to='/teacherregister'>Register Teacher</Link>
+                                                </li>   
                                             </>
                                         )}
                                         {userData.user === "Teacher" && (
@@ -125,11 +127,6 @@ export default function Navbar({ user }) {
             max-width:200px;
             margin-left:10px;
         }
-        .button{
-            background:transparent;
-            padding: 5px 20px;
-            border-radius: 10px;
-        }
         li {
           margin-inline: 10px;
         }
@@ -141,6 +138,15 @@ export default function Navbar({ user }) {
             top:5px;
             right:2%;
             max-width:55px;
+        }
+        @media screen and (max-width:650px){
+            nav{
+                max-width:80%;
+                flex-direction: column;
+            }
+            .nav-cont{
+                width:10vw;
+            }
         }
       `}</style>
         </>

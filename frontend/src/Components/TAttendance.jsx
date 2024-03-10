@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import { useAuth } from './store/auth';
 
@@ -7,11 +7,12 @@ export default function TAttendance() {
     const [attended, setAttended] = useState(false);
     const [type, setType] = useState('present'); // Default to 'present'
     const userData = JSON.parse(localStorage.getItem("USER"));
-    const { backend_api } = useAuth();
+    const { loggedUser, backend_api, token } = useAuth();
+    const presentBtn = useRef();
 
     const userAuthentication = async () => {
         try {
-            const response = await fetch(`${backend_api}/fetchStudents`, {
+            const response = await fetch(`${backend_api}/get_students`, {
                 method: "GET",
             });
 
@@ -35,25 +36,21 @@ export default function TAttendance() {
 
     const updateAttendance = async (studentId, attendanceType) => {
         try {
-            const response = await fetch(`${backend_api}/putattendance`, {
-                method: "PUT",
+            const response = await fetch(`${backend_api}/markAttendance/${studentId}`, {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
-                    // Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    student_id: studentId,
-                    sub_name: userData.subject,
-                    presentLec: attendanceType === 'present' ? 1 : 0,
-                    totalLec: 1,
+                    subjectName: loggedUser.subject,
                 }),
             });
 
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
-                setType(attendanceType);  // Set type based on the attendanceType
-                setAttended(true);  // Set attended to true
+                presentBtn.current[studentId].setAttribute('disabled', 'true');
             } else {
                 console.error("Server returned an error:", response.status, response.statusText);
             }
@@ -84,12 +81,21 @@ export default function TAttendance() {
                         <tbody>
                             {Array.isArray(students) && students.map((student) => (
                                 <tr key={student._id}>
-                                    <td className="text-center">{student.username}</td>
-                                    <td className="text-center">{student.student_id}</td>
-                                    {attended === true ? (<td className='text-center'>
-                                        <button className="btn btn-success me-2" type="button" onClick={() => updateAttendance(student.student_id, 'present')}>Present</button>
-                                        <button className="btn btn-danger ms-2" type="button" onClick={() => updateAttendance(student.student_id, 'absent')}>Absent</button>
-                                    </td>) : <p>{type}</p>}
+                                    <td className="text-center">{student.fullname}</td>
+                                    <td className="text-center">{student.sapID}</td>
+                                    {attended === true ? (
+                                        <td className='text-center'>
+                                            <button
+                                                className="btn btn-success me-2"
+                                                type="button"
+                                                onClick={() => updateAttendance(student._id, 'present')}
+                                                ref={(button) => presentBtn.current[student._id] = button} // Assign a ref to each button
+                                                disabled={false}
+                                            >
+                                                Present
+                                            </button>
+                                        </td>
+                                    ) : <p>{type}</p>}
                                 </tr>
                             ))}
                         </tbody>

@@ -69,7 +69,7 @@ export default function StudentRegister() {
                 const res_data = await response.json();
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
-                navigate('/teachers');
+                navigate('/students');
                 alert("Registration Successfull !!!");
             } else {
                 return console.log(response);
