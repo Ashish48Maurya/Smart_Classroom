@@ -10,15 +10,20 @@ export default function Navbar({ user }) {
     const data = localStorage.getItem("USER");
     const userData = JSON.parse(data);
 
+    useEffect(() => {
+        console.log(userData);
+    }, [])
+
+
     return (
         <>
             <div className="nav-cont">
-                <nav style={{ maxWidth: "100%", backgroundColor: "rgba(255,255,255,0.3)" }} className="navbar navbar-expand-lg">
+                <nav style={{ maxWidth: "100%" }} className="navbar navbar-expand-lg">
                     <div className="container-fluid">
                         <Link className="navbar-brand fs-4 fw-bolder" style={{ color: "purple" }} to='/'>
                             <img src={logo} alt="logo" className='logo' id="logo" />
                         </Link>
-                        <button className="navbar-toggler " style={{ "border": "2px solid black" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <button className="navbar-toggler" style={{ "border": "2px solid black" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon "></span>
                         </button>
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -28,7 +33,7 @@ export default function Navbar({ user }) {
                                 </li>
                                 {userData && (
                                     <>
-                                        {userData.isStudent && (
+                                        {userData.user === "Student" && (
                                             <>
 
                                                 <li className="nav-item">
@@ -36,21 +41,17 @@ export default function Navbar({ user }) {
                                                 </li>
                                             </>
                                         )}
-                                        {userData.isAdmin && (
+                                        {userData.user === "Admin" && (
                                             <><li className="nav-item">
                                                 <Link className="nav-link active" aria-current="page" to='/manage'>Manage</Link>
                                             </li>
                                                 <li>
-                                                    <button className='btn btn-outline-success ms-2 fw-semibold' style={{ maxHeight: "min-content" }} onClick={() => {
-                                                        navigate('/studentregister')
-                                                    }}>Register Student</button>
-                                                    <button className="" type="button" style={{ maxHeight: "min-content" }} onClick={() => {
-                                                        navigate('/teacherregister');
-                                                    }}>Register Teacher</button>
+                                                    <Link className='button' style={{ maxHeight: "min-content" }} to='/studentregister'>Register Student</Link>
+                                                    <Link className="button" type="button" style={{ maxHeight: "min-content" }} to='/teacherregister'>Register Teacher</Link>
                                                 </li>
                                             </>
                                         )}
-                                        {userData.isTeacher && (
+                                        {userData.user === "Teacher" && (
                                             <>
                                                 <li className="nav-item">
                                                     <Link className="nav-link active" aria-current="page" to='/classroom'>FindClass</Link>
@@ -65,13 +66,6 @@ export default function Navbar({ user }) {
                                         )}
                                     </>
                                 )}
-                                <li className="nav-item">
-                                    <select value={person} onChange={(e) => { setPerson(e.target.value) }}>
-                                        <option value="Teacher">Teacher</option>
-                                        <option value="Student">Student</option>
-                                        <option value="Admin">Admin</option>
-                                    </select>
-                                </li>
                             </ul>
                             <form className="d-flex fs-6 fw-medium ms-auto">
                                 {isLoggedIn ? (
@@ -96,22 +90,43 @@ export default function Navbar({ user }) {
           box-sizing: border-box;
           font-family: 'Poppins', sans-serif;
         }
+        a:hover,a{text-decoration:none;}
         body {
           width: 100%;
           overflow-x: hidden;
           z-index: 10;
         }
+        nav{
+            margin:10px 10px 0 10px;
+            background:none;
+            width:100vw;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+        }
         .nav-cont {
-          width: 100%;
-          background-color:rgba(255,255,255,0.3);
-          position: fixed;
-          top: 0;
-          left: 0;
+            width:100%;
+            background: rgba(255, 255, 255, 0.26);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(9.6px);
+            -webkit-backdrop-filter: blur(9.6px);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
         .logo{
-            width:40vw;
+            width:10vw;
             max-width:200px;
             margin-left:10px;
+        }
+        .button{
+            background:transparent;
+            padding: 5px 20px;
+            border-radius: 10px;
         }
         li {
           margin-inline: 10px;
@@ -119,10 +134,11 @@ export default function Navbar({ user }) {
         .nav-item select {
           margin-top: 10px;
         }
-        @media screen and (max-width:1000px){
-            .logo{
-                width:40vw;
-            }
+        .navbar-toggler{
+            position:absolute;
+            top:20px;
+            right:2%;
+            max-width:55px;
         }
       `}</style>
         </>

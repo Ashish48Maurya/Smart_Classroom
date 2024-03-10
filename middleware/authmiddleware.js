@@ -6,6 +6,7 @@ const Admin = require('../models/Admin')
 const authMiddleware = (Model) => {
     return async (req, res, next) => {
         const token = req.header('Authorization');
+        console.log("Request Headers: ", req.headers);
 
         if (!token) {
             return res.status(401).json({ message: "Unauthorized HTTP, Token not provided" });
@@ -23,8 +24,7 @@ const authMiddleware = (Model) => {
             if (!userData) {
                 console.log("User not found");
                 return res.status(401).json({ message: "User not found" });
-            }
-
+            } 
             req.user = userData;
             req.token = token;
             req.userID = userData._id;

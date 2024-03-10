@@ -1,25 +1,21 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
-import { Navigate, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function StudentRegister() {
-    const { person, storeTokenInLS, backend_api } = useAuth();
-
-    const [token, setToken] = useState("");
+    const { storeTokenInLS, backend_api , token } = useAuth();
 
     const inputref = useRef(null)
     const iconref = useRef(null);
     const [iconState, setIcon] = useState(false)
     const handleClick = () => {
-        const inputattr = inputref.current.getAttribute('type')
-        inputattr === "password" ? inputref.current.setAttribute('type', 'text') : inputref.current.setAttribute('type', 'password')
-        inputattr === "text" ? iconref.current.className("fa fa-eye-slash") : iconref.current.className("fa fa-eye")
-        iconState ? setIcon(false) : setIcon(true)
-    }
-
-
+        const inputattr = inputref.current.getAttribute('type');
+        inputattr === 'password'
+            ? inputref.current.setAttribute('type', 'text')
+            : inputref.current.setAttribute('type', 'password');
+        setIcon(!iconState);
+    };
 
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
@@ -29,8 +25,9 @@ export default function StudentRegister() {
     const [password, setPassword] = useState('');
     const [mail, setMail] = useState('');
     const [student_id, setStudentId] = useState('');
-    const [branch, setBranch] = useState('');
-    const [yos, setYos] = useState('');
+    const [subjects, setSubjects] = useState([]);
+    const [phone, setPhone] = useState('');
+    const [department, setDepartment] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -54,27 +51,28 @@ export default function StudentRegister() {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer  ${token}`
                 },
                 body: JSON.stringify({
-                    username,
+                    fullname: username,
+                    department,
                     password,
-                    mail,
-                    student_id,
-                    branch,
-                    yos,
-                    type: person
+                    email: mail,
+                    phoneNo: phone,
+                    sapID: student_id,
+                    subjects
                 }),
             });
+            console.log(token);
 
             if (response.status === 200) {
                 const res_data = await response.json();
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
+                navigate('/teachers');
                 alert("Registration Successfull !!!");
-                navigate("/login");
             } else {
-                return alert("Username Already Exist!!!");
+                return console.log(response);
             }
         }
         catch (error) {
@@ -82,145 +80,49 @@ export default function StudentRegister() {
         }
     };
 
-
-    const [pass, setPass] = useState('');
     return (
         <>
             <Navbar />
-            {/* <div className="container ">
-
-                <div className="form-body">
-                    <form id="registerForm" onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label for="username">Username:</label>
-                            <input type="text" id="username" name="username"  />
-                        </div>
-                        <div className="form-group">
-                            <label for="password">Password:</label>
-                            <input type="password" id="password" name="password"  />
-                        </div>
-                        <div className="form-group">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email"  />
-                        </div>
-                        <div className="form-group">
-                            <label for="student-id">Student ID:</label>
-                            <input type="student-id" id="student-id" name="student-id"  />
-                        </div>
-                        <div className="form-group">
-                            <label for="branch">Branch:</label>
-                            <input type="branch" id="branch" name="branch"  />
-                        </div>
-                        <div className="form-group">
-                            <label for="yos">Year Of Study:</label>
-                            <input type="yos" id="yos" name="yos" value={yos}
-                                onChange={(e) => setYos(e.target.value)} required />
-                        </div>
-                        <div className="form-group">
-                            <button type="submit">SignUp</button>
-                        </div>
-                    </form>
-                </div>
-            </div > */}
-
-
-
-
-
-            <div class="main-block">
+            <div className="main-block">
                 <h1>Student Registration</h1>
-                <form action="/">
-                    <label id="icon" for="name"><i class="fas fa-user"></i></label>
+                <form onSubmit={handleSubmit}>
+                    <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
                     <input type="text" name="name" id="name" placeholder="Name" value={username} onChange={(e) => setUsername(e.target.value)} required />
-                    <label id="icon" for="name"><i class="fas fa-envelope"></i></label>
+                    <label id="icon" htmlFor="name"><i className="fas fa-envelope"></i></label>
                     <input type="text" name="name" id="name" placeholder="Email" value={mail}
                         onChange={(e) => setMail(e.target.value)} required />
-                    <label id="icon" for="name"><i class="fas fa-id-card"></i></label>
+                    <label id="icon" htmlFor="name"><i className="fas fa-id-card"></i></label>
                     <input type="text" name="name" id="name" placeholder="SAP ID" value={student_id}
                         onChange={(e) => setStudentId(e.target.value)} required />
-                    <label id="icon" for="name"><i class="fa fa-graduation-cap"></i></label>
-                    <input type="text" name="name" id="name" placeholder="Branch"  />
-                    <label id="icon" for="name"><i class="fa fa-calendar"></i></label>
-                    <input type="text" name="name" id="name" placeholder="Year Of Education" value={branch}
-                        onChange={(e) => setBranch(e.target.value)} required />
-                    <label id="icon" for="name"><i class="fas fa-unlock-alt"></i></label>
-                    <input type="password" name="name" id="name" placeholder="Password" value={password}
-                        onChange={(e) => setPassword(e.target.value)} required ref={inputref} /><span className='see' onClick={() => { handleClick() }}><i class="fa fa-eye-slash" ref={iconref}></i></span>
+                    <label id="icon" htmlFor="name"><i className="fa fa-phone"></i></label>
+                    <input type="text" name="name" id="name" placeholder="Phone Number" value={phone}
+                        onChange={(e) => setPhone(e.target.value)} required />
+                    <label id="icon" htmlFor="name"><i className="fa fa-laptop"></i></label>
+                    <input type="text" name="name" id="dept" placeholder="Department" value={department}
+                        onChange={(e) => setDepartment(e.target.value)} required />
+                    <label id="icon" htmlFor="name"><i className="fa fa-laptop-code"></i></label>
+                    <input type="text" name="name" id="subject" placeholder="Subjects" value={subjects}
+                        onChange={(e) => setSubjects(e.target.value.split(','))} required />
+                    <label id="icon" htmlFor="name"><i className="fas fa-unlock-alt"></i></label>
+                    <input
+                        type="password"
+                        name="name"
+                        id="name"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        ref={inputref}
+                    />
+                    <span className='see' onClick={handleClick}>
+                        <i className={`fa ${iconState ? 'fa-eye-slash' : 'fa-eye'}`} ref={iconref}></i>
+                    </span>
                     <hr />
-                    <div class="btn-block">
+                    <div className="button-block">
                         <button type="submit" href="/">Register</button>
                     </div>
                 </form>
             </div>
-
-
-
-            {/* <style>{`
-
-
-.container {
-    margin-top:8%;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    width: 100%;
-    max-width: 400px;
-}
-
-.checkbox-area{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-    width:max-content;
-}
-
-
-.form-header {
-    background-color: #4CAF50;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
-
-.form-body {
-    padding: 20px;
-}
-
-.form-group {
-    width:100%;
-}
-
-label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-input {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-top: 5px;
-}
-
-button {
-    background-color: #0d6efd;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin:20px 0;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-`}</style> */}
-
             <style>
                 {`
                 html, body {
@@ -296,11 +198,11 @@ button:hover {
       color: #fff;
       text-align: center;
       }
-      .btn-block {
+      .button-block {
       margin-top: 10px;
       text-align: center;
       }
-      button {
+      .button-block button {
       width: 100%;
       padding: 10px 0;
       margin: 10px auto;
@@ -314,7 +216,7 @@ button:hover {
       button:hover {
       background: #26a9e0;
       }
-      .fa-id-card,.fa-graduation-cap{
+      .fa-id-card,.fa-graduation-cap,.fa-laptop-code,.fa-laptop{
         width:15px;
       } 
                 `}
