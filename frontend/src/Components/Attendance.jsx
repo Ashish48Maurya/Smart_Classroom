@@ -27,7 +27,6 @@ export default function Attendance() {
                 const parsedData = await response.json();
                 console.log(parsedData);
                 setAttendanceData(parsedData.attendanceData);
-                setSubjectWiseAttendance(parsedData.subjectWiseAttendance);
                 setTotalAttendancePercentage(parsedData.totalAttendancePercentage);
             } else {
                 console.error('Failed to fetch attendance history:', response.status);

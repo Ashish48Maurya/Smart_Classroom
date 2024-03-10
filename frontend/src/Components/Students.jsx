@@ -29,7 +29,7 @@ const Teacher = () => {
         <>
             <Navbar />
             <div className="container">
-                <h1>Teacher List</h1>
+                <h1>Students List</h1>
                 <ul>
                     {students.map((teacher) => (
                         <li key={teacher._id}>
