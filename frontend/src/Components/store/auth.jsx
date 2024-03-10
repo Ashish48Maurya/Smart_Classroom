@@ -8,16 +8,29 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [person, setPerson] = useState("Student");
     const [loggedUser, setcurrentUser] = useState('');
+    const [parsedUser, setParsedUser] = useState();
     const isLoggedIn = !!token;
-    const ls = localStorage.getItem("USER");
+//     ls ? (
+//         let parsedUser = JSON.parse(ls);
+//     setcurrentUser(parsedUser.user);
+    // ) : console.log('please login first');
+    
+    useEffect(() => {
+        const ls = localStorage.getItem("USER");
+        if (ls) {
+            const parsedUser = JSON.parse(ls);
+            setParsedUser(parsedUser);
+            setcurrentUser(parsedUser);
+        } else {
+            console.log("Please Login First");
+        }
+    }, []);
 
-    if (ls) {
-        const parsedUser = JSON.parse(ls);
-        const currentUser = parsedUser.user;
-        setcurrentUser(currentUser);
-    } else {
-        console.log('Please login first');
-    }
+
+
+
+
+
 
     
 
@@ -61,10 +74,15 @@ export const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        if (token) {
-            userAuthentication();
-        }
+        const authenticateUser = async () => {
+            if (token) {
+                await userAuthentication();
+            }
+        };
+
+        authenticateUser();
     }, [token, person]);
+
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, token, setPerson, person, backend_api, loggedUser }}>
