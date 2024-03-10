@@ -99,17 +99,19 @@ export default function Navbar({ user }) {
         nav{
             margin:10px 10px 0 10px;
             background:none;
-            width:100vw;
+            width:100%;
             display:flex;
             justify-content:center;
             align-items:center;
         }
         .nav-cont {
-            width:100%;
+            width:max-content;
+            min-width:95%;
             background: rgba(255, 255, 255, 0.26);
-            border-radius: 16px;
+            border-radius: 50px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(9.6px);
+            margin:10px 20  px 0 20px;
             -webkit-backdrop-filter: blur(9.6px);
             display:flex;
             justify-content:center;
@@ -119,7 +121,7 @@ export default function Navbar({ user }) {
             left: 0;
         }
         .logo{
-            width:10vw;
+            width:30vw;
             max-width:200px;
             margin-left:10px;
         }
@@ -136,7 +138,7 @@ export default function Navbar({ user }) {
         }
         .navbar-toggler{
             position:absolute;
-            top:20px;
+            top:5px;
             right:2%;
             max-width:55px;
         }
