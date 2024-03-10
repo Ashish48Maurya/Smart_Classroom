@@ -6,9 +6,9 @@ import { messaging } from "./firebase";
 import { getToken } from "firebase/messaging";
 
 export default function Login() {
-    const { person, storeTokenInLS, backend_api } = useAuth();
+    const { person, storeTokenInLS, backend_api, setPerson } = useAuth();
     const navigate = useNavigate();
-    const [mail, setmail] = useState('');
+    const [mail, setMail] = useState('');
     const [password, setPassword] = useState('');
 
     async function requestPermission() {
@@ -32,10 +32,11 @@ export default function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(mail, password);
+
         if (!password || !mail) {
-            return alert("All Fields are Required!!!")
+            return alert("All Fields are Required!!!");
         }
+
         try {
             const response = await fetch(`${backend_api}/login/${person}`, {
                 method: "post",
@@ -44,47 +45,64 @@ export default function Login() {
                 },
                 body: JSON.stringify({
                     email: mail,
-                    password: password
-                })
-            })
+                    password: password,
+                }),
+            });
+
             if (response.status === 200) {
                 const res_data = await response.json();
                 storeTokenInLS(res_data.token);
                 localStorage.setItem("USER", JSON.stringify(res_data.user));
-                window.alert("Login Successfull");
-                console.log(res_data.user);
+                window.alert("Login Successful");
                 navigate('/');
-            }
-            else {
-                return alert("Invalid Credentials!!!")
+            } else {
+                return alert("Invalid Credentials!!!");
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
     return (
         <>
             <Navbar />
-            <div class="main-block">
+            <div className="main-block">
                 <h1>Login</h1>
                 <form id="registerForm" onSubmit={handleSubmit}>
-                    <label id="icon" for="name"><i class="fas fa-envelope"></i></label>
-                    <input type="text" name="name" id="email" placeholder="Email" value={mail}
-                        onChange={(e) => { setmail(e.target.value); console.log(mail) }} required />
-                    <label id="icon" for="name"><i class="fas fa-unlock-alt"></i></label>
-                    <input type="password" name="name" id="password" placeholder="Password" value={password}
-                        onChange={(e) => { setPassword(e.target.value); console.log(password) }} required />
+                    <label htmlFor="email" id="icon"><i className="fas fa-envelope"></i></label>
+                    <input
+                        type="text"
+                        name="email"
+                        id="email"
+                        placeholder="Email"
+                        value={mail}
+                        onChange={(e) => setMail(e.target.value)}
+                        required
+                    />
+                    <label htmlFor="password" id="icon"><i className="fas fa-unlock-alt"></i></label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <select value={person} onChange={(e) => { setPerson(e.target.value) }}>
+                        <option value="Teacher">Teacher</option>
+                        <option value="Student">Student</option>
+                        <option value="Admin">Admin</option>
+                    </select>
                     <hr />
-                    <div class="btn-block">
-                        <button type="submit" href="/">Login</button>
+                    <div className="button-block">
+                        <button type="submit">Login</button>
                     </div>
                 </form>
             </div>
 
-
-            <style>{`
-                html, body {
+            <style jsx>{`
+        html, body {
       display: flex;
       justify-content: center;
       height: 100%;
@@ -115,7 +133,7 @@ export default function Login() {
       max-width: 60%; 
       min-height: auto; 
       min-width:80%;
-      padding: 100px 50px;
+      padding: 50px 25px;
       margin: 100px auto;
       border-radius: 20px; 
       border: solid 1px #ccc;
@@ -150,11 +168,11 @@ export default function Login() {
       color: #fff;
       text-align: center;
       }
-      .btn-block {
+      .button-block {
       margin-top: 10px;
       text-align: center;
       }
-      button {
+      .button-block button {
       width: 100%;
       padding: 10px 0;
       margin: 10px auto;
@@ -170,11 +188,8 @@ export default function Login() {
       }
       .fa-id-card,.fa-graduation-cap,.fa-phone,.fa-laptop{
         width:15px;
-      } `}
-            </style>
-
-
-
+      }
+      `}</style>
         </>
-    )
+    );
 }

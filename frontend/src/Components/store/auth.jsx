@@ -6,8 +6,20 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [person, setPerson] = useState("Student")
+    const [person, setPerson] = useState("Student");
+    const [loggedUser, setcurrentUser] = useState('');
     const isLoggedIn = !!token;
+    const ls = localStorage.getItem("USER");
+
+    if (ls) {
+        const parsedUser = JSON.parse(ls);
+        const currentUser = parsedUser.user;
+        setcurrentUser(currentUser);
+    } else {
+        console.log('Please login first');
+    }
+
+    
 
     const storeTokenInLS = (serverToken) => {
         setToken(serverToken);
@@ -23,36 +35,20 @@ export const AuthProvider = ({ children }) => {
     const userAuthentication = async () => {
         let response;
         try {
-            if (person === "student") {
-                response = await fetch(`${backend_api}/user2`, {
+            response = await fetch(`${backend_api}/${loggedUser}`, {
                     method: "GET",
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                });
-            } else if (person === "teacher") {
-                response = await fetch(`${backend_api}/user1`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-            } else if (person === "admin") {
-                response = await fetch(`${backend_api}/user3`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-            }
+            });
 
-            if (!response.ok) {
+            if (response.status !== 200) {
                 console.error("Server returned an error:", response.status, response.statusText);
                 // You might want to throw an error or handle it in some way
             }
 
             const data = await response.json();
-            
+
             if (data.msg) {
                 localStorage.setItem("USER", JSON.stringify(data.msg));
             } else {
@@ -63,6 +59,7 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+
     useEffect(() => {
         if (token) {
             userAuthentication();
@@ -70,7 +67,7 @@ export const AuthProvider = ({ children }) => {
     }, [token, person]);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, token, setPerson, person , backend_api }}>
+        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, token, setPerson, person, backend_api, loggedUser }}>
             {children}
         </AuthContext.Provider>
     );

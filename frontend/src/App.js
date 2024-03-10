@@ -16,6 +16,8 @@ import Assignment from './Components/Assignment';
 import Manage from './Components/Manage';
 import Edit from './Components/Edit';
 import './index.css';
+import Teacher from './Components/Teacher';
+import Students from './Components/Students';
 
 
 function App() {
@@ -25,7 +27,7 @@ function App() {
   useEffect(() => {
     const ans = localStorage.getItem('USER');
     setUser(ans ? JSON.parse(ans) : null);
-    console.log("PERSON", person);
+    // console.log("PERSON", person);
   }, []);
 
   return (
@@ -40,9 +42,11 @@ function App() {
         <Route exact path='/manage' element={<Manage />} />
         <Route exact path='/edit/:id' element={<Edit />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
-        {person === 'Student' && <Route exact path='/studentregister' element={<StudentRegister />} />}
-        {person === 'Teacher' && <Route exact path='/teacherregister' element={<TeacherRegister />} />}
-        {person === 'Admin' && <Route exact path='/adminregister' element={<AdminRegister />} />}
+        <Route exact path='/studentregister' element={<StudentRegister />} />
+        <Route exact path='/teacherregister' element={<TeacherRegister />} />
+        <Route exact path='/adminregister' element={<AdminRegister />} />
+        <Route exact path='/teachers' element={<Teacher />} />
+        <Route exact path='/students' element={<Students />} />
       </Routes>
       <ToastContainer />
     </>
