@@ -111,7 +111,7 @@ export default function Navbar({ user }) {
             border-radius: 50px;
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(9.6px);
-            margin:10px 20  px 0 20px;
+            margin:10px 20px 0 20px;
             -webkit-backdrop-filter: blur(9.6px);
             display:flex;
             justify-content:center;
