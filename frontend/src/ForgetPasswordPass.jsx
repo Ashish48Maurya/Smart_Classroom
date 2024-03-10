@@ -1,84 +1,50 @@
-import React, { useState, useEffect } from 'react'
-import Navbar from './Navbar'
-import { useAuth } from './store/auth'
-import { useNavigate, Link } from 'react-router-dom';
-import { messaging } from "./firebase";
-import { getToken } from "firebase/messaging";
+import React, { useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useAuth } from './Components/store/auth';
+import Navbar from './Components/Navbar'
+import { Link } from 'react-router-dom';
 
-export default function Login() {
-    const { person, storeTokenInLS, backend_api, setPerson } = useAuth();
+export default function ForgetPasswordPass() {
+    const {USER,token,id} = useParams();
+    const {backend_api} = useAuth();
     const navigate = useNavigate();
-    const [mail, setMail] = useState('');
-    const [password, setPassword] = useState('');
-    const [deviceToken, setDeviceToken] = useState('');
-
-    async function requestPermission() {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-            const dtoken = await getToken(messaging, {
-                vapidKey:
-                    "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
-            });
-            setDeviceToken(dtoken);
-            console.log(dtoken)
-        } else if (permission === "denied") {
-            alert("You denied for the notification");
-        }
-    }
-
-    useEffect(() => {
-        requestPermission();
-    }, []);
-
+    const [password,setPassword] = useState('');
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!password || !mail) {
-            return alert("All Fields are Required!!!");
+        if (!password) {
+            return alert("Password is Required!!!");
         }
 
         try {
-            const response = await fetch(`${backend_api}/login/${person}?deviceToken=${deviceToken}`, {
-                method: "post",
+            const response = await fetch(`${backend_api}/resetPassword/${USER}/${token}/${id}`, {
+                method: "put",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    email: mail,
                     password: password,
                 }),
             });
 
             if (response.status === 200) {
                 const res_data = await response.json();
-                storeTokenInLS(res_data.token);
-                localStorage.setItem("USER", JSON.stringify(res_data.user));
-                window.alert("Login Successful");
-                navigate('/');
+                console.log(res_data);
+                window.alert("Password Reset Successfully");
+                navigate('/')
             } else {
-                return alert("Invalid Credentials!!!");
+                return alert("Server Error");
             }
         } catch (error) {
             console.error(error);
         }
-    };
-
-    return (
-        <>
-            <Navbar />
+    }
+  return (
+    <>
+    <Navbar />
             <div className="main-block">
-                <h1>Login</h1>
+                <h1>Enter Password</h1>
                 <form id="registerForm" onSubmit={handleSubmit}>
-                    <label htmlFor="email" id="icon"><i className="fas fa-envelope"></i></label>
-                    <input
-                        type="text"
-                        name="email"
-                        id="email"
-                        placeholder="Email"
-                        value={mail}
-                        onChange={(e) => setMail(e.target.value)}
-                        required
-                    />
                     <label htmlFor="password" id="icon"><i className="fas fa-unlock-alt"></i></label>
                     <input
                         type="password"
@@ -89,17 +55,10 @@ export default function Login() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                    <div className='flex'>
-                        <select value={person} onChange={(e) => { setPerson(e.target.value) }}>
-                            <option value="Teacher">Teacher</option>
-                            <option value="Student">Student</option>
-                            <option value="Admin">Admin</option>
-                        </select>
-                        <Link to='/forgetPassEmail'>forget password ?</Link>
-                    </div>
+                   
                     <hr />
                     <div className="button-block">
-                        <button type="submit">Login</button>
+                        <button type="submit">Reset</button>
                     </div>
                 </form>
             </div>
@@ -201,6 +160,6 @@ export default function Login() {
         width:15px;
       }
       `}</style>
-        </>
-    );
+    </>
+  )
 }

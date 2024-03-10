@@ -9,6 +9,7 @@ const authmiddleware = require('../middleware/authmiddleware')
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
+const serviceAccount = require('./firebase.json')
 
 
 const transporter = nodemailer.createTransport({
@@ -227,7 +228,7 @@ router.get('/forgetPass/:email/:USER', async (req, res) => {
             await sendMail({
                 to: user.email,
                 title: "Password Reset Link",
-                subject: `This Link Will Expire in 10 Minutes: <a href="http://localhost:8000/api/test/resetPassword/${USER}/${token}/${id}">Password Reset Link</a>`
+                subject: `This Link Will Expire in 10 Minutes: <a href="http://localhost:3000/resetPassword/${USER}/${token}/${id}">Password Reset Link</a>`
             });
             res.status(200).json({ message: "Password Reset Link Is Sent On Your Email", link: token + id });
         }
@@ -598,59 +599,90 @@ router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (re
 });
 
 
-router.get('/sendNotification', async (req, res) => {
+
+//Working Code
+// router.get('/sendNotification', async (req, res) => {
+//     try {
+//         // const { department, yearOfStudy, data } = req.body;
+//         // const students = await Student.find({ department, yearOfStudy }, 'tokens');
+
+//         // const registrationTokens = students.flatMap(student => student.tokens);
+
+//         // if (!registrationTokens || registrationTokens.length === 0) {
+//         //     return res.status(400).send('No registration tokens found for the students');
+//         // }
+
+//         // const message = {
+//         //     data: {
+//         //         title: data.title,
+//         //         body: data.body,
+//         //     },
+//         //     tokens: registrationTokens,
+//         // };
+//         const serviceAccount = require('./firebase.json')
+//         admin.initializeApp({
+//             credential: admin.credential.cert(serviceAccount),
+//         });
+
+
+//         const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
+
+
+//         const payload = {
+//             notification: {
+//                 title: 'Test Notification',
+//                 body: 'This is a test notification from your backend server.'
+//             }
+//         };
+
+
+//         admin.messaging().sendToDevice(deviceToken, payload)
+//             .then((response) => {
+//                 console.log('Successfully sent test notification:', response);
+//             })
+//             .catch((error) => {
+//                 console.error('Error sending test notification:', error);
+//             });
+
+//     } catch (error) {
+//         console.error('Error sending message1:', error);
+//         res.status(500).send('Error sending message');
+//     }
+// });
+
+
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+});
+
+router.post('/sendNotification', async (req, res) => {
     try {
-        // const { department, yearOfStudy, data } = req.body;
-        // const students = await Student.find({ department, yearOfStudy }, 'tokens');
+        const { department, yearOfStudy, data } = req.body;
+        const students = await Student.find({ department, yearOfStudy }, 'tokens');
 
-        // const registrationTokens = students.flatMap(student => student.tokens);
+        const registrationTokens = students.flatMap(student => student.tokens);
 
-        // if (!registrationTokens || registrationTokens.length === 0) {
-        //     return res.status(400).send('No registration tokens found for the students');
-        // }
+        if (!registrationTokens || registrationTokens.length === 0) {
+            return res.status(400).send('No registration tokens found for the students');
+        }
 
-        // const message = {
-        //     data: {
-        //         title: data.title,
-        //         body: data.body,
-        //     },
-        //     tokens: registrationTokens,
-        // };
-
-        
-
-       
-
-
-
-        const serviceAccount = require('./firebase.json')
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-        });
-
-
-        const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
-
-
-        const payload = {
-            notification: {
-                title: 'Test Notification',
-                body: 'This is a test notification from your backend server.'
-            }
+        const message = {
+            data: {
+                title: data.title,
+                body: data.body,
+            },
+            tokens: registrationTokens,
         };
 
+        const messagingResponse = await admin.messaging().sendMulticast(message);
 
-        admin.messaging().sendToDevice(deviceToken, payload)
-            .then((response) => {
-                console.log('Successfully sent test notification:', response);
-            })
-            .catch((error) => {
-                console.error('Error sending test notification:', error);
-            });
+        console.log('Successfully sent notification:', messagingResponse);
+        res.status(200).json({ success: true, response: messagingResponse });
 
     } catch (error) {
-        console.error('Error sending message1:', error);
-        res.status(500).send('Error sending message');
+        console.error('Error sending message:', error);
+        res.status(500).json({ success: false, error: 'Error sending message' });
     }
 });
 

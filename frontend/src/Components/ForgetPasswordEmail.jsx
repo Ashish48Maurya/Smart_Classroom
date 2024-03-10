@@ -1,73 +1,38 @@
-import React, { useState, useEffect } from 'react'
-import Navbar from './Navbar'
-import { useAuth } from './store/auth'
-import { useNavigate, Link } from 'react-router-dom';
-import { messaging } from "./firebase";
-import { getToken } from "firebase/messaging";
+import React, { useState } from 'react'
+import Navbar from './Navbar';
+import { useAuth } from './store/auth';
 
-export default function Login() {
-    const { person, storeTokenInLS, backend_api, setPerson } = useAuth();
-    const navigate = useNavigate();
+
+export default function ForgetPasswordEmail() {
+    const {person,backend_api} = useAuth();
     const [mail, setMail] = useState('');
-    const [password, setPassword] = useState('');
-    const [deviceToken, setDeviceToken] = useState('');
-
-    async function requestPermission() {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-            const dtoken = await getToken(messaging, {
-                vapidKey:
-                    "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
-            });
-            setDeviceToken(dtoken);
-            console.log(dtoken)
-        } else if (permission === "denied") {
-            alert("You denied for the notification");
-        }
-    }
-
-    useEffect(() => {
-        requestPermission();
-    }, []);
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!password || !mail) {
-            return alert("All Fields are Required!!!");
+        if (!mail) {
+            return alert("Mail ID is Required!!!");
         }
 
         try {
-            const response = await fetch(`${backend_api}/login/${person}?deviceToken=${deviceToken}`, {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: mail,
-                    password: password,
-                }),
+            const response = await fetch(`${backend_api}/forgetPass/${mail}/${person}`, {
+                method: "get",
             });
 
             if (response.status === 200) {
                 const res_data = await response.json();
-                storeTokenInLS(res_data.token);
-                localStorage.setItem("USER", JSON.stringify(res_data.user));
-                window.alert("Login Successful");
-                navigate('/');
+                window.alert("Password Reset Link Sent On Your Mail");
             } else {
                 return alert("Invalid Credentials!!!");
             }
         } catch (error) {
             console.error(error);
         }
-    };
-
+    }
     return (
         <>
             <Navbar />
             <div className="main-block">
-                <h1>Login</h1>
+                <h1>Enter Email</h1>
                 <form id="registerForm" onSubmit={handleSubmit}>
                     <label htmlFor="email" id="icon"><i className="fas fa-envelope"></i></label>
                     <input
@@ -79,31 +44,12 @@ export default function Login() {
                         onChange={(e) => setMail(e.target.value)}
                         required
                     />
-                    <label htmlFor="password" id="icon"><i className="fas fa-unlock-alt"></i></label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <div className='flex'>
-                        <select value={person} onChange={(e) => { setPerson(e.target.value) }}>
-                            <option value="Teacher">Teacher</option>
-                            <option value="Student">Student</option>
-                            <option value="Admin">Admin</option>
-                        </select>
-                        <Link to='/forgetPassEmail'>forget password ?</Link>
-                    </div>
                     <hr />
                     <div className="button-block">
-                        <button type="submit">Login</button>
+                        <button type="submit">Verify</button>
                     </div>
                 </form>
             </div>
-
             <style jsx>{`
         html, body {
       display: flex;
@@ -202,5 +148,5 @@ export default function Login() {
       }
       `}</style>
         </>
-    );
+    )
 }
