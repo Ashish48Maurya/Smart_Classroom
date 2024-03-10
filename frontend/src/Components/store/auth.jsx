@@ -9,17 +9,17 @@ export const AuthProvider = ({ children }) => {
     const [person, setPerson] = useState("Student");
     const [loggedUser, setcurrentUser] = useState('');
     const isLoggedIn = !!token;
-    const ls = localStorage.getItem("USER");
-
-    if (ls) {
-        const parsedUser = JSON.parse(ls);
-        const currentUser = parsedUser.user;
-        setcurrentUser(currentUser);
-    } else {
-        console.log('Please login first');
-    }
-
     
+    useEffect(() => {
+        const ls = localStorage.getItem("USER");
+        if (ls) {
+            const parsedUser = JSON.parse(ls);
+            setcurrentUser(parsedUser);
+        } else {
+            console.log("Please Login First");
+        }
+    }, []);
+
 
     const storeTokenInLS = (serverToken) => {
         setToken(serverToken);
@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("USER");
     }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const userAuthentication = async () => {
         let response;
         try {
@@ -44,7 +45,6 @@ export const AuthProvider = ({ children }) => {
 
             if (response.status !== 200) {
                 console.error("Server returned an error:", response.status, response.statusText);
-                // You might want to throw an error or handle it in some way
             }
 
             const data = await response.json();
@@ -61,10 +61,15 @@ export const AuthProvider = ({ children }) => {
 
 
     useEffect(() => {
-        if (token) {
-            userAuthentication();
-        }
-    }, [token, person]);
+        const authenticateUser = async () => {
+            if (token) {
+                await userAuthentication();
+            }
+        };
+
+        authenticateUser();
+    }, [token, person, userAuthentication]);
+
 
     return (
         <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, token, setPerson, person, backend_api, loggedUser }}>
