@@ -18,8 +18,8 @@ import Edit from './Components/Edit';
 import './index.css';
 import Teacher from './Components/Teacher';
 import Students from './Components/Students';
-import EnterEmail from './Components/EnterEmail';
-import NewPassword from './Components/NewPassword';
+import ForgetPasswordEmail from './Components/ForgetPasswordEmail';
+import ForgetPasswordPass from './ForgetPasswordPass';
 
 
 function App() {
@@ -38,8 +38,8 @@ function App() {
         <Route exact path='/navbar' element={<Navbar />} />
         <Route exact path='/' element={<Home />} />
         <Route exact path='/login' element={<Login />} />
-        <Route exact path='/enter-email' element={<EnterEmail />} />
-        <Route exact path='/new-password' element={<NewPassword />} />
+        <Route exact path='/forgetPassEmail' element={<ForgetPasswordEmail />} />
+        <Route exact path='/resetPassword/:USER/:token/:id' element={<ForgetPasswordPass />} />
         <Route exact path='/attendance' element={<Attendance />} />
         <Route exact path='/tattendance' element={<TAttendance />} />
         <Route exact path='/assignments' element={<Assignment />} />
