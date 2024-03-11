@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { messaging } from "./firebase";
 import { getToken } from "firebase/messaging";
 
