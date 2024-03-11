@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { messaging } from "./firebase";
 import { getToken } from "firebase/messaging";
 
@@ -96,6 +96,10 @@ export default function Login() {
                     </select>
                     <hr />
                     <div className="button-block">
+                        <Link to='/enter-email' style={{
+                            color: "white",
+                            textDecoration: "underline"
+                        }}>forgot password</Link>
                         <button type="submit">Login</button>
                     </div>
                 </form>

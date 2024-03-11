@@ -397,7 +397,7 @@ router.patch('/update_user_info/:id/:USER', authmiddleware(Admin), async (req, r
 });
 
 
-router.get('/Student', authmiddleware(Student), (req, res) => {
+router.get('/Student', authmiddleware(Student), (req, res) => {//done
     try {
         const userData = req.User;
         console.log(userData);
@@ -408,7 +408,7 @@ router.get('/Student', authmiddleware(Student), (req, res) => {
 })
 
 
-router.get('/Admin', authmiddleware(Admin), (req, res) => {
+router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
     try {
         const userData = req.User;
         console.log(userData);
@@ -419,7 +419,7 @@ router.get('/Admin', authmiddleware(Admin), (req, res) => {
 })
 
 
-router.get('/Teacher', authmiddleware(Teacher), (req, res) => {
+router.get('/Teacher', authmiddleware(Teacher), (req, res) => {//done
     try {
         const userData = req.User;
         console.log(userData);
@@ -430,7 +430,7 @@ router.get('/Teacher', authmiddleware(Teacher), (req, res) => {
 })
 
 router.get('/get_students', async (req, res) => {
-    try {
+    try {//done
         const data = await Student.find({});
         res.status(200).json({ msg: data })
     } catch (error) {
@@ -438,7 +438,7 @@ router.get('/get_students', async (req, res) => {
     }
 })
 
-router.get('/get_teachers', async (req, res) => {
+router.get('/get_teachers', async (req, res) => {//done
     try {
         const data = await Teacher.find({});
         res.status(200).json({ msg: data })
@@ -517,7 +517,7 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
 })
 
 
-router.get('/studentAttendance/:studentId', async (req, res) => {
+router.get('/studentAttendance/:studentId', async (req, res) => {//done
     const { studentId } = req.params;
     try {
         const student = await Student.findById(studentId);
@@ -539,17 +539,17 @@ router.get('/studentAttendance/:studentId', async (req, res) => {
 });
 
 
-router.get('/faculty/students/:branch/:yearOfStudy', authmiddleware(['Teacher', 'Admin']), async (req, res) => {
-    const { branch, yearOfStudy } = req.params;
+router.get('/faculty/students/:department/:yearOfStudy', authmiddleware(['Teacher', 'Admin']), async (req, res) => {
+    const { department, yearOfStudy } = req.params;
 
     try {
         const students = await Student.find({
-            department: branch,
+            department: department,
             yearOfStudy: yearOfStudy
         });
 
         if (!students || students.length === 0) {
-            return res.status(404).json({ "error": "No students found for the specified branch and year" });
+            return res.status(404).json({ "error": "No students found for the specified department and year" });
         }
 
         const studentList = students.map(student => ({
@@ -565,9 +565,9 @@ router.get('/faculty/students/:branch/:yearOfStudy', authmiddleware(['Teacher', 
 });
 
 
-router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (req, res) => {
+router.post('/give_assignment/:yearOfStudy/:department', authmiddleware(Teacher), async (req, res) => {
     const { title, description, dueDate, subject } = req.body;
-    const { year, branch } = req.params;
+    const { yearOfStudy, department } = req.params;
     const teacherId = req.userID;
 
     try {
@@ -577,15 +577,20 @@ router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (re
             return res.status(404).json({ error: 'Teacher not found' });
         }
 
-        const students = await Student.find({ year, branch });
+        const students = await Student.find({ yearOfStudy, department });
 
         if (students.length === 0) {
-            return res.status(404).json({ error: 'No students found for the specified year and branch' });
+            return res.status(404).json({ error: 'No students found for the specified yearOfStudy and department' });
         }
 
         const assignment = { title, description, dueDate, subject, createdBy: teacherId };
 
         for (const student of students) {
+            // Ensure that the 'assignments' array is initialized
+            if (!student.assignments) {
+                student.assignments = [];
+            }
+
             student.assignments.push(assignment);
             await student.save();
         }
@@ -596,6 +601,7 @@ router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (re
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 
 router.get('/sendNotification', async (req, res) => {

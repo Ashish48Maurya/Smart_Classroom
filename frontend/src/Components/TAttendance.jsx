@@ -50,7 +50,6 @@ export default function TAttendance() {
             if (response.ok) {
                 const data = await response.json();
                 alert(data.message);
-                presentBtn.current[studentId].setAttribute('disabled', 'true');
             } else {
                 console.error("Server returned an error:", response.status, response.statusText);
             }
@@ -83,19 +82,18 @@ export default function TAttendance() {
                                 <tr key={student._id}>
                                     <td className="text-center">{student.fullname}</td>
                                     <td className="text-center">{student.sapID}</td>
-                                    {attended === true ? (
+
                                         <td className='text-center'>
                                             <button
                                                 className="btn btn-success me-2"
                                                 type="button"
                                                 onClick={() => updateAttendance(student._id, 'present')}
-                                                ref={(button) => presentBtn.current[student._id] = button} // Assign a ref to each button
+                                                 // Assign a ref to each button
                                                 disabled={false}
                                             >
                                                 Present
                                             </button>
-                                        </td>
-                                    ) : <p>{type}</p>}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
