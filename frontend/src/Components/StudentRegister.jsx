@@ -158,7 +158,8 @@ export default function StudentRegister() {
       opacity: 0.3;
       }
       .main-block {
-      max-width: 60%; 
+      max-width: 80%;
+      min-width: 60%;
       min-height: auto; 
       padding: 10px 0;
       margin: 100px auto;

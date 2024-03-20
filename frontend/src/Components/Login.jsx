@@ -95,14 +95,13 @@ export default function Login() {
                             <option value="Student">Student</option>
                             <option value="Admin">Admin</option>
                         </select>
-                        <Link to='/forgetPassEmail'>forget password ?</Link>
+                        <Link to='/forgetPassEmail' style={{
+                            color: "white",
+                            textDecoration: "underline"
+                        }}>forgot password ?</Link>
                     </div>
                     <hr />
                     <div className="button-block">
-                        <Link to='/enter-email' style={{
-                            color: "white",
-                            textDecoration: "underline"
-                        }}>forgot password</Link>
                         <button type="submit">Login</button>
                     </div>
                 </form>
@@ -203,6 +202,18 @@ export default function Login() {
       }
       .fa-id-card,.fa-graduation-cap,.fa-phone,.fa-laptop{
         width:15px;
+      }
+      @media screen and (max-width:340px){
+        .flex{
+            flex-direction:column;
+        }
+        .flex select , .flex a , input , .main-block {
+            width:100%;
+        }
+
+        .main-block{
+            padding: 50px 0px;
+        }
       }
       `}</style>
         </>

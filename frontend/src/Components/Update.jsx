@@ -87,7 +87,7 @@ const Update = () => {
           <Navbar />
           <div className="main-block">
               <h1>Update Details</h1>
-              <form action="/">
+              <form onSubmit={()=>{handleSubmit()}}>
                   <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
                   <input type="text" name="name" id="name" placeholder="Name" value={username} onChange={(e) => setUsername(e.target.value)} required />
                   <label id="icon" htmlFor="name"><i className="fas fa-envelope"></i></label>

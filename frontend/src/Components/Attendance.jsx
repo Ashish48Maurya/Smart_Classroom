@@ -11,16 +11,16 @@ export default function Attendance() {
     const { token, backend_api, loggedUser } = useAuth();
     const [attendanceData, setAttendanceData] = useState([]);
     const [totalAttendancePercentage, setTotalAttendancePercentage] = useState("");
+    const [selectedSubject, setSelectedSubject] = useState(null);
 
     const getAttendance = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/studentAttendance/65ed685fc5babd6068bb40ab`, {
+            const response = await fetch(`${backend_api}/studentAttendance/${loggedUser._id}`, {
                 method: 'GET'
             });
-
             if (response.status === 200) {
                 const parsedData = await response.json();
-                console.log(parsedData);
+                // console.log(parsedData);
                 setAttendanceData(parsedData.attendanceData);
                 setTotalAttendancePercentage(parsedData.totalAttendancePercentage);
             } else {
@@ -31,9 +31,13 @@ export default function Attendance() {
         }
     };
 
+    const handleSubjectClick = (subject) => {
+        setSelectedSubject(subject);
+    };
+
     useEffect(() => {
         getAttendance();
-    }, []);
+    }, [loggedUser]);
 
     return (
         <>
@@ -53,7 +57,7 @@ export default function Attendance() {
                                 </thead>
                                 <tbody>
                                     {attendanceData.map(item => (
-                                        <tr key={item.name}>
+                                        <tr key={item.name} onClick={() => handleSubjectClick(item)}>
                                             <td className="text-center">{item.name}</td>
                                             <td className="text-center">{item.attendance.length}</td>
                                         </tr>
@@ -61,17 +65,22 @@ export default function Attendance() {
                                 </tbody>
                             </table>
                         </div>
-                        <h2>Subject-wise Attendance</h2>
-                        <Chart
-                            chartType="PieChart"
-                            data={[
-                                ['Subject', 'Attendance'],
-                                ...attendanceData.map(item => [item.name, item.attendance.length]),
-                            ]}
-                            options={options}
-                            width={"100%"}
-                            height={"400px"}
-                        />
+
+                        {selectedSubject && (
+                            <>
+                                <h2>Attendance for {selectedSubject.name}</h2>
+                                <Chart
+                                    chartType="PieChart"
+                                    data={[
+                                        ['Date', 'Count'],
+                                        ...selectedSubject.attendance.map(record => [new Date(record.date).toLocaleDateString(), record.count]),
+                                    ]}
+                                    options={options}
+                                    width={"100%"}
+                                    height={"400px"}
+                                />
+                            </>
+                        )}
                         <h2>Total Attendance Percentage</h2>
                         <Chart
                             chartType="PieChart"
@@ -84,7 +93,6 @@ export default function Attendance() {
                             width={"100%"}
                             height={"400px"}
                         />
-                        <p>Data available, charts and table should be visible</p>
                     </div>
                 ) : (
                     <p>No attendance data available</p>
@@ -96,7 +104,10 @@ export default function Attendance() {
                     text-align: center;
                 }
                 .container {
-                    margin-top: 100px;
+                    margin-top: 150px;
+                }
+                table {
+                    cursor: pointer;
                 }
                 `}
             </style>
