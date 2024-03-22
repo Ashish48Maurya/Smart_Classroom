@@ -18,6 +18,7 @@ const Student = () => {
             });
             if (res.status === 200) {
                 const res_data = await res.json();
+                console.log(res_data.student);
                 setStudentData(res_data.student);
             }
         } catch (error) {
@@ -52,7 +53,7 @@ const Student = () => {
                             </ol>
                         </div>
                         <img className='profile-img' src={
-                            studentData.image || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+                            studentData.student_photo || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
                         } />
                     </div>
                 )}

@@ -21,7 +21,6 @@ export default function Login() {
                     "BGB_y7Y1bn2cNClO6RfDBOlI_Yh1gF3XEqu_3PVwyTwpiYmn1gvRIrKtiQTn08j62_RYzWCF4ik5x7taEKrz0y4",
             });
             setDeviceToken(dtoken);
-            console.log(dtoken)
         } else if (permission === "denied") {
             toast("You denied for the notification");
         }

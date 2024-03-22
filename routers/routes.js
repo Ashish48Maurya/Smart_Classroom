@@ -39,7 +39,7 @@ const sendMail = async (options) => {
 }
 
 router.post('/registerStudent', authmiddleware(Admin), async (req, res) => {
-    const { fullname, department, password, email, phoneNo, sapID, subjects } = req.body;
+    const { fullname, department, password, email, phoneNo, sapID, subjects, student_photo } = req.body;
     if (!email || !fullname || !password) {
         console.log('Please add all the fields');
         return res.status(422).json({ error: "Please add all the fields" });
@@ -62,6 +62,7 @@ router.post('/registerStudent', authmiddleware(Admin), async (req, res) => {
             sapID,
             password: hashedPassword,
             subjects: subjects.map(subject => ({ name: subject })),
+            student_photo
         });
 
         user.save().then(async user => {
@@ -88,7 +89,7 @@ router.post('/registerStudent', authmiddleware(Admin), async (req, res) => {
 
 
 router.post('/registerFaculty', authmiddleware(Admin), async (req, res) => {
-    const { fullname, department, subject, password, email, phoneNo, teacherID } = req.body;
+    const { fullname, department, subject, password, email, phoneNo, teacherID, teacher_photo } = req.body;
 
     if (!email || !fullname || !password) {
         console.log('Please add all the fields');
@@ -111,7 +112,8 @@ router.post('/registerFaculty', authmiddleware(Admin), async (req, res) => {
             email,
             phoneNo,
             teacherID,
-            password: hashedPassword
+            password: hashedPassword,
+            teacher_photo
         });
 
         user.save().then(async user => {

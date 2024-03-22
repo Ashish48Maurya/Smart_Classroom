@@ -1,15 +1,14 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const Loader = () => <h1>Posting....</h1>;
+const Loader = () => <h1>Registering student please wait....</h1>;
 
 export default function StudentRegister() {
     const { storeTokenInLS, backend_api, token } = useAuth();
 
-    const [body, setBody] = useState("");
     const [image, setImage] = useState("");
     const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
@@ -40,6 +39,7 @@ export default function StudentRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        postDetails();
 
         if (!username || !password || !mail) {
             return toast.error("All Fields Are Required!!!");
@@ -69,7 +69,8 @@ export default function StudentRegister() {
                     email: mail,
                     phoneNo: phone,
                     sapID: student_id,
-                    subjects
+                    subjects,
+                    student_photo: url
                 }),
             });
             console.log(token);
@@ -91,6 +92,7 @@ export default function StudentRegister() {
 
     // image to cloudinary
     const postDetails = () => {
+        console.log(image);
         setLoading(true);
         const data = new FormData();
         data.append("file", image);
@@ -112,6 +114,7 @@ export default function StudentRegister() {
                 console.log(err);
             });
     };
+
 
     const loadfile = (event) => {
         var output = document.getElementById("output");
@@ -159,6 +162,22 @@ export default function StudentRegister() {
                     <span className='see' onClick={handleClick}>
                         <i className={`fa ${iconState ? 'fa-eye-slash' : 'fa-eye'}`} ref={iconref}></i>
                     </span>
+                    <label id="icon" htmlFor="name"><i className="fas fa-image"></i></label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(event) => loadfile(event)}
+                    />
+                    <img
+                        id="output"
+                        src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"
+                        alt="Preview"
+                    />
+                    {loading && (
+                        <div className="loader">
+                            <Loader />
+                        </div>
+                    )}
                     <hr />
                     <div className="button-block">
                         <button type="submit" href="/">Register</button>
@@ -220,7 +239,7 @@ export default function StudentRegister() {
       margin: 0;
       border-radius: 5px 0 0 5px;
       }
-      input[type=text], input[type=password] {
+      input[type=text], input[type=password] , input[type="file"] {
       width: calc(100% - 57px);
       height: 42px;
       margin: 13px 0 0 -5px;
@@ -230,6 +249,11 @@ export default function StudentRegister() {
       box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
       background: #fff; 
       }
+      input[type="file"]{
+        position:relative;
+        bottom:5px;
+      }
+
       input[type=password] {
       margin-bottom: 15px;
       }
@@ -262,6 +286,24 @@ export default function StudentRegister() {
       .fa-id-card,.fa-graduation-cap,.fa-laptop-code,.fa-laptop{
         width:15px;
       } 
+      #output{
+        min-width:10vw;
+        max-width:60vw;
+      }
+       .loader{
+                            display:${loading ? "flex" : "none"};
+                            justify-content:center;
+                            align-items:center;
+                            position:absolute;
+                            top:8%;
+                            left:33%;
+                            border:0px solid black;
+                            border-radius:10px;
+                            height:500px;
+                            width:600px;
+                            background-color:white;
+                            box-shadow:1px 1px 10px black;
+                        }
                 `}
             </style>
         </>

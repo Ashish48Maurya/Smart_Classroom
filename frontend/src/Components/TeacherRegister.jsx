@@ -4,9 +4,16 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from './Navbar';
 import { toast } from 'react-toastify';
 
+const Loader = () => <h1>Registering teacher please wait....</h1>;
+
 export default function TeacherRegister() {
     const navigate = useNavigate();
     const { token, storeTokenInLS, backend_api } = useAuth();
+
+    const [image, setImage] = useState("");
+    const [url, setUrl] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [posted, setPosted] = useState(false);
 
     const inputref = useRef(null)
     const iconref = useRef(null);
@@ -32,6 +39,8 @@ export default function TeacherRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        postDetails()
+        console.log(url)
 
         if (!username || !password || !mail) {
             return toast.error("All Fields Are Required!!!");
@@ -60,7 +69,8 @@ export default function TeacherRegister() {
                     password,
                     email: mail,
                     phoneNo: phone,
-                    teacherID: teacher_id
+                    teacherID: teacher_id,
+                    teacher_photo: url
                 }),
             });
 
@@ -78,6 +88,41 @@ export default function TeacherRegister() {
         catch (error) {
             toast.error(error);
         }
+    };
+
+    // image to cloudinary
+    const postDetails = () => {
+        console.log(image);
+        setLoading(true);
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "smart-allocator");
+        data.append("cloud_name", "djy7my1mw");
+
+        fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
+            method: "post",
+            body: data
+        })
+            .then(res => res.json())
+            .then(data => {
+                setUrl(data.url);
+                setLoading(false);
+                setPosted(true); // Set posted to true after image upload
+            })
+            .catch(err => {
+                setLoading(false);
+                console.log(err);
+            });
+    };
+
+
+    const loadfile = (event) => {
+        var output = document.getElementById("output");
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src); // free memory
+        };
+        setImage(event.target.files[0]);
     };
 
 
@@ -119,6 +164,23 @@ export default function TeacherRegister() {
                     <span className='see' onClick={handleClick}>
                         <i className={`fa ${iconState ? 'fa-eye-slash' : 'fa-eye'}`} ref={iconref}></i>
                     </span>
+                    <label id="icon" htmlFor="name"><i className="fas fa-image"></i></label>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(event) => loadfile(event)}
+                    />
+                    <img
+                        id="output"
+                        src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"
+                        alt="Preview"
+                    />
+                    {loading && (
+                        <div className="loader">
+                            <Loader />
+                        </div>
+                    )}
+                    <hr />
                     <hr />
                     <div className="button-block">
                         <button type="submit">Register</button>
@@ -178,7 +240,7 @@ export default function TeacherRegister() {
       margin: 0;
       border-radius: 5px 0 0 5px;
       }
-      input[type=text], input[type=password] , input[type=phone] {
+      input[type=text], input[type=password] , input[type=phone] , input[type="file"] {
       width: calc(100% - 57px);
       height: 42px;
       margin: 13px 0 0 -5px;
@@ -220,7 +282,25 @@ export default function TeacherRegister() {
       .fa-id-card,.fa-graduation-cap,.fa-phone,.fa-laptop,.fa-laptop-code{
         text-align:center;
         width:15px;
-      } `}
+      }
+      #output{
+        min-width:10vw;
+        max-width:60vw;
+      }
+       .loader{
+                            display:${loading ? "flex" : "none"};
+                            justify-content:center;
+                            align-items:center;
+                            position:absolute;
+                            top:8%;
+                            left:33%;
+                            border:0px solid black;
+                            border-radius:10px;
+                            height:500px;
+                            width:600px;
+                            background-color:white;
+                            box-shadow:1px 1px 10px black;
+      `}
             </style>
 
 

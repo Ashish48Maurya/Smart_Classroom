@@ -44,7 +44,7 @@ const Teachers = () => {
                             <h2>Subject:</h2>
                             <p>{teacherData.subject}</p>
                         </div>
-                        <img className='profile-img' src={teacherData.image || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"} alt="Teacher Profile" />
+                        <img className='profile-img' src={teacherData.teacher_photo || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"} alt="Teacher Profile" />
                     </div>
                 )}
             </div>
