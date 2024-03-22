@@ -39,7 +39,7 @@ const Students = () => {
                 <div className="table-responsive">
                     <table>
                         <thead>
-                            <tr>
+                            <tr className='text-center'>
                                 <th>Full Name</th>
                                 <th>Department</th>
                                 <th>Email</th>
@@ -86,13 +86,14 @@ const Students = () => {
                 }
 
                 tbody{
+                    text-align: center;
                     border:none;
                     border-radius:100px;
                 }
 
                 th, td {
                     border: 1px solid #dddddd;
-                    text-align: left;
+                    // text-align: left;
                     padding: 8px;
                 }
                 td{
