@@ -153,7 +153,7 @@ router.post('/login/:USER', async (req, res) => {
                 if (!user) {
                     return res.status(422).json({ error: "Invalid username or password" });
                 }
-                user.tokens = deviceToken;
+                user.ntoken = deviceToken;
                 await user.save();
                 break;
             case 'admin':
