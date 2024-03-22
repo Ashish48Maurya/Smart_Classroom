@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './Components/Navbar';
 import Login from './Components/Login';
 import AdminRegister from './Components/AdminRegister';

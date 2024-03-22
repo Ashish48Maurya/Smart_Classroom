@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import { useAuth } from './store/auth';
+import { toast } from "react-toastify";
 
 export default function Assignment() {
     const [branch, setBranch] = useState('');
@@ -25,7 +26,7 @@ export default function Assignment() {
         });
 
     if (ans.ok) {
-        alert("Message Sent Successfully");
+        toast.success("Message Sent Successfully");
         setBranch('');
         setMsg('');
     } else {

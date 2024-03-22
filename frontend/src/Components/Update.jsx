@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 const Update = () => {
@@ -36,15 +37,15 @@ const Update = () => {
         e.preventDefault();
 
         if (!username || !password || !mail) {
-            return alert("All Fields Are Required!!!");
+            return toast.error("All Fields Are Required!!!");
         }
 
         if (!emailRegex.test(mail)) {
-            alert("Invalid Email");
+            toast.error("Invalid Email");
             return;
         }
         else if (!passRege.test(password)) {
-            alert("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+            toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
         }
 
@@ -71,10 +72,10 @@ const Update = () => {
                 const res_data = await response.json();
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
-                alert("Registration Successfull !!!");
+                toast.success("Registration Successfull !!!");
                 navigate("/login");
             } else {
-                return alert("Username Already Exist!!!");
+                return toast.error("Username Already Exist!!!");
             }
         }
         catch (error) {

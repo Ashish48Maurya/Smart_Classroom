@@ -1,10 +1,11 @@
 import React from 'react'
+import { toast } from "react-toastify";
 
 const Allocate = () => {
 
     const handleSubmit = (e) => {
         e.preventDeafault();
-        alert('Submitted');
+        toast.success('Submitted');
     }
 
     return (

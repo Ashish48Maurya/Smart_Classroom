@@ -4,6 +4,7 @@ import { useAuth } from './store/auth'
 import { useNavigate, Link } from 'react-router-dom';
 import { messaging } from "./firebase";
 import { getToken } from "firebase/messaging";
+import { toast } from 'react-toastify';
 
 export default function Login() {
     const { person, storeTokenInLS, backend_api, setPerson } = useAuth();
@@ -22,7 +23,7 @@ export default function Login() {
             setDeviceToken(dtoken);
             console.log(dtoken)
         } else if (permission === "denied") {
-            alert("You denied for the notification");
+            toast("You denied for the notification");
         }
     }
 
@@ -34,7 +35,7 @@ export default function Login() {
         e.preventDefault();
 
         if (!password || !mail) {
-            return alert("All Fields are Required!!!");
+            return toast.error("All Fields are Required!!!");
         }
 
         try {
@@ -53,10 +54,10 @@ export default function Login() {
                 const res_data = await response.json();
                 storeTokenInLS(res_data.token);
                 localStorage.setItem("USER", JSON.stringify(res_data.user));
-                window.alert("Login Successful");
+                toast.success("Login Successful");
                 navigate('/');
             } else {
-                return alert("Invalid Credentials!!!");
+                return toast.error("Invalid Credentials!!!");
             }
         } catch (error) {
             console.error(error);

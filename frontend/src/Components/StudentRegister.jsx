@@ -2,9 +2,18 @@ import React, { useRef, useState } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
+const Loader = () => <h1>Posting....</h1>;
 
 export default function StudentRegister() {
-    const { storeTokenInLS, backend_api , token } = useAuth();
+    const { storeTokenInLS, backend_api, token } = useAuth();
+
+    const [body, setBody] = useState("");
+    const [image, setImage] = useState("");
+    const [url, setUrl] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [posted, setPosted] = useState(false);
 
     const inputref = useRef(null)
     const iconref = useRef(null);
@@ -33,15 +42,15 @@ export default function StudentRegister() {
         e.preventDefault();
 
         if (!username || !password || !mail) {
-            return alert("All Fields Are Required!!!");
+            return toast.error("All Fields Are Required!!!");
         }
 
         if (!emailRegex.test(mail)) {
-            alert("Invalid Email");
+            toast.error("Invalid Email");
             return;
         }
         else if (!passRege.test(password)) {
-            alert("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+            toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
         }
 
@@ -70,7 +79,7 @@ export default function StudentRegister() {
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
                 navigate('/students');
-                alert("Registration Successfull !!!");
+                toast.success("Registration Successfull !!!");
             } else {
                 return console.log(response);
             }
@@ -78,6 +87,39 @@ export default function StudentRegister() {
         catch (error) {
             console.log(error);
         }
+    };
+
+    // image to cloudinary
+    const postDetails = () => {
+        setLoading(true);
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "smart-allocator");
+        data.append("cloud_name", "djy7my1mw");
+
+        fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
+            method: "post",
+            body: data
+        })
+            .then(res => res.json())
+            .then(data => {
+                setUrl(data.url);
+                setLoading(false);
+                setPosted(true); // Set posted to true after image upload
+            })
+            .catch(err => {
+                setLoading(false);
+                console.log(err);
+            });
+    };
+
+    const loadfile = (event) => {
+        var output = document.getElementById("output");
+        output.src = URL.createObjectURL(event.target.files[0]);
+        output.onload = function () {
+            URL.revokeObjectURL(output.src); // free memory
+        };
+        setImage(event.target.files[0]);
     };
 
     return (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import { useAuth } from './store/auth';
+import { toast } from 'react-toastify';
 
 export default function TAttendance() {
     const [students, setStudents] = useState([]);
@@ -48,9 +49,9 @@ export default function TAttendance() {
 
             if (response.ok) {
                 const data = await response.json();
-                alert(data.message);
+                toast.success(data.message);
             } else {
-                response.status === 400 ? alert("Attendance already marked for today") : console.log("An unexpected error occurred", response.status, response.statusText);
+                response.status === 400 ? toast("Attendance already marked for today") : console.log("An unexpected error occurred", response.status, response.statusText);
             }
         } catch (error) {
             console.error("Error during updating attendance:", error);

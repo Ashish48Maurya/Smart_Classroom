@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Navbar from './Navbar';
 import { useAuth } from './store/auth';
+import { toast } from 'react-toastify';
 
 
 export default function ForgetPasswordEmail() {
@@ -10,7 +11,7 @@ export default function ForgetPasswordEmail() {
         e.preventDefault();
 
         if (!mail) {
-            return alert("Mail ID is Required!!!");
+            return toast.error("Mail ID is Required!!!");
         }
 
         try {
@@ -20,9 +21,9 @@ export default function ForgetPasswordEmail() {
 
             if (response.status === 200) {
                 const res_data = await response.json();
-                window.alert("Password Reset Link Sent On Your Mail");
+                toast.success("Password Reset Link Sent On Your Mail");
             } else {
-                return alert("Invalid Credentials!!!");
+                return toast.error("Invalid Credentials!!!");
             }
         } catch (error) {
             console.error(error);

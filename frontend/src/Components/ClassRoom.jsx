@@ -28,7 +28,7 @@ export default function ClassRoom() {
         });
 
         if (ans.ok) {
-            alert("Message Sent Successfully");
+            toast.success("Message Sent Successfully");
             setBranch('');
             setMsg('');
         } else {
@@ -58,7 +58,7 @@ export default function ClassRoom() {
             const updatedData = data.filter((ele) => ele._id !== id);
             setData(updatedData);
           
-            alert("Class Allocated Successfully");
+            toast.success("Class Allocated Successfully");
             sendMail("There have been some changes in your branch", userData.branch);
             setStrength("");
         } else {
