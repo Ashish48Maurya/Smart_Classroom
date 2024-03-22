@@ -8,37 +8,36 @@ export const options = {
 };
 
 export default function Attendance() {
-    const { token, backend_api } = useAuth();
+    const { token, backend_api, loggedUser } = useAuth();
     const [attendanceData, setAttendanceData] = useState([]);
-    const [subjectWiseAttendance, setSubjectWiseAttendance] = useState({});
     const [totalAttendancePercentage, setTotalAttendancePercentage] = useState("");
-    const userData = JSON.parse(localStorage.getItem("USER"));
+    const [selectedSubject, setSelectedSubject] = useState(null);
 
     const getAttendance = async () => {
         try {
-            const response = await fetch(`${backend_api}/getattendance`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            const response = await fetch(`${backend_api}/studentAttendance/${loggedUser._id}`, {
+                method: 'GET'
             });
-
             if (response.status === 200) {
                 const parsedData = await response.json();
-                console.log(parsedData);
+                // console.log(parsedData);
                 setAttendanceData(parsedData.attendanceData);
                 setTotalAttendancePercentage(parsedData.totalAttendancePercentage);
             } else {
                 console.error('Failed to fetch attendance history:', response.status);
             }
         } catch (error) {
-            console.log('Error fetching attendance history:', error);
+            console.error('Error fetching attendance history:', error);
         }
+    };
+
+    const handleSubjectClick = (subject) => {
+        setSelectedSubject(subject);
     };
 
     useEffect(() => {
         getAttendance();
-    }, []);
+    }, [loggedUser]);
 
     return (
         <>
@@ -47,17 +46,41 @@ export default function Attendance() {
                 <h1>Student Attendance Portal</h1>
                 {attendanceData.length > 0 ? (
                     <div>
-                        <h2>Subject-wise Attendance</h2>
-                        <Chart
-                            chartType="PieChart"
-                            data={[
-                                ['Subject', 'Attendance'],
-                                ...attendanceData.map(item => [item.sub_name, item.presentLec]),
-                            ]}
-                            options={options}
-                            width={"100%"}
-                            height={"400px"}
-                        />
+                        <h2>Individual Subject Attendance</h2>
+                        <div className="table-responsive mt-5">
+                            <table className="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" className="text-center">Subject</th>
+                                        <th scope="col" className="text-center">Attendance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {attendanceData.map(item => (
+                                        <tr key={item.name} onClick={() => handleSubjectClick(item)}>
+                                            <td className="text-center">{item.name}</td>
+                                            <td className="text-center">{item.attendance.length}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {selectedSubject && (
+                            <>
+                                <h2>Attendance for {selectedSubject.name}</h2>
+                                <Chart
+                                    chartType="PieChart"
+                                    data={[
+                                        ['Date', 'Count'],
+                                        ...selectedSubject.attendance.map(record => [new Date(record.date).toLocaleDateString(), record.count]),
+                                    ]}
+                                    options={options}
+                                    width={"100%"}
+                                    height={"400px"}
+                                />
+                            </>
+                        )}
                         <h2>Total Attendance Percentage</h2>
                         <Chart
                             chartType="PieChart"
@@ -70,8 +93,6 @@ export default function Attendance() {
                             width={"100%"}
                             height={"400px"}
                         />
-
-                        <p>Data available, charts should be visible</p>
                     </div>
                 ) : (
                     <p>No attendance data available</p>
@@ -83,7 +104,10 @@ export default function Attendance() {
                     text-align: center;
                 }
                 .container {
-                    margin-top: 100px;
+                    margin-top: 150px;
+                }
+                table {
+                    cursor: pointer;
                 }
                 `}
             </style>

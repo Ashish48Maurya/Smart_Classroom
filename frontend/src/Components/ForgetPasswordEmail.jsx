@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Navbar from './Navbar';
 import { useAuth } from './store/auth';
+import { toast } from 'react-toastify';
 
 
 export default function ForgetPasswordEmail() {
@@ -10,7 +11,7 @@ export default function ForgetPasswordEmail() {
         e.preventDefault();
 
         if (!mail) {
-            return alert("Mail ID is Required!!!");
+            return toast.error("Mail ID is Required!!!");
         }
 
         try {
@@ -20,9 +21,9 @@ export default function ForgetPasswordEmail() {
 
             if (response.status === 200) {
                 const res_data = await response.json();
-                window.alert("Password Reset Link Sent On Your Mail");
+                toast.success("Password Reset Link Sent On Your Mail");
             } else {
-                return alert("Invalid Credentials!!!");
+                return toast.error("Invalid Credentials!!!");
             }
         } catch (error) {
             console.error(error);
@@ -36,7 +37,7 @@ export default function ForgetPasswordEmail() {
                 <form id="registerForm" onSubmit={handleSubmit}>
                     <label htmlFor="email" id="icon"><i className="fas fa-envelope"></i></label>
                     <input
-                        type="text"
+                        type="email"
                         name="email"
                         id="email"
                         placeholder="Email"
@@ -51,28 +52,7 @@ export default function ForgetPasswordEmail() {
                 </form>
             </div>
             <style jsx>{`
-        html, body {
-      display: flex;
-      justify-content: center;
-      height: 100%;
-      }
-      .flex{
-        justify-content: space-between;
-        align-items:center;
-        display:flex;
-      }
-      body, div, h1, form, input, p { 
-      padding: 0;
-      margin: 0;
-      outline: none;
-      font-family: Roboto, Arial, sans-serif;
-      font-size: 16px;
-      color: #666;
-      }
-      a:hover , a{
-        color:white;
-      }
-      h1 {
+        h1,p {
       padding: 10px 0;
       font-size: 32px;
       font-weight: 300;
@@ -104,7 +84,7 @@ export default function ForgetPasswordEmail() {
       margin: 0;
       border-radius: 5px 0 0 5px;
       }
-      input[type=text], input[type=password] , input[type=phone] {
+      input[type=email]{
       width: calc(100% - 57px);
       height: 42px;
       margin: 13px 0 0 -5px;

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './Components/Navbar';
 import Login from './Components/Login';
 import AdminRegister from './Components/AdminRegister';
@@ -20,6 +21,8 @@ import Teacher from './Components/Teacher';
 import Students from './Components/Students';
 import ForgetPasswordEmail from './Components/ForgetPasswordEmail';
 import ForgetPasswordPass from './ForgetPasswordPass';
+import Student from './Components/Student';
+import Teachers from './Components/Teachers';
 
 
 function App() {
@@ -51,6 +54,8 @@ function App() {
         <Route exact path='/adminregister' element={<AdminRegister />} />
         <Route exact path='/teachers' element={<Teacher />} />
         <Route exact path='/students' element={<Students />} />
+        <Route exact path='/get_student/:id' element={<Student />} />
+        <Route exact path='/get_teacher/:id' element={<Teachers />} />
       </Routes>
       <ToastContainer />
     </>

@@ -398,7 +398,21 @@ router.patch('/update_user_info/:id/:USER', authmiddleware(Admin), async (req, r
 });
 
 
-router.get('/Student', authmiddleware(Student), (req, res) => {
+router.get('/Student/:studentId', authmiddleware(Admin||Student), async (req, res) => {//done
+    try {
+        const { studentId } = req.params;
+        const student = await Student.findById(studentId);
+        const userData = req.User;
+        console.log(userData);
+        console.log(student);
+        res.status(200).json({ student })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+
+router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
     try {
         const userData = req.User;
         console.log(userData);
@@ -409,29 +423,21 @@ router.get('/Student', authmiddleware(Student), (req, res) => {
 })
 
 
-router.get('/Admin', authmiddleware(Admin), (req, res) => {
+router.get('/Teacher/:teacherId', authmiddleware(Admin ||Teacher),async (req, res) => {//done
     try {
+        const { teacherId } = req.params;
+        const teacher = await Teacher.findById(teacherId);
         const userData = req.User;
         console.log(userData);
-        res.status(200).json({ msg: userData })
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-
-router.get('/Teacher', authmiddleware(Teacher), (req, res) => {
-    try {
-        const userData = req.User;
-        console.log(userData);
-        res.status(200).json({ msg: userData })
+        console.log(teacher);
+        res.status(200).json({ teacher })
     } catch (error) {
         console.log(error)
     }
 })
 
 router.get('/get_students', async (req, res) => {
-    try {
+    try {//done
         const data = await Student.find({});
         res.status(200).json({ msg: data })
     } catch (error) {
@@ -439,7 +445,7 @@ router.get('/get_students', async (req, res) => {
     }
 })
 
-router.get('/get_teachers', async (req, res) => {
+router.get('/get_teachers', async (req, res) => {//done
     try {
         const data = await Teacher.find({});
         res.status(200).json({ msg: data })
@@ -448,7 +454,7 @@ router.get('/get_teachers', async (req, res) => {
     }
 })
 
-router.get('/get_classrooms', authmiddleware(['Teacher', 'Admin']), async (req, res) => {
+router.get('/get_classrooms', authmiddleware(Admin || Teacher), async (req, res) => {
     try {
         const data = await Classroom.find({});
         res.status(200).json({ msg: data })
@@ -457,6 +463,7 @@ router.get('/get_classrooms', authmiddleware(['Teacher', 'Admin']), async (req, 
     }
 })
 
+// router.patch('/update_class/:id', authmiddleware(Admin), async (req, res) => {
 router.patch('/update_class/:id', authmiddleware(Admin), async (req, res) => {
     const { id } = req.params;
     const updateFields = req.body;
@@ -520,37 +527,51 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
 
 router.get('/studentAttendance/:studentId', async (req, res) => {
     const { studentId } = req.params;
+
+    // Define 'today' as the current date in the format 'YYYY-MM-DD'
+    const today = new Date().toISOString().split('T')[0];
+    let totalAttendanceCount = 0;
+    let totalPresentCount = 0;
+
     try {
         const student = await Student.findById(studentId);
         if (!student) {
             return res.status(404).json({ "error": "Student not found" });
         }
+
         const attendanceData = student.subjects.map(subject => {
-            // const presentDayAttendance = subject.attendance.filter(record => record.date.toISOString().split('T')[0] === today);
+            const presentDayAttendance = subject.attendance.filter(record => record.date.toISOString().split('T')[0] === today);
+            totalAttendanceCount += subject.attendance.length;
+            totalPresentCount += presentDayAttendance.length;
+
             return {
                 name: subject.name,
                 attendance: subject.attendance,
+                dailyattendance: presentDayAttendance
             };
-        })
+        });
 
-        return res.status(200).json({ "attendanceData": attendanceData });
+        const totalAttendancePercentage = (totalPresentCount / totalAttendanceCount) * 100;
+
+        return res.status(200).json({ "attendanceData": attendanceData, "totalAttendancePercentage": totalAttendancePercentage.toFixed(2) });
     } catch (err) {
         return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
     }
 });
 
 
-router.get('/faculty/students/:branch/:yearOfStudy', authmiddleware(['Teacher', 'Admin']), async (req, res) => {
-    const { branch, yearOfStudy } = req.params;
+
+router.get('/faculty/students/:department/:yearOfStudy', authmiddleware(['Teacher', 'Admin']), async (req, res) => {
+    const { department, yearOfStudy } = req.params;
 
     try {
         const students = await Student.find({
-            department: branch,
+            department: department,
             yearOfStudy: yearOfStudy
         });
 
         if (!students || students.length === 0) {
-            return res.status(404).json({ "error": "No students found for the specified branch and year" });
+            return res.status(404).json({ "error": "No students found for the specified department and year" });
         }
 
         const studentList = students.map(student => ({
@@ -566,9 +587,9 @@ router.get('/faculty/students/:branch/:yearOfStudy', authmiddleware(['Teacher', 
 });
 
 
-router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (req, res) => {
+router.post('/give_assignment/:yearOfStudy/:department', authmiddleware(Teacher), async (req, res) => {
     const { title, description, dueDate, subject } = req.body;
-    const { year, branch } = req.params;
+    const { yearOfStudy, department } = req.params;
     const teacherId = req.userID;
 
     try {
@@ -578,15 +599,20 @@ router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (re
             return res.status(404).json({ error: 'Teacher not found' });
         }
 
-        const students = await Student.find({ year, branch });
+        const students = await Student.find({ yearOfStudy, department });
 
         if (students.length === 0) {
-            return res.status(404).json({ error: 'No students found for the specified year and branch' });
+            return res.status(404).json({ error: 'No students found for the specified yearOfStudy and department' });
         }
 
         const assignment = { title, description, dueDate, subject, createdBy: teacherId };
 
         for (const student of students) {
+            // Ensure that the 'assignments' array is initialized
+            if (!student.assignments) {
+                student.assignments = [];
+            }
+
             student.assignments.push(assignment);
             await student.save();
         }
@@ -601,89 +627,89 @@ router.post('/give_assignment/:year/:branch', authmiddleware(Teacher), async (re
 
 
 //Working Code
-// router.get('/sendNotification', async (req, res) => {
-//     try {
-//         // const { department, yearOfStudy, data } = req.body;
-//         // const students = await Student.find({ department, yearOfStudy }, 'tokens');
-
-//         // const registrationTokens = students.flatMap(student => student.tokens);
-
-//         // if (!registrationTokens || registrationTokens.length === 0) {
-//         //     return res.status(400).send('No registration tokens found for the students');
-//         // }
-
-//         // const message = {
-//         //     data: {
-//         //         title: data.title,
-//         //         body: data.body,
-//         //     },
-//         //     tokens: registrationTokens,
-//         // };
-//         const serviceAccount = require('./firebase.json')
-//         admin.initializeApp({
-//             credential: admin.credential.cert(serviceAccount),
-//         });
-
-
-//         const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
-
-
-//         const payload = {
-//             notification: {
-//                 title: 'Test Notification',
-//                 body: 'This is a test notification from your backend server.'
-//             }
-//         };
-
-
-//         admin.messaging().sendToDevice(deviceToken, payload)
-//             .then((response) => {
-//                 console.log('Successfully sent test notification:', response);
-//             })
-//             .catch((error) => {
-//                 console.error('Error sending test notification:', error);
-//             });
-
-//     } catch (error) {
-//         console.error('Error sending message1:', error);
-//         res.status(500).send('Error sending message');
-//     }
-// });
-
-
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-});
-
-router.post('/sendNotification', async (req, res) => {
+router.get('/sendNotification', async (req, res) => {
     try {
-        const { department, yearOfStudy, data } = req.body;
-        const students = await Student.find({ department, yearOfStudy }, 'tokens');
+        // const { department, yearOfStudy, data } = req.body;
+        // const students = await Student.find({ department, yearOfStudy }, 'tokens');
 
-        const registrationTokens = students.flatMap(student => student.tokens);
+        // const registrationTokens = students.flatMap(student => student.tokens);
 
-        if (!registrationTokens || registrationTokens.length === 0) {
-            return res.status(400).send('No registration tokens found for the students');
-        }
+        // if (!registrationTokens || registrationTokens.length === 0) {
+        //     return res.status(400).send('No registration tokens found for the students');
+        // }
 
-        const message = {
-            data: {
-                title: data.title,
-                body: data.body,
-            },
-            tokens: registrationTokens,
+        // const message = {
+        //     data: {
+        //         title: data.title,
+        //         body: data.body,
+        //     },
+        //     tokens: registrationTokens,
+        // };
+        const serviceAccount = require('./firebase.json')
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+        });
+
+
+        const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
+
+
+        const payload = {
+            notification: {
+                title: 'Test Notification',
+                body: 'This is a test notification from your backend server.'
+            }
         };
 
-        const messagingResponse = await admin.messaging().sendMulticast(message);
 
-        console.log('Successfully sent notification:', messagingResponse);
-        res.status(200).json({ success: true, response: messagingResponse });
+        admin.messaging().sendToDevice(deviceToken, payload)
+            .then((response) => {
+                console.log('Successfully sent test notification:', response);
+            })
+            .catch((error) => {
+                console.error('Error sending test notification:', error);
+            });
 
     } catch (error) {
-        console.error('Error sending message:', error);
-        res.status(500).json({ success: false, error: 'Error sending message' });
+        console.error('Error sending message1:', error);
+        res.status(500).send('Error sending message');
     }
 });
+
+
+
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount),
+// });
+
+// router.post('/sendNotification', async (req, res) => {
+//     try {
+//         const { department, yearOfStudy, data } = req.body;
+//         const students = await Student.find({ department, yearOfStudy }, 'tokens');
+
+//         const registrationTokens = students.flatMap(student => student.tokens);
+
+//         if (!registrationTokens || registrationTokens.length === 0) {
+//             return res.status(400).send('No registration tokens found for the students');
+//         }
+
+//         const message = {
+//             data: {
+//                 title: data.title,
+//                 body: data.body,
+//             },
+//             tokens: registrationTokens,
+//         };
+
+//         const messagingResponse = await admin.messaging(message);
+
+//         console.log('Successfully sent notification:', messagingResponse);
+//         res.status(200).json({ success: true, response: messagingResponse });
+
+//     } catch (error) {
+//         console.error('Error sending message:', error);
+//         res.status(500).json({ success: false, error: 'Error sending message' });
+//     }
+// });
 
 module.exports = router;

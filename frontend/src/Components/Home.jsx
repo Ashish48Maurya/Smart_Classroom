@@ -33,34 +33,34 @@ const Home = () => {
             </div>
             <div>
                 <Card
-                    head1="Welcome to EduManager"
+                    head1="Welcome to AcademiaHub"
                     head2="Your Ultimate Classroom Management Solution"
-                    t1="Are you tired of the hassle and chaos involved in managing classroom schedules? Look no further! EduManager is here to revolutionize the way you handle classroom allocation and scheduling"
+                    t1="Are you tired of the hassle and chaos involved in managing classroom schedules? Look no further! AcademiaHub is here to revolutionize the way you handle classroom allocation and scheduling"
                     btn1="Experience It"
                     imgSrc={Img1}
                 />
                 <Card
                     head1="Swift and Easy"
                     head2="Optimize your Resources Effectively"
-                    t1="With our advanced resource optimization algorithm, EduManager ensures that classrooms are allocated efficiently based on factors like class size, subject requirements, and facility availability"
+                    t1="With our advanced resource optimization algorithm, AcademiaHub ensures that classrooms are allocated efficiently based on factors like class size, subject requirements, and facility availability"
                     btn1="Explore More"
                     imgSrc={Img2}
                 />
                 <Card
                     head1="Stay Up-to-Date with Real-time Schedule"
-                    t1="Whether it's last-minute changes or unexpected events, our platform EduManager allows for instant adjustments to the class schedule, ensuring smooth operations at all times"
+                    t1="Whether it's last-minute changes or unexpected events, our platform AcademiaHub allows for instant adjustments to the class schedule, ensuring smooth operations at all times"
                     btn1="Experience It"
                     imgSrc={Img3}
                 />
                 <Card
                     head1="Never Miss a Beat with Automated Notifications"
-                    t1="EduManager keeps everyone in the loop with automated notifications. Teachers and students will receive instant alerts about any changes in their classroom assignments, ensuring no one misses important updates"
+                    t1="AcademiaHub keeps everyone in the loop with automated notifications. Teachers and students will receive instant alerts about any changes in their classroom assignments, ensuring no one misses important updates"
                     btn1="Explore More"
                     imgSrc={Img4}
                 />
                 <Card
                     head1="Gain Insights with Historical Data Analysis"
-                    t1="Unlock the power of data with EduManager's historical data analysis feature. Identify trends, optimize future scheduling decisions, and take your classroom management to the next level"
+                    t1="Unlock the power of data with AcademiaHub's historical data analysis feature. Identify trends, optimize future scheduling decisions, and take your classroom management to the next level"
                     btn1="Experience It"
                     imgSrc={Img5}
                 />

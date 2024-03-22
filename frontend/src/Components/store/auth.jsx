@@ -1,64 +1,74 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { backend_api } from "./url";
+import { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { backend_api } from './url';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-
-    const [token, setToken] = useState(localStorage.getItem("token"));
-    const [person, setPerson] = useState("Student");
+    const [token, setToken] = useState(localStorage.getItem('token'));
+    const [person, setPerson] = useState('Student');
     const [loggedUser, setcurrentUser] = useState('');
     const isLoggedIn = !!token;
-    
+
     useEffect(() => {
-        const ls = localStorage.getItem("USER");
+        const ls = localStorage.getItem('USER');
         if (ls) {
             const parsedUser = JSON.parse(ls);
             setcurrentUser(parsedUser);
         } else {
-            console.log("Please Login First");
+            console.log('Please Login First');
         }
     }, []);
 
-
     const storeTokenInLS = (serverToken) => {
         setToken(serverToken);
-        localStorage.setItem("token", serverToken);
+        localStorage.setItem('token', serverToken);
     };
 
     const LogoutUser = () => {
-        setToken("");
-        localStorage.removeItem("token");
-        localStorage.removeItem("USER");
-    }
+        setToken('');
+        localStorage.removeItem('token');
+        localStorage.removeItem('USER');
+    };
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const userAuthentication = async () => {
-        let response;
+    const userAuthentication = useCallback(async () => {
+        if (!token || !loggedUser || !loggedUser.user) {
+            console.error('Invalid token or user information');
+            return;
+        }
+
         try {
-            response = await fetch(`${backend_api}/${loggedUser}`, {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+            const response = await fetch(`${backend_api}/${loggedUser.user}`, {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             });
 
-            if (response.status !== 200) {
-                console.error("Server returned an error:", response.status, response.statusText);
+            if (!response.ok) {
+                console.error('Server returned an error:', response.status, response.statusText);
+                return;
+            }
+
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                console.error('Response is not JSON');
+                return;
             }
 
             const data = await response.json();
-
             if (data.msg) {
-                localStorage.setItem("USER", JSON.stringify(data.msg));
+                localStorage.setItem('USER', JSON.stringify(data.msg));
             } else {
-                console.error("Unexpected API response format:", data);
+                console.error('Unexpected API response format:', data);
             }
         } catch (error) {
-            console.error("Error during user authentication:", error);
+            console.error('Error during user authentication:', error);
         }
-    };
+    }, [token, loggedUser]);
 
+    const getClassData = useCallback(async () => {
+        
+    },[]);
 
     useEffect(() => {
         const authenticateUser = async () => {
@@ -68,11 +78,12 @@ export const AuthProvider = ({ children }) => {
         };
 
         authenticateUser();
-    }, [token, person, userAuthentication]);
-
+    }, [token, userAuthentication]);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, storeTokenInLS, LogoutUser, token, setPerson, person, backend_api, loggedUser }}>
+        <AuthContext.Provider
+            value={{ isLoggedIn, storeTokenInLS, LogoutUser, token, setPerson, person, backend_api, loggedUser }}
+        >
             {children}
         </AuthContext.Provider>
     );
@@ -81,7 +92,7 @@ export const AuthProvider = ({ children }) => {
 export const useAuth = () => {
     const authContextValue = useContext(AuthContext);
     if (!authContextValue) {
-        throw new Error("useAuth used outside of the Provider");
+        throw new Error('useAuth used outside of the Provider');
     }
     return authContextValue;
 };

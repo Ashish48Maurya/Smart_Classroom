@@ -4,6 +4,7 @@ import { useAuth } from './store/auth'
 import { useNavigate, Link } from 'react-router-dom';
 import { messaging } from "./firebase";
 import { getToken } from "firebase/messaging";
+import { toast } from 'react-toastify';
 
 export default function Login() {
     const { person, storeTokenInLS, backend_api, setPerson } = useAuth();
@@ -22,7 +23,7 @@ export default function Login() {
             setDeviceToken(dtoken);
             console.log(dtoken)
         } else if (permission === "denied") {
-            alert("You denied for the notification");
+            toast("You denied for the notification");
         }
     }
 
@@ -34,7 +35,7 @@ export default function Login() {
         e.preventDefault();
 
         if (!password || !mail) {
-            return alert("All Fields are Required!!!");
+            return toast.error("All Fields are Required!!!");
         }
 
         try {
@@ -53,10 +54,10 @@ export default function Login() {
                 const res_data = await response.json();
                 storeTokenInLS(res_data.token);
                 localStorage.setItem("USER", JSON.stringify(res_data.user));
-                window.alert("Login Successful");
+                toast.success("Login Successful");
                 navigate('/');
             } else {
-                return alert("Invalid Credentials!!!");
+                return toast.error("Invalid Credentials!!!");
             }
         } catch (error) {
             console.error(error);
@@ -95,7 +96,10 @@ export default function Login() {
                             <option value="Student">Student</option>
                             <option value="Admin">Admin</option>
                         </select>
-                        <Link to='/forgetPassEmail'>forget password ?</Link>
+                        <Link to='/forgetPassEmail' style={{
+                            color: "white",
+                            textDecoration: "underline"
+                        }}>forgot password ?</Link>
                     </div>
                     <hr />
                     <div className="button-block">
@@ -199,6 +203,18 @@ export default function Login() {
       }
       .fa-id-card,.fa-graduation-cap,.fa-phone,.fa-laptop{
         width:15px;
+      }
+      @media screen and (max-width:340px){
+        .flex{
+            flex-direction:column;
+        }
+        .flex select , .flex a , input , .main-block {
+            width:100%;
+        }
+
+        .main-block{
+            padding: 50px 0px;
+        }
       }
       `}</style>
         </>

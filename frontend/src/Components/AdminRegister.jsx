@@ -18,16 +18,16 @@ export default function AdminRegister() {
         e.preventDefault();
 
         if (!emailRegex.test(mail)) {
-            alert("Invalid Email");
+            toast.error("Invalid Email");
             return;
         }
         else if (!passRege.test(password)) {
-            alert("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+            toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
         }
 
         if (!username || !password || !mail) {
-            return alert("All Fields Are Required!!!");
+            return toast.error("All Fields Are Required!!!");
         }
         try {
             const response = await fetch(`${backend_api}/signup`, {
@@ -47,14 +47,14 @@ export default function AdminRegister() {
                 const res_data = await response.json();
                 console.log("response from server ", res_data);
                 storeTokenInLS(res_data.token);
-                alert("Registration Successfull !!!");
+                toast.success("Registration Successfull !!!");
                 navigate("/login");
             } else {
-                return alert("An error occured");
+                return toast.error("An error occured");
             }
         }
         catch (error) {
-            alert(error);
+            toast.error(error);
         }
     };
 

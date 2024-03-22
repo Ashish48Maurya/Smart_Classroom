@@ -4,7 +4,9 @@ const Footer = () => {
   return (
       <>
           <div className='footer-cont'>
-        Copyright &copy; 2024. All rights  reserved | Designed by Tech4Stack
+        <p>
+          Copyright &copy; 2024. All rights  reserved | Designed by Tech4Stack
+        </p>
       </div>  
       <style>
         {`

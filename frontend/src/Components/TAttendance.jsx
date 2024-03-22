@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './Navbar';
 import { useAuth } from './store/auth';
+import { toast } from 'react-toastify';
 
 export default function TAttendance() {
     const [students, setStudents] = useState([]);
-    const [attended, setAttended] = useState(false);
-    const [type, setType] = useState('present'); // Default to 'present'
+    const [attendance, setAttendance] = useState(false);
+
     const userData = JSON.parse(localStorage.getItem("USER"));
     const { loggedUser, backend_api, token } = useAuth();
-    const presentBtn = useRef();
 
     const userAuthentication = async () => {
         try {
@@ -22,7 +22,7 @@ export default function TAttendance() {
 
                 if (data.msg) {
                     setStudents(data.msg);
-                    setAttended(true);
+                    setAttendance(true);
                 } else {
                     console.error("Unexpected API response format:", data);
                 }
@@ -49,10 +49,9 @@ export default function TAttendance() {
 
             if (response.ok) {
                 const data = await response.json();
-                alert(data.message);
-                presentBtn.current[studentId].setAttribute('disabled', 'true');
+                toast.success(data.message);
             } else {
-                console.error("Server returned an error:", response.status, response.statusText);
+                response.status === 400 ? toast("Attendance already marked for today") : console.log("An unexpected error occurred", response.status, response.statusText);
             }
         } catch (error) {
             console.error("Error during updating attendance:", error);
@@ -76,6 +75,7 @@ export default function TAttendance() {
                                 <th scope="col" className="text-center">Name</th>
                                 <th scope="col" className="text-center">SAP ID</th>
                                 <th scope="col" className="text-center">Status</th>
+                                <th scope="col" className="text-center">Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -83,19 +83,21 @@ export default function TAttendance() {
                                 <tr key={student._id}>
                                     <td className="text-center">{student.fullname}</td>
                                     <td className="text-center">{student.sapID}</td>
-                                    {attended === true ? (
-                                        <td className='text-center'>
-                                            <button
-                                                className="btn btn-success me-2"
-                                                type="button"
-                                                onClick={() => updateAttendance(student._id, 'present')}
-                                                ref={(button) => presentBtn.current[student._id] = button} // Assign a ref to each button
-                                                disabled={false}
-                                            >
-                                                Present
-                                            </button>
-                                        </td>
-                                    ) : <p>{type}</p>}
+                                    <td className='text-center'>
+                                        <button
+                                            className="btn btn-success me-2"
+                                            type="button"
+                                            onClick={() => updateAttendance(student._id, 'present')}
+                                            // Assign a ref to each button
+                                            disabled={false}
+                                        >
+                                            Present
+                                        </button>
+                                    </td>
+                                    <td className='text-center'>
+                                        <p>{attendance === false ? "Present" : "Absent"}</p>
+                                        {/* <p>{type}</p> */}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
