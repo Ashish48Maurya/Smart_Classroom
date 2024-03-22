@@ -398,11 +398,14 @@ router.patch('/update_user_info/:id/:USER', authmiddleware(Admin), async (req, r
 });
 
 
-router.get('/Student', authmiddleware(Student), (req, res) => {//done
+router.get('/Student/:studentId', authmiddleware(Admin||Student), async (req, res) => {//done
     try {
+        const { studentId } = req.params;
+        const student = await Student.findById(studentId);
         const userData = req.User;
         console.log(userData);
-        res.status(200).json({ msg: userData })
+        console.log(student);
+        res.status(200).json({ student })
     } catch (error) {
         console.log(error)
     }
@@ -420,11 +423,14 @@ router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
 })
 
 
-router.get('/Teacher', authmiddleware(Teacher), (req, res) => {//done
+router.get('/Teacher/:teacherId', authmiddleware(Admin ||Teacher),async (req, res) => {//done
     try {
+        const { teacherId } = req.params;
+        const teacher = await Teacher.findById(teacherId);
         const userData = req.User;
         console.log(userData);
-        res.status(200).json({ msg: userData })
+        console.log(teacher);
+        res.status(200).json({ teacher })
     } catch (error) {
         console.log(error)
     }

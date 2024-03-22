@@ -127,7 +127,7 @@ export default function Edit() {
                     </div>
                     <div className="input-group mb-3">
                         <div className="col-md-4">
-                            <label htmlFor="faculty">Ente~r Faculty Name</label>
+                            <label htmlFor="faculty">Enter Faculty Name</label>
                         </div>
                         <div className="col-md-8">
                             <input

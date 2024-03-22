@@ -10,17 +10,13 @@ export default function Navbar({ user }) {
     const data = localStorage.getItem("USER");
     const userData = JSON.parse(data);
 
-    useEffect(() => {
-        console.log(userData);
-    }, []);
-
     return (
         <>
             <div className="nav-cont">
                 <nav style={{ maxWidth: "100%" }} className="navbar navbar-expand-lg">
                     <div className="container-fluid">
-                        <Link className="navbar-brand fs-4 fw-bolder" style={{ color: "purple" }} to='/'>
-                            <img src={logo} alt="logo" className='logo' id="logo" />
+              <Link className="navbar-brand" to='/'>
+                <img src={logo} className='logo' alt="" />
                         </Link>
                         <button className="navbar-toggler" style={{ "border": "2px solid black" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                             <span className="navbar-toggler-icon "></span>
@@ -44,7 +40,13 @@ export default function Navbar({ user }) {
                           <li className="nav-item">
                             <Link className="nav-link active" aria-current="page" to='/manage'>Classrooms</Link>
                           </li>
-                                                <li className="nav-item">
+                          <li className="nav-item">
+                            <Link className='nav-link active' style={{ maxHeight: "min-content" }} to='/students'>Students</Link>
+                          </li>
+                          <li className="nav-item">
+                            <Link className='nav-link active' style={{ maxHeight: "min-content" }} to='/teachers'>Teachers</Link>
+                          </li>
+                          <li className="nav-item">
                                                     <Link className='nav-link active' style={{ maxHeight: "min-content" }} to='/studentregister'>Register Student</Link>
                                                 </li>
                                                 <li className="nav-item">
@@ -86,12 +88,12 @@ export default function Navbar({ user }) {
                     </div>
                 </nav>
             </div>
-            <style>{`
+        <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap')
                 * {
                   margin: 0;
                   padding: 0;
                   box-sizing: border-box;
-                  font-family: 'Poppins', sans-serif;
                 }
                 a:hover, a {
                   text-decoration: none;
@@ -107,6 +109,9 @@ export default function Navbar({ user }) {
                   font-size: 18px !important;
                   font-weight: 600 !important;
                   color: #1d46ff !important;
+                }
+                .logo{
+                  width:5vw;
                 }
                 nav {
                   margin: 10px 10px 0 10px;
@@ -133,11 +138,12 @@ export default function Navbar({ user }) {
                   left: 0;
                   z-index: 100;
                 }
-                .logo {
-                  width: 30vw;
-                  max-width: 200px;
-                  margin-left: 10px;
+                .gugi-regular {
+                  font-family: "Gugi", sans-serif;
+                  font-weight: 400;
+                  font-style: normal;
                 }
+
                 li {
                   margin-inline: 10px;
                 }
@@ -159,6 +165,9 @@ export default function Navbar({ user }) {
                   .btn-txt-grp {
                     flex-direction: column;
                   }
+                  .logo{
+                    width:10vw;
+                  }
                 }
                 @media screen and (max-width: 650px) {
                   nav {
@@ -167,6 +176,9 @@ export default function Navbar({ user }) {
                   }
                   .nav-cont {
                     width: 10vw;
+                  }
+                  .logo{
+                    width:15vw;
                   }
                 }
               `}
