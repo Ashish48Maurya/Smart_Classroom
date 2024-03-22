@@ -86,11 +86,12 @@ const Teacher = () => {
                 tbody{
                     border:none;
                     border-radius:100px;
+                    text-align: center;
                 }
 
                 th, td {
                     border: 1px solid #dddddd;
-                    text-align: left;
+                    text-align: center;
                     padding: 8px;
                 }
                 td{
