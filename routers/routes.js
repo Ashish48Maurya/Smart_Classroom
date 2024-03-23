@@ -454,6 +454,8 @@ router.get('/get_teachers', async (req, res) => {//done
     }
 })
 
+
+//fetch All Class
 router.get('/get_classrooms', authmiddleware(Admin || Teacher), async (req, res) => {
     try {
         const data = await Classroom.find({});
@@ -463,7 +465,18 @@ router.get('/get_classrooms', authmiddleware(Admin || Teacher), async (req, res)
     }
 })
 
-// router.patch('/update_class/:id', authmiddleware(Admin), async (req, res) => {
+//fetch data of a particular class to show on a page
+router.get('/class/:id', authmiddleware(Admin), async (req, res) => {
+    const { id } = req.params;
+    try {
+        const data = await Classroom.findById(id);
+        res.status(200).json({ msg: data })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+//Update particular class
 router.patch('/update_class/:id', authmiddleware(Admin), async (req, res) => {
     const { id } = req.params;
     const updateFields = req.body;
@@ -484,19 +497,7 @@ router.patch('/update_class/:id', authmiddleware(Admin), async (req, res) => {
     }
 })
 
-
-
-router.get('/class/:id', authmiddleware(Admin), async (req, res) => {
-    const { id } = req.params;
-    try {
-        const data = await Classroom.findById(id);
-        res.status(200).json({ msg: data })
-    } catch (error) {
-        console.log(error)
-    }
-})
-
-
+//Search Class by Strength
 router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) => {
     try {
         const { strength } = req.params;
@@ -509,7 +510,6 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
             isReserved: false,
             strength: { $gte: strength }
         }).select('classroom_no strength facility isReserved');
-
 
         if (classrooms.length === 0) {
             console.log("No classes found with isReserved set to false");
@@ -525,40 +525,47 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
 })
 
 
-router.get('/studentAttendance/:studentId', async (req, res) => {
-    const { studentId } = req.params;
-
-    // Define 'today' as the current date in the format 'YYYY-MM-DD'
-    const today = new Date().toISOString().split('T')[0];
-    let totalAttendanceCount = 0;
-    let totalPresentCount = 0;
+//Allocate Class for required amount of time
+router.patch('/reserve_class/:id', authmiddleware(Teacher), async (req, res) => {
+    const { id } = req.params;
+    const {time_in_hour,facultyName} = req.body;
+    // const reservedTime = 60 //1 min in seconds
+    const reservedTime = time_in_hour*60*60; //in seconds
 
     try {
-        const student = await Student.findById(studentId);
-        if (!student) {
-            return res.status(404).json({ "error": "Student not found" });
+        const updatedClassroom = await Classroom.findByIdAndUpdate(
+            id,
+            { $set: { isReserved: true,faculty_name:facultyName, reservedUntil: Date.now() + reservedTime * 1000 } }, // Convert seconds to milliseconds
+            { useFindAndModify: false, new: true }
+        );
+
+        if (!updatedClassroom) {
+            return res.status(404).json({ error: "Classroom not found" });
         }
 
-        const attendanceData = student.subjects.map(subject => {
-            const presentDayAttendance = subject.attendance.filter(record => record.date.toISOString().split('T')[0] === today);
-            totalAttendanceCount += subject.attendance.length;
-            totalPresentCount += presentDayAttendance.length;
+        setTimeout(async () => {
+            try {
+                const classToUnreserve = await Classroom.findByIdAndUpdate(
+                    id,
+                    { $set: { isReserved: false,faculty_name:null,reservedUntil: null } },
+                    { useFindAndModify: false, new: true }
+                );
 
-            return {
-                name: subject.name,
-                attendance: subject.attendance,
-                dailyattendance: presentDayAttendance
-            };
-        });
+                if (!classToUnreserve) {
+                    console.log("Failed to unreserve class after reserved time.");
+                } else {
+                    console.log("Class unreserved after reserved time:", classToUnreserve);
+                }
+            } catch (err) {
+                console.error("Error unreserving class after reserved time:", err);
+            }
+        }, reservedTime * 1000);
 
-        const totalAttendancePercentage = (totalPresentCount / totalAttendanceCount) * 100;
-
-        return res.status(200).json({ "attendanceData": attendanceData, "totalAttendancePercentage": totalAttendancePercentage.toFixed(2) });
+        return res.status(200).json({ Updated_Classroom: updatedClassroom });
     } catch (err) {
-        return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+        return res.status(500).json({ error: `Internal Server Error -> ${err}` });
     }
 });
-
 
 
 router.get('/faculty/students/:department/:yearOfStudy', authmiddleware(['Teacher', 'Admin']), async (req, res) => {

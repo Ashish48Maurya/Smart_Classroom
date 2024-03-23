@@ -25,6 +25,9 @@ const classroomSchema = new Schema({
     isLab: {
         type: Boolean,
         default: false
+    },
+    reservedUntil: {
+        type: Date
     }
 });
 
