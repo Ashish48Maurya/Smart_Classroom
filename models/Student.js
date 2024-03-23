@@ -77,6 +77,10 @@ const studentSchema = new Schema({
         type: Number,
         required: true,
     },
+    student_photo: {
+        type: String,
+        required: true,
+    },
     AdmissionDate: {
         type: Date,
         default: Date.now,
