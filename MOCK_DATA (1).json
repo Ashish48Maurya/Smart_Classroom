@@ -1,0 +1,181 @@
+[
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 62,
+        "facility": "Projector",
+        "isLab": true,
+        "classroom_no": 354,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 45,
+        "facility": "Cameras",
+        "isLab": false,
+        "classroom_no": 360,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 65,
+        "facility": "Ethernet cables",
+        "isLab": true,
+        "classroom_no": 171,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 46,
+        "facility": "Computers",
+        "isLab": true,
+        "classroom_no": 337,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 72,
+        "facility": "Ethernet cables",
+        "isLab": true,
+        "classroom_no": 289,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 33,
+        "facility": "Smartboard",
+        "isLab": false,
+        "classroom_no": 374,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 40,
+        "facility": "Smartboard",
+        "isLab": true,
+        "classroom_no": 182,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 37,
+        "facility": "Chairs",
+        "isLab": true,
+        "classroom_no": 138,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 61,
+        "facility": "Scanner",
+        "isLab": false,
+        "classroom_no": 396,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 31,
+        "facility": "Cameras",
+        "isLab": false,
+        "classroom_no": 149,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 68,
+        "facility": "Smartboard",
+        "isLab": true,
+        "classroom_no": 340,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 60,
+        "facility": "Ethernet cables",
+        "isLab": true,
+        "classroom_no": 193,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 64,
+        "facility": "Chairs",
+        "isLab": true,
+        "classroom_no": 238,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 29,
+        "facility": "Projector",
+        "isLab": false,
+        "classroom_no": 374,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 49,
+        "facility": "Ethernet cables",
+        "isLab": true,
+        "classroom_no": 192,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 81,
+        "facility": "Projector",
+        "isLab": true,
+        "classroom_no": 169,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 45,
+        "facility": "Chairs",
+        "isLab": true,
+        "classroom_no": 313,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 73,
+        "facility": "Chairs",
+        "isLab": true,
+        "classroom_no": 275,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 66,
+        "facility": "Cameras",
+        "isLab": true,
+        "classroom_no": 232,
+        "reservedUntil":null
+    },
+    {
+        "faculty_name": null,
+        "isReserved": false,
+        "strength": 70,
+        "facility": "Chairs",
+        "isLab": false,
+        "classroom_no": 130
+    }
+]
