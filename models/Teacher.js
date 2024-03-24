@@ -42,7 +42,11 @@ const teacherSchema = new Schema({
     joiningDate:{
         type:Date,
         default:Date.now,
-    }
+    },
+    assignments: [{
+        type: Schema.Types.ObjectId,
+        ref: 'assignment', 
+    }],
 });
 
 teacherSchema.methods.generateToken = async function () {

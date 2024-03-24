@@ -10,6 +10,10 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebase.json')
+const Assignment = require('../models/Assignment');
+const fs = require('fs');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 
 const transporter = nodemailer.createTransport({
@@ -400,7 +404,7 @@ router.patch('/update_user_info/:id/:USER', authmiddleware(Admin), async (req, r
 });
 
 
-router.get('/Student/:studentId', authmiddleware(Admin||Student), async (req, res) => {//done
+router.get('/Student/:studentId', authmiddleware(Admin || Student), async (req, res) => {//done
     try {
         const { studentId } = req.params;
         const student = await Student.findById(studentId);
@@ -425,7 +429,7 @@ router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
 })
 
 
-router.get('/Teacher/:teacherId', authmiddleware(Admin ||Teacher),async (req, res) => {//done
+router.get('/Teacher/:teacherId', authmiddleware(Admin || Teacher), async (req, res) => {//done
     try {
         const { teacherId } = req.params;
         const teacher = await Teacher.findById(teacherId);
@@ -530,14 +534,14 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
 //Allocate Class for required amount of time
 router.patch('/reserve_class/:id', authmiddleware(Teacher), async (req, res) => {
     const { id } = req.params;
-    const {time_in_hour,facultyName} = req.body;
+    const { time_in_hour, facultyName } = req.body;
     // const reservedTime = 60 //1 min in seconds
-    const reservedTime = time_in_hour*60*60; //in seconds
+    const reservedTime = time_in_hour * 60 * 60; //in seconds
 
     try {
         const updatedClassroom = await Classroom.findByIdAndUpdate(
             id,
-            { $set: { isReserved: true,faculty_name:facultyName, reservedUntil: Date.now() + reservedTime * 1000 } }, // Convert seconds to milliseconds
+            { $set: { isReserved: true, faculty_name: facultyName, reservedUntil: Date.now() + reservedTime * 1000 } }, // Convert seconds to milliseconds
             { useFindAndModify: false, new: true }
         );
 
@@ -549,7 +553,7 @@ router.patch('/reserve_class/:id', authmiddleware(Teacher), async (req, res) => 
             try {
                 const classToUnreserve = await Classroom.findByIdAndUpdate(
                     id,
-                    { $set: { isReserved: false,faculty_name:null,reservedUntil: null } },
+                    { $set: { isReserved: false, faculty_name: null, reservedUntil: null } },
                     { useFindAndModify: false, new: true }
                 );
 
@@ -596,9 +600,8 @@ router.get('/faculty/students/:department/:yearOfStudy', authmiddleware(['Teache
 });
 
 
-router.post('/give_assignment/:yearOfStudy/:department', authmiddleware(Teacher), async (req, res) => {
-    const { title, description, dueDate, subject } = req.body;
-    const { yearOfStudy, department } = req.params;
+router.post('/give_assignment', authmiddleware(Teacher), upload.single('file'), async (req, res) => {
+    const { title, description, dueDate, subject, yearOfStudy, department, file } = req.body;
     const teacherId = req.userID;
 
     try {
@@ -607,6 +610,25 @@ router.post('/give_assignment/:yearOfStudy/:department', authmiddleware(Teacher)
         if (!teacher) {
             return res.status(404).json({ error: 'Teacher not found' });
         }
+        const { originalname, path } = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        const newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
+
+        const assignment = new Assignment({
+            title,
+            description,
+            dueDate,
+            subject,
+            yearOfStudy,
+            department,
+            file: newPath
+        });
+
+        await assignment.save()
+        teacher.assignments.push(assignment._id);
+        await teacher.save();
 
         const students = await Student.find({ yearOfStudy, department });
 
@@ -614,19 +636,12 @@ router.post('/give_assignment/:yearOfStudy/:department', authmiddleware(Teacher)
             return res.status(404).json({ error: 'No students found for the specified yearOfStudy and department' });
         }
 
-        const assignment = { title, description, dueDate, subject, createdBy: teacherId };
-
         for (const student of students) {
-            // Ensure that the 'assignments' array is initialized
-            if (!student.assignments) {
-                student.assignments = [];
-            }
-
-            student.assignments.push(assignment);
+            student.assignments.push(assignment._id);
             await student.save();
         }
 
-        return res.status(200).json({ message: 'Assignment given successfully' });
+        return res.status(200).json({ message: 'Assignment Saved and Sent Successfully' });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: 'Internal server error' });
@@ -654,7 +669,6 @@ router.get('/sendNotification', async (req, res) => {
         //     },
         //     tokens: registrationTokens,
         // };
-        const serviceAccount = require('./firebase.json')
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
         });
@@ -720,5 +734,30 @@ router.get('/sendNotification', async (req, res) => {
 //         res.status(500).json({ success: false, error: 'Error sending message' });
 //     }
 // });
+
+
+
+
+//Pending
+router.post('/submit_assignment', authmiddleware(Student), async (req, res) => {
+    // const { assignmentId } = req.body;
+    // const studentId = req.userID;
+
+    // try {
+    //     const assignment = await Assignment.findById(assignmentId);
+
+    //     if (!assignment) {
+    //         return res.status(404).json({ error: 'Assignment not found' });
+    //     }
+    //     const student = await Student.findById(studentId);
+    //     student.assignmentFiles.push(assignmentFilePath);
+    //     await student.save();
+
+    //     return res.status(200).json({ message: 'Assignment submitted successfully' });
+    // } catch (err) {
+    //     console.error(err);
+    //     return res.status(500).json({ error: 'Internal server error' });
+    // }
+});
 
 module.exports = router;
