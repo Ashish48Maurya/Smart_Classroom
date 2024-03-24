@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student')
@@ -14,6 +15,21 @@ const Assignment = require('../models/Assignment');
 const fs = require('fs');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
+
+//multer
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now()
+        cb(null, uniqueSuffix + file.originalname)
+    }
+})
+
+const upload = multer({ storage: storage })
 
 
 const transporter = nodemailer.createTransport({
@@ -429,7 +445,7 @@ router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
 })
 
 
-router.get('/Teacher/:teacherId', authmiddleware(Admin || Teacher), async (req, res) => {//done
+router.get('/Teacher/:teacherId', authmiddleware([Admin, Teacher]), async (req, res) => {//done
     try {
         const { teacherId } = req.params;
         const teacher = await Teacher.findById(teacherId);
@@ -648,6 +664,16 @@ router.post('/give_assignment', authmiddleware(Teacher), upload.single('file'), 
     }
 });
 
+router.get('/get-files', async (req, res) => {
+    try {
+
+    }
+    catch (error) {
+        console.error(error);
+        return res.json({ msg: `An error occurred : ${error}` })
+    }
+})
+
 
 
 //Working Code
@@ -698,7 +724,6 @@ router.get('/sendNotification', async (req, res) => {
         res.status(500).send('Error sending message');
     }
 });
-
 
 
 // admin.initializeApp({

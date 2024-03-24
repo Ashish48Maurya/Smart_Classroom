@@ -39,8 +39,6 @@ export default function TeacherRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        postDetails()
-        console.log(url)
 
         if (!username || !password || !mail) {
             return toast.error("All Fields Are Required!!!");
@@ -49,46 +47,64 @@ export default function TeacherRegister() {
         if (!emailRegex.test(mail)) {
             toast.error("Invalid Email");
             return;
-        }
-        else if (!passRege.test(password)) {
-            toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+        } else if (!passRege.test(password)) {
+            toast.error("Password must contain at least 8 characters, including at least 1 number, 1 lowercase and 1 uppercase letter, and 1 special character.");
             return;
         }
 
         try {
-            const response = await fetch(`${backend_api}/registerFaculty`, {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer  ${token}`
-                },
-                body: JSON.stringify({
-                    fullname: username,
-                    department,
-                    subject,
-                    password,
-                    email: mail,
-                    phoneNo: phone,
-                    teacherID: teacher_id,
-                    teacher_photo: url
-                }),
-            });
-
-            console.log(token);
-            if (response.status === 200) {
-                const res_data = await response.json();
-                console.log("response from server ", res_data);
-                storeTokenInLS(res_data.token);
-                navigate('/teachers');
-                toast.success("Registration Successfull !!!");
-            } else {
-                return console.log(response);
-            }
-        }
-        catch (error) {
+            postDetails()
+                .then(() => {
+                    // Proceed with API call only if URL is available
+                    if (url) {
+                        fetch(`${backend_api}/registerFaculty`, {
+                            method: "post",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Bearer  ${token}`
+                            },
+                            body: JSON.stringify({
+                                fullname: username,
+                                department,
+                                subject,
+                                password,
+                                email: mail,
+                                phoneNo: phone,
+                                teacherID: teacher_id,
+                                teacher_photo: url
+                            }),
+                        })
+                            .then(response => {
+                                if (response.status === 200) {
+                                    return response.json();
+                                } else {
+                                    throw new Error(response.statusText);
+                                }
+                            })
+                            .then(res_data => {
+                                console.log("response from server ", res_data);
+                                storeTokenInLS(res_data.token);
+                                navigate('/teachers');
+                                toast.success("Registration Successful !!!");
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
+                                toast.error("Failed to register teacher !!");
+                            });
+                    } else {
+                        toast.error("Failed to register teacher !!");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    toast.error("Failed to upload image !!");
+                });
+        } catch (error) {
             toast.error(error);
         }
     };
+
+
 
     // image to cloudinary
     const postDetails = () => {

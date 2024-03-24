@@ -11,8 +11,13 @@ const cors = require("cors");
 app.use(cors())
 app.use(express.json());
 app.use(require("./routers/routes")); 
+app.use('/files', express.static('files'))
 
 app.use(bodyParser.json());
+
+app.get('/', async (req, res) => {
+  return res.json({ msg: "Daffa hoja yaha se" })
+})
 
 mongoConnect(process.env.MONGO_URL).then(async () => {
 

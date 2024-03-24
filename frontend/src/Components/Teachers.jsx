@@ -32,15 +32,21 @@ const Teachers = () => {
     return (
         <>
             <Navbar />
+            <h1 style={{ textAlign: "center" }}>Teacher Details</h1>
             <div className="teacher-cont">
                 {teacherData && (
                     <div className="teacher-details">
                         <div className="class-1">
-                            <h1>Teacher Details</h1>
+                            <h1>Teacher : <b style={{
+                                textDecoration: "underline",
+                                backgroundColor: "yellow"
+                            }}>{teacherData.fullname}</b></h1>
                             <p><strong>Full Name:</strong> {teacherData.fullname}</p>
                             <p><strong>Email:</strong> {teacherData.email}</p>
+                            <p><strong>TeacherID:</strong> {teacherData.teacherID}</p>
                             <p><strong>Department:</strong> {teacherData.department}</p>
                             <p><strong>Phone Number:</strong> {teacherData.phoneNo}</p>
+                            <p><strong>Joining Date:</strong> {Date(teacherData.joiningDate).toString().replace("T", ",").replace(/\.\d{3}Z$/, ",")}</p>
                             <h2>Subject:</h2>
                             <p>{teacherData.subject}</p>
                         </div>
@@ -49,8 +55,10 @@ const Teachers = () => {
                 )}
             </div>
             <style>{`
+            body{
+                margin-top: 100px;
+            }
                 .teacher-cont {
-                    margin-top: 100px;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -58,19 +66,26 @@ const Teachers = () => {
                 }
 
                 .profile-img{
-                    max-width:30vw;
-                    height:30vw;
+                    width:25vw;
+                    max-width:40vw;
+                    min-width:10vw;
+                    height:25vw;
+                    border-radius:10px;
+                    border:2px solid black;
+                    padding:2px;
+                    background-color:gray;
                 }
 
                 .teacher-details {
                     display:flex;
                     justify-content:space-between;
-                    align-items:space-between;
+                    align-items:center;
                     background-color: #f9f9f9;
                     padding: 20px;
                     border-radius: 8px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     width:100%;
+                    margin:10px 50px;
                 }
 
                 .teacher-details h1 {
@@ -89,6 +104,16 @@ const Teachers = () => {
                     margin-bottom: 10px;
                     font-size: 16px;
                     color: #555;
+                }
+                @media screen and (max-width:700px){
+                    .teacher-details{
+                        flex-direction:column-reverse;
+                        margin:10px 30px;
+                    }
+                    .profile-img{
+                        width:40vw;
+                        height:40vw;
+                    }
                 }
             `}</style>
         </>

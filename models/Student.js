@@ -22,8 +22,8 @@ const subjectSchema = new Schema({
 });
 
 const studentSchema = new Schema({
-    tokens:{
-        type:String,
+    tokens: {
+        type: String,
     },
     fullname: {
         type: String,
@@ -54,16 +54,15 @@ const studentSchema = new Schema({
         required: true,
     },
     student_photo: {
-        type: String,
-        required: true,
+        type: String
     },
     AdmissionDate: {
         type: Date,
         default: Date.now,
     },
-    yearOfStudy:{
-        type:String,
-        default:"1st",
+    yearOfStudy: {
+        type: String,
+        default: "1st",
     },
     subjects: [subjectSchema],
     assignments:[{
