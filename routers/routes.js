@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const express = require('express');
 const router = express.Router();
 const Student = require('../models/Student')
@@ -10,6 +11,21 @@ const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebase.json')
+
+//multer
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, './uploads')
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now()
+        cb(null, uniqueSuffix + file.originalname)
+    }
+})
+
+const upload = multer({ storage: storage })
 
 
 const transporter = nodemailer.createTransport({
@@ -425,7 +441,7 @@ router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
 })
 
 
-router.get('/Teacher/:teacherId', authmiddleware(Admin ||Teacher),async (req, res) => {//done
+router.get('/Teacher/:teacherId', authmiddleware([Admin, Teacher]), async (req, res) => {//done
     try {
         const { teacherId } = req.params;
         const teacher = await Teacher.findById(teacherId);
@@ -456,7 +472,7 @@ router.get('/get_teachers', async (req, res) => {//done
     }
 })
 
-router.get('/get_classrooms', authmiddleware(Admin || Teacher), async (req, res) => {
+router.get('/get_classrooms', authmiddleware([Admin, Teacher]), async (req, res) => {
     try {
         const data = await Classroom.find({});
         res.status(200).json({ msg: data })
@@ -614,8 +630,9 @@ router.post('/give_assignment/:yearOfStudy/:department', authmiddleware(Teacher)
             if (!student.assignments) {
                 student.assignments = [];
             }
-
+            console.log("Before: ", student.subjects.assignments);
             student.assignments.push(assignment);
+            console.log("After: ", student.subjects);
             await student.save();
         }
 
@@ -625,6 +642,16 @@ router.post('/give_assignment/:yearOfStudy/:department', authmiddleware(Teacher)
         return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
+router.get('/get-files', async (req, res) => {
+    try {
+
+    }
+    catch (error) {
+        console.error(error);
+        return res.json({ msg: `An error occurred : ${error}` })
+    }
+})
 
 
 
@@ -677,7 +704,6 @@ router.get('/sendNotification', async (req, res) => {
         res.status(500).send('Error sending message');
     }
 });
-
 
 
 // admin.initializeApp({

@@ -23,6 +23,8 @@ import ForgetPasswordEmail from './Components/ForgetPasswordEmail';
 import ForgetPasswordPass from './ForgetPasswordPass';
 import Student from './Components/Student';
 import Teachers from './Components/Teachers';
+import GiveAssignments from './Components/GiveAssignments';
+import Assignments from './Assignments';
 
 
 function App() {
@@ -45,10 +47,12 @@ function App() {
         <Route exact path='/resetPassword/:USER/:token/:id' element={<ForgetPasswordPass />} />
         <Route exact path='/attendance' element={<Attendance />} />
         <Route exact path='/tattendance' element={<TAttendance />} />
-        <Route exact path='/assignments' element={<Assignment />} />
+        <Route exact path='/connect' element={<Assignment />} />
         <Route exact path='/manage' element={<Manage />} />
         <Route exact path='/edit/:id' element={<Edit />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
+        <Route exact path='/give-assignment' element={<GiveAssignments />} />
+        <Route exact path='/assignments' element={<Assignments />} />
         <Route exact path='/studentregister' element={<StudentRegister />} />
         <Route exact path='/teacherregister' element={<TeacherRegister />} />
         <Route exact path='/adminregister' element={<AdminRegister />} />

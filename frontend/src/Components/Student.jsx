@@ -68,8 +68,14 @@ const Student = () => {
                 }
 
                 .profile-img{
-                    max-width:30vw;
-                    height:30vw;
+                    width:25vw;
+                    max-width:40vw;
+                    min-width:10vw;
+                    height:25vw;
+                    border-radius:10px;
+                    border:2px solid black;
+                    padding:2px;
+                    background-color:gray;
                 }
 
                 .student-details {
@@ -81,6 +87,7 @@ const Student = () => {
                     border-radius: 8px;
                     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
                     width:100%;
+                    margin:10px 50px;
                 }
 
                 .student-details h1 {
@@ -99,6 +106,16 @@ const Student = () => {
                     margin-bottom: 10px;
                     font-size: 16px;
                     color: #555;
+                }
+                @media screen and (max-width:700px){
+                    .student-details{
+                        flex-direction:column-reverse;
+                        margin:10px 30px;
+                    }
+                    .profile-img{
+                        width:40vw;
+                        height:40vw;
+                    }
                 }
             `}</style>
         </>

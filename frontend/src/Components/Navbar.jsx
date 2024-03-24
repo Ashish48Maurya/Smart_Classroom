@@ -23,7 +23,9 @@ export default function Navbar({ user }) {
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav ms-auto mb-lg-0 fs-5 fw-semibold">
-
+                {/* <li className="nav-item">
+                  <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
+                </li> */}
                 {userData && (
                   <>
                     {userData.user === "Student" && (
@@ -67,10 +69,13 @@ export default function Navbar({ user }) {
                           <Link className="nav-link active" aria-current="page" to='/classroom'>FindClass</Link>
                         </li>
                         <li className="nav-item">
-                          <Link className="nav-link active" aria-current="page" to='/assignments'>Connect</Link>
+                          <Link className="nav-link active" aria-current="page" to='/connect'>Connect</Link>
                         </li>
                         <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/tattendance'>Attendance</Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link className="nav-link active" aria-current="page" to='/assignments'>Assignments</Link>
                         </li>
                       </>
                     )}

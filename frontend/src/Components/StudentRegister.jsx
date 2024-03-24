@@ -41,6 +41,7 @@ export default function StudentRegister() {
         e.preventDefault();
         postDetails();
 
+        if(url){
         if (!username || !password || !mail) {
             return toast.error("All Fields Are Required!!!");
         }
@@ -73,7 +74,6 @@ export default function StudentRegister() {
                     student_photo: url
                 }),
             });
-            console.log(token);
 
             if (response.status === 200) {
                 const res_data = await response.json();
@@ -87,7 +87,8 @@ export default function StudentRegister() {
         }
         catch (error) {
             console.log(error);
-        }
+            }
+        } else { toast.error("Failed to register student !!!") }
     };
 
     // image to cloudinary
