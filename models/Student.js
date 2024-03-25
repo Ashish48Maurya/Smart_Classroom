@@ -13,35 +13,11 @@ const attendanceRecordSchema = new Schema({
     },
 });
 
-const assignmentSchema = new Schema({
-    title: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        required: true,
-    },
-    dueDate: {
-        type: Date,
-        required: true,
-    },
-    createdBy: {
-        type: Schema.Types.ObjectId,
-        ref: 'teacher',
-    },
-    subject: {
-        type: String,
-        required: true,
-    },
-});
-
 const subjectSchema = new Schema({
     name: {
         type: String,
         required: true,
     },
-    assignments: [assignmentSchema],
     attendance: [attendanceRecordSchema],
 });
 
@@ -89,6 +65,13 @@ const studentSchema = new Schema({
         default: "1st",
     },
     subjects: [subjectSchema],
+    assignments:[{
+        type: Schema.Types.ObjectId,
+        ref: 'assignment', 
+    }],
+    assignmentFiles: [{
+        type: String,
+    }]
 });
 
 
