@@ -73,7 +73,7 @@ export default function ClassRoom() {
         <div className="container mt-5">
             <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Class Strength" aria-label="Recipient's username" aria-describedby="button-addon2" value={strength} onChange={(e) => { setStrength(e.target.value) }} />
-                <button class="btn btn-success" type="button" id="button-addon2" onClick={handleSubmit}>Button</button>
+                <button class="btn btn-success" type="button" id="button-addon2" onClick={handleSubmit}>Search Class</button>
             </div>
 
             <div className="table-responsive mt-5">

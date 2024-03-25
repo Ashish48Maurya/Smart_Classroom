@@ -42,7 +42,7 @@ export default function ForgetPasswordPass() {
   return (
     <>
     <Navbar />
-            <div className="main-block">
+            <div className="main-block col-12 col-lg-6 col-md-8 col-sm-10">
                 <h1>Enter Password</h1>
                 <form id="registerForm" onSubmit={handleSubmit}>
                     <label htmlFor="password" id="icon"><i className="fas fa-unlock-alt"></i></label>
@@ -100,8 +100,7 @@ export default function ForgetPasswordPass() {
       opacity: 0.3;
       }
       .main-block {
-      max-width: 60%; 
-      min-height: auto; 
+
       min-width:80%;
       padding: 50px 25px;
       margin: 100px auto;

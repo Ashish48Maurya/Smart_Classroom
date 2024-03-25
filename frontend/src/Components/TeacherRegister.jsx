@@ -145,7 +145,7 @@ export default function TeacherRegister() {
     return (
         <>
             <Navbar />
-            <div className="main-block">
+            <div className="main-block  col-12 col-lg-6 col-md-8 col-sm-10">
                 <h1>Teacher Registration</h1>
                 <form id="registerForm" onSubmit={handleSubmit}>
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
@@ -186,18 +186,19 @@ export default function TeacherRegister() {
                         accept="image/*"
                         onChange={(event) => loadfile(event)}
                     />
-                    <img
-                        id="output"
-                        src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"
-                        alt="Preview"
-                    />
+                    <div className='text-center'>
+                        <img
+                            style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
+                            id="output"
+                            src=""
+                        />
+                    </div>
                     {loading && (
                         <div className="loader">
                             <Loader />
                         </div>
                     )}
-                    <hr />
-                    <hr />
+
                     <div className="button-block">
                         <button type="submit">Register</button>
                     </div>
@@ -239,8 +240,6 @@ export default function TeacherRegister() {
       opacity: 0.3;
       }
       .main-block {
-      max-width: 80%; 
-      min-width:60%;
       min-height: auto; 
       padding: 10px 0;
       margin: 100px auto;

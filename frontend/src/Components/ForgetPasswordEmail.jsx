@@ -5,8 +5,9 @@ import { toast } from 'react-toastify';
 
 
 export default function ForgetPasswordEmail() {
-    const {person,backend_api} = useAuth();
+    const { backend_api } = useAuth();
     const [mail, setMail] = useState('');
+    const [person,setPerson] = useState('');
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -32,7 +33,7 @@ export default function ForgetPasswordEmail() {
     return (
         <>
             <Navbar />
-            <div className="main-block">
+            <div className="main-block  col-12 col-lg-6 col-md-8 col-sm-10">
                 <h1>Enter Email</h1>
                 <form id="registerForm" onSubmit={handleSubmit}>
                     <label htmlFor="email" id="icon"><i className="fas fa-envelope"></i></label>
@@ -45,6 +46,13 @@ export default function ForgetPasswordEmail() {
                         onChange={(e) => setMail(e.target.value)}
                         required
                     />
+                    <div className='flex'>
+                        <select value={person} onChange={(e) => { setPerson(e.target.value) }}>
+                            <option value="Teacher">Teacher</option>
+                            <option value="Student">Student</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
                     <hr />
                     <div className="button-block">
                         <button type="submit">Verify</button>
@@ -67,9 +75,7 @@ export default function ForgetPasswordEmail() {
       opacity: 0.3;
       }
       .main-block {
-      max-width: 60%; 
-      min-height: auto; 
-      min-width:80%;
+
       padding: 50px 25px;
       margin: 100px auto;
       border-radius: 20px; 
