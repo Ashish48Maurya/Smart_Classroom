@@ -28,8 +28,7 @@ const teacherSchema = new Schema({
         required: true,
     },
     teacher_photo: {
-        type: String,
-        required: true,
+        type: String
     },
     teacherID:{
         type: Number,

@@ -14,6 +14,7 @@ export default function Assignments() {
     const [yos, setYos] = useState('');
     const [subject, setSubject] = useState('')
     const [department, setDepartment] = useState('');
+    const [src, setSrc] = useState('')
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,7 +26,6 @@ export default function Assignments() {
         formData.append("title", title);
         formData.append("description", description);
         formData.append("dueDate", dueDate);
-        formData.append("yos", yos);
         formData.append("subject", subject);
         formData.append("file", file);
         formData.append("yearOfStudy", yos);
@@ -62,10 +62,12 @@ export default function Assignments() {
     const loadfile = (event) => {
         var output = document.getElementById("output");
         output.src = URL.createObjectURL(event.target.files[0]);
+        setSrc(output.src);
         output.onload = function () {
             URL.revokeObjectURL(output.src); // free memory
         };
         setFile(event.target.files[0]);
+        output.style.height = "max-content";
     };
 
     return (
@@ -97,7 +99,7 @@ export default function Assignments() {
                         color: "white"
                     }}>Preview</span>
                     
-                    <iframe src="https://clickdimensions.com/links/TestPDFfile.pdf" frameBorder="0" id="output" className='preview'></iframe>
+                    <iframe src={src} frameBorder="0" id="output" className='preview' />
                     <div className="button-block">
                         <button type="submit" href="/">Post</button>
                     </div>
@@ -205,7 +207,7 @@ export default function Assignments() {
       }
       #output{
         width:100%;
-        height:100vh;
+        height:0;
       }
                 `}
             </style>

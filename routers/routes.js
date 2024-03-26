@@ -648,9 +648,10 @@ router.post('/give_assignment', authmiddleware(Teacher), upload.single('file'), 
     }
 });
 
-router.get('/get-files', async (req, res) => {
+router.get('/get_assignments', async (req, res) => {
     try {
-
+        const data = await Assignment.find({});
+        res.status(200).json({ data })
     }
     catch (error) {
         console.error(error);

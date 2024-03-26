@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useAuth } from './Components/store/auth';
-import Navbar from './Components/Navbar'
+import { useAuth } from './store/auth';
+import Navbar from './Navbar'
 import { Link } from 'react-router-dom';
 
 export default function ForgetPasswordPass() {
-    const {USER,token,id} = useParams();
-    const {backend_api} = useAuth();
+    const { USER, token, id } = useParams();
+    const { backend_api } = useAuth();
     const navigate = useNavigate();
-    const [password,setPassword] = useState('');
+    const [password, setPassword] = useState('');
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -39,9 +39,9 @@ export default function ForgetPasswordPass() {
             console.error(error);
         }
     }
-  return (
-    <>
-    <Navbar />
+    return (
+        <>
+            <Navbar />
             <div className="main-block col-12 col-lg-6 col-md-8 col-sm-10">
                 <h1>Enter Password</h1>
                 <form id="registerForm" onSubmit={handleSubmit}>
@@ -55,7 +55,7 @@ export default function ForgetPasswordPass() {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
-                   
+
                     <hr />
                     <div className="button-block">
                         <button type="submit">Reset</button>
@@ -159,6 +159,6 @@ export default function ForgetPasswordPass() {
         width:15px;
       }
       `}</style>
-    </>
-  )
+        </>
+    )
 }

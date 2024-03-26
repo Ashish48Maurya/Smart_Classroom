@@ -7,11 +7,17 @@ const bodyParser = require('body-parser')
 const mongoConnect = require('./db')
 const PORT = 8000;
 const cors = require("cors");
+const path = require("path");
 
 app.use(cors())
 app.use(express.json());
 app.use(require("./routers/routes")); 
 app.use('/files', express.static('files'))
+
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
+
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 app.use(bodyParser.json());
 

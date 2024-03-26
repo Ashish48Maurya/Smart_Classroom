@@ -20,11 +20,12 @@ import './index.css';
 import Teacher from './Components/Teacher';
 import Students from './Components/Students';
 import ForgetPasswordEmail from './Components/ForgetPasswordEmail';
-import ForgetPasswordPass from './ForgetPasswordPass';
+import ForgetPasswordPass from './Components/ForgetPasswordPass';
 import Student from './Components/Student';
 import Teachers from './Components/Teachers';
 import GiveAssignments from './Components/GiveAssignments';
-import Assignments from './Assignments';
+import Assignments from './Components/Assignments';
+import StudentAssignments from './Components/StudentAssignments';
 
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route exact path='/adminregister' element={<AdminRegister />} />
         <Route exact path='/teachers' element={<Teacher />} />
         <Route exact path='/students' element={<Students />} />
+        <Route exact path='/get-assignments' element={<StudentAssignments />} />
         <Route exact path='/get_student/:id' element={<Student />} />
         <Route exact path='/get_teacher/:id' element={<Teachers />} />
       </Routes>
