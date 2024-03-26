@@ -18,17 +18,22 @@ const assignmentSchema = new Schema({
         type: String,
         required: true,
     },
-    yearOfStudy:{
-        type:String,
-        required:true,
+    yearOfStudy: {
+        type: String,
+        required: true,
     },
-    department:{
-        type:String,
-        required:true
+    department: {
+        type: String,
+        required: true
     },
-    file:{
+    file: {
         type: String
-    }
+    },
+    students_output: [{
+        fullname: String,
+        sapID: Number,
+        assignmentPath: String
+    }]
 });
 
 const Assignment = mongoose.model("assignment", assignmentSchema);

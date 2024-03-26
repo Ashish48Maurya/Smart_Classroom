@@ -748,26 +748,31 @@ router.get('/sendNotification', async (req, res) => {
 
 
 
-//Pending
-router.post('/submit_assignment', authmiddleware(Student), async (req, res) => {
-    // const { assignmentId } = req.body;
-    // const studentId = req.userID;
+router.post('/submit_assignment/:id', authmiddleware(Student), upload.single('file'), async (req, res) => {
+    try {
+        const { id } = req.params;
+        const assignment = await Assignment.findById(id);
+        
+        if (!assignment) {
+            return res.status(404).json({ error: "Assignment Not Found" });
+        }
+        const { originalname, path } = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        const newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
 
-    // try {
-    //     const assignment = await Assignment.findById(assignmentId);
+        const {fullname,sapID} = req.user; 
+        console.log(fullname,sapID);
+        assignment.students_output.push({ sapID, fullname, assignmentPath: newPath });
+        await assignment.save();
 
-    //     if (!assignment) {
-    //         return res.status(404).json({ error: 'Assignment not found' });
-    //     }
-    //     const student = await Student.findById(studentId);
-    //     student.assignmentFiles.push(assignmentFilePath);
-    //     await student.save();
-
-    //     return res.status(200).json({ message: 'Assignment submitted successfully' });
-    // } catch (err) {
-    //     console.error(err);
-    //     return res.status(500).json({ error: 'Internal server error' });
-    // }
+        return res.status(200).json({ msg: "Assignment Submitted" });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: `Server Error: ${err.message}` });
+    }
 });
+
 
 module.exports = router;
