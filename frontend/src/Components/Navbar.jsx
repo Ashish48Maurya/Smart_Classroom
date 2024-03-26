@@ -87,12 +87,12 @@ export default function Navbar({ user }) {
                   <>
                     <div className="btn-txt-grp">
                       <p className='user-name'>{userData.fullname}</p>
-                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
+                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
                     </div>
                   </>
                 ) : (
                   <>
-                    <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content" }} onClick={() => { navigate('/login') }}>Login</button>
+                      <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px" }} onClick={() => { navigate('/login') }}>Login</button>
                   </>
                 )}
               </form>
@@ -103,17 +103,17 @@ export default function Navbar({ user }) {
       <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap')
                 * {
-                  margin: 0;
-                  padding: 0;
-                  box-sizing: border-box;
+                  margin: 0 !important;
+                  padding: 0 !important;
+                  box-sizing: border-box !important;
                 }
                 a:hover, a {
-                  text-decoration: none;
+                  text-decoration: none !important;
                 }
                 body {
-                  width: 100%;
-                  overflow-x: hidden;
-                  z-index: 10;
+                  width: 100% !important;
+                  overflow-x: hidden !important;
+                  z-index: 10 !important;
                 }
                 .btn-txt-grp p{
                   margin: auto 0 !important;
@@ -123,73 +123,80 @@ export default function Navbar({ user }) {
                   color: #1d46ff !important;
                 }
                 .logo{
-                  width:5vw;
+                  width:5vw !important;
+                  height:max-content !important;
+                }
+                .nav-link{
+                  font-size:large !important;
+                }
+                .user-name{
+
                 }
                 nav {
-                  margin: 10px 10px 0 10px;
-                  background: none;
-                  width: 100%;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
+                  // margin: 10px 10px 0 10px !important;
+                  background: none !important;
+                  width: 100% !important;
+                  display: flex !important;
+                  justify-content: center !important;
+                  align-items: center !important;
                 }
                 .nav-cont {
-                  width: max-content;
-                  min-width: 95%;
-                  background: rgba(255, 255, 255, 0.26);
-                  border-radius: 50px;
-                  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-                  backdrop-filter: blur(9.6px);
-                  margin: 10px 20px 0 20px;
-                  -webkit-backdrop-filter: blur(9.6px);
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  position: fixed;
-                  top: 0;
-                  left: 0;
-                  z-index: 100;
+                  width: max-content !important;
+                  min-width: 95% !important;
+                  background: rgba(255, 255, 255, 0.26) !important;
+                  border-radius: 50px !important;
+                  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+                  backdrop-filter: blur(9.6px) !important;
+                  margin: 10px 20px 0 20px !important;
+                  -webkit-backdrop-filter: blur(9.6px) !important;
+                  display: flex !important;
+                  justify-content: center !important;
+                  align-items: center !important;
+                  position: fixed !important;
+                  top: 0 !important;
+                  left: 0 !important;
+                  z-index: 100 !important;
                 }
                 .gugi-regular {
-                  font-family: "Gugi", sans-serif;
-                  font-weight: 400;
-                  font-style: normal;
+                  font-family: "Gugi", sans-serif !important;
+                  font-weight: 400 !important;
+                  font-style: normal !important;
                 }
                 li {
-                  margin-inline: 10px;
+                  margin-inline: 10px !important;
                 }
                 .nav-item select {
-                  margin-top: 10px;
+                  margin-top: 10px !important;
                 }
                 .navbar-toggler {
-                  position: absolute;
-                  top: 5px;
-                  right: 2%;
-                  max-width: 55px;
+                  position: absolute !important;
+                  top: 5px !important;
+                  right: 2% !important;
+                  max-width: 55px !important;
                 }
                 .btn-txt-grp {
-                  display: flex;
-                  justify-content: center;
-                  align-items: baseline;
+                  display: flex !important;
+                  justify-content: center !important;
+                  align-items: baseline !important;
                 }
                 @media screen and (max-width: 992px) {
                   .btn-txt-grp {
-                    flex-direction: column;
+                    flex-direction: column !important;
                   }
                   .logo{
-                    width:10vw;
+                    width:10vw !important;
                   }
                 }
                 @media screen and (max-width: 650px) {
                   nav {
-                    max-width: 80%;
-                    flex-direction: column;
+                    max-width: 80% !important;
+                    flex-direction: column !important;
                   }
                   .nav-cont {
-                    width: 10vw;
+                    width: 10vw !important;
                   }
                   .logo{
-                    width:15vw;
+                    width:15vw !important;
                   }
                 }
               `}

@@ -28,9 +28,13 @@ export default function Assignments() {
         formData.append("yos", yos);
         formData.append("subject", subject);
         formData.append("file", file);
+        formData.append("yearOfStudy", yos);
+        formData.append("department", department)
+
+        console.log(title, description, dueDate, yos, subject, file, department);
 
         try {
-            const response = await fetch(`${backend_api}/give_assignment/${yos}/${department}`, {
+            const response = await fetch(`${backend_api}/give_assignment`, {
                 method: "post",
                 headers: {
                     "Content-type": "multipart/form-data",

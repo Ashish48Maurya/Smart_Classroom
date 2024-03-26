@@ -7,10 +7,10 @@ export default function ClassRoom() {
     const [data, setData] = useState('');
     const [strength, setStrength] = useState('');
     const userData = JSON.parse(localStorage.getItem("USER"));
-    const [branch, setBranch] = useState('');
-    const [msg, setMsg] = useState('');
-    const [selectedBranch, setSelectedBranch] = useState('');
-    const { backend_api } = useAuth();
+    // const [branch, setBranch] = useState('');
+    // const [msg, setMsg] = useState('');
+    // const [selectedBranch, setSelectedBranch] = useState('');
+    const { token, backend_api } = useAuth();
 
     const sendMail = async (msg, selectedBranch) => {
         // Use the selectedBranch state variable in your fetch request or any other logic
@@ -29,17 +29,19 @@ export default function ClassRoom() {
 
         if (ans.ok) {
             toast.success("Message Sent Successfully");
-            setBranch('');
-            setMsg('');
+            // setBranch('');
+            // setMsg('');
         } else {
             console.error('Error:', ans.statusText);
         }
     }
 
     const handleSubmit = async () => {
-        const ans = await fetch(`${backend_api}/getclassroom/?strength=${strength}`, {
+        const ans = await fetch(`${backend_api}/find_class/${strength}`, {
             method: "GET",
-           
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
         });
         if (ans.ok) {
             const dataa = await ans.json();

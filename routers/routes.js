@@ -429,7 +429,7 @@ router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
 })
 
 
-router.get('/Teacher/:teacherId', authmiddleware([Admin, Teacher]), async (req, res) => {//done
+router.get('/Teacher/:teacherId', authmiddleware(Admin||Teacher), async (req, res) => {//done
     try {
         const { teacherId } = req.params;
         const teacher = await Teacher.findById(teacherId);
