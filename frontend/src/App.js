@@ -59,7 +59,7 @@ function App() {
         <Route exact path='/adminregister' element={<AdminRegister />} />
         <Route exact path='/teachers' element={<Teacher />} />
         <Route exact path='/students' element={<Students />} />
-        <Route exact path='/get-assignments' element={<StudentAssignments />} />
+        <Route exact path='/get_assignments' element={<StudentAssignments />} />
         <Route exact path='/get_student/:id' element={<Student />} />
         <Route exact path='/get_teacher/:id' element={<Teachers />} />
       </Routes>

@@ -169,7 +169,7 @@ export default function StudentRegister() {
                         accept="image/*"
                         onChange={(event) => loadfile(event)}
                     />
-                    <div className='text-center'>
+                    <div className='text-center m-2'>
                         <img
                             style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
                             id="output"

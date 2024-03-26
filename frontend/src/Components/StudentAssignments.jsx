@@ -13,6 +13,7 @@ const StudentAssignments = () => {
             });
             if (res.ok) {
                 const data = await res.json();
+                console.log(data);
                 setAssignments(data.data); // Access the 'data' property of the response
             } else {
                 console.error('Failed to fetch assignments:', res.statusText);

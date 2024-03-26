@@ -19,6 +19,7 @@ const upload = multer({ dest: 'uploads/' });
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
 
+
 app.use(bodyParser.json());
 
 app.get('/', async (req, res) => {

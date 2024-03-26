@@ -37,7 +37,7 @@ export default function Assignments() {
             const response = await fetch(`${backend_api}/give_assignment`, {
                 method: "post",
                 headers: {
-                    "Content-type": "multipart/form-data",
+                    // "Content-type": "multipart/form-data",
                     "Authorization": `Bearer  ${token}`
                 },
                 body: formData,
@@ -64,7 +64,7 @@ export default function Assignments() {
         output.src = URL.createObjectURL(event.target.files[0]);
         setSrc(output.src);
         output.onload = function () {
-            URL.revokeObjectURL(output.src); // free memory
+            URL.revokeObjectURL(output.src); 
         };
         setFile(event.target.files[0]);
         output.style.height = "max-content";
@@ -92,7 +92,7 @@ export default function Assignments() {
                     <input
                         type="file"
                         accept="file/*"
-                        name="file" // Ensure this matches the field name expected by multer
+                        name="file"
                         onChange={(event) => loadfile(event)}
                     />
                     <span style={{
