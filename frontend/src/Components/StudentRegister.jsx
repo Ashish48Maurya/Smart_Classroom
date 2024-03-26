@@ -41,52 +41,52 @@ export default function StudentRegister() {
         e.preventDefault();
         postDetails();
 
-        if(url){
-        if (!username || !password || !mail) {
-            return toast.error("All Fields Are Required!!!");
-        }
-
-        if (!emailRegex.test(mail)) {
-            toast.error("Invalid Email");
-            return;
-        }
-        else if (!passRege.test(password)) {
-            toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
-            return;
-        }
-
-
-        try {
-            const response = await fetch(`${backend_api}/registerStudent`, {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer  ${token}`
-                },
-                body: JSON.stringify({
-                    fullname: username,
-                    department,
-                    password,
-                    email: mail,
-                    phoneNo: phone,
-                    sapID: student_id,
-                    subjects,
-                    student_photo: url
-                }),
-            });
-
-            if (response.status === 200) {
-                const res_data = await response.json();
-                console.log("response from server ", res_data);
-                storeTokenInLS(res_data.token);
-                navigate('/students');
-                toast.success("Registration Successfull !!!");
-            } else {
-                return console.log(response);
+        if (url) {
+            if (!username || !password || !mail) {
+                return toast.error("All Fields Are Required!!!");
             }
-        }
-        catch (error) {
-            console.log(error);
+
+            if (!emailRegex.test(mail)) {
+                toast.error("Invalid Email");
+                return;
+            }
+            else if (!passRege.test(password)) {
+                toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+                return;
+            }
+
+
+            try {
+                const response = await fetch(`${backend_api}/registerStudent`, {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer  ${token}`
+                    },
+                    body: JSON.stringify({
+                        fullname: username,
+                        department,
+                        password,
+                        email: mail,
+                        phoneNo: phone,
+                        sapID: student_id,
+                        subjects,
+                        student_photo: url
+                    }),
+                });
+
+                if (response.status === 200) {
+                    const res_data = await response.json();
+                    console.log("response from server ", res_data);
+                    storeTokenInLS(res_data.token);
+                    navigate('/students');
+                    toast.success("Registration Successfull !!!");
+                } else {
+                    return console.log(response);
+                }
+            }
+            catch (error) {
+                console.log(error);
             }
         } else { toast.error("Failed to register student !!!") }
     };
@@ -129,7 +129,7 @@ export default function StudentRegister() {
     return (
         <>
             <Navbar />
-            <div className="main-block">
+            <div className="main-block col-12 col-lg-6 col-md-8 col-sm-10">
                 <h1>Student Registration</h1>
                 <form onSubmit={handleSubmit}>
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
@@ -169,17 +169,18 @@ export default function StudentRegister() {
                         accept="image/*"
                         onChange={(event) => loadfile(event)}
                     />
-                    <img
-                        id="output"
-                        src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"
-                        alt="Preview"
-                    />
+                    <div className='text-center'>
+                        <img
+                            style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
+                            id="output"
+                            src=""
+                        />
+                    </div>
                     {loading && (
                         <div className="loader">
                             <Loader />
                         </div>
                     )}
-                    <hr />
                     <div className="button-block">
                         <button type="submit" href="/">Register</button>
                     </div>
@@ -220,8 +221,6 @@ export default function StudentRegister() {
       opacity: 0.3;
       }
       .main-block {
-      max-width: 80%;
-      min-width: 60%;
       min-height: auto; 
       padding: 10px 0;
       margin: 100px auto;

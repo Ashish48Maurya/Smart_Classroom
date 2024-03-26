@@ -6,7 +6,7 @@ const Assignments = () => {
     return (
         <>
             <Navbar />
-            <div className="ass-cont">
+            <div className="ass-cont ">
                 <h1 style={{
                     textAlign: "center"
                 }}>Your Assignments</h1>

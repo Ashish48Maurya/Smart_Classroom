@@ -60,11 +60,10 @@ const Student = () => {
             </div>
             <style>{`
                 .student-cont {
-                    margin-top: 100px;
                     display: flex;
-                    justify-content: center;
+                    justify-content: space-evenly;
                     align-items: center;
-                    height: 100%;
+                    min-height: 100vh;
                 }
 
                 .profile-img{
@@ -115,6 +114,7 @@ const Student = () => {
                     .profile-img{
                         width:40vw;
                         height:40vw;
+                        margin-bottom:30px
                     }
                 }
             `}</style>

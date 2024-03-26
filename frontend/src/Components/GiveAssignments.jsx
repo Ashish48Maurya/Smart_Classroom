@@ -71,7 +71,7 @@ export default function Assignments() {
     return (
         <>
             <Navbar />
-            <div className="main-block">
+            <div className="main-block col-12 col-lg-6 col-md-8 col-sm-10">
                 <h1>Create Assignment</h1>
                 <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <label id="icon" htmlFor="title"><i className="fas fa-file"></i></label>
@@ -96,11 +96,10 @@ export default function Assignments() {
                     <span style={{
                         color: "white"
                     }}>Preview</span>
+                    
                     <iframe src="https://clickdimensions.com/links/TestPDFfile.pdf" frameBorder="0" id="output" className='preview'></iframe>
-
-                    <hr />
                     <div className="button-block">
-                        <button type="submit" href="/">Register</button>
+                        <button type="submit" href="/">Post</button>
                     </div>
                 </form>
             </div>
@@ -139,8 +138,6 @@ export default function Assignments() {
       opacity: 0.3;
       }
       .main-block {
-      max-width: 80%;
-      min-width: 60%;
       height: auto; 
       padding: 10px 0;
       margin: 100px auto;

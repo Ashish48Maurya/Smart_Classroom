@@ -37,7 +37,7 @@ export default function Assignment() {
 return (
     <>
         <Navbar />
-        <div className="container col-6 mt-5">
+        <div className="container  mt-5">
             <div className="input-group mb-3">
                 <div className="btn-group" id="btn-group">
                     <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
