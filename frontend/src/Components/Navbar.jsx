@@ -13,12 +13,12 @@ export default function Navbar({ user }) {
   return (
     <>
       <div className="nav-cont">
-        <nav style={{ maxWidth: "100%" }} className="navbar navbar-expand-lg my-auto ">
+        <nav style={{ maxWidth: "100%" }} className="navbar navbar-expand-lg my-auto py-1">
           <div className="container-fluid">
             <Link className="navbar-brand" to='/'>
               <img src={logo} className='logo' alt="" />
             </Link>
-            <button className="navbar-toggler" style={{ "border": "2px solid black" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler " style={{ "border": "2px solid black", marginRight:"15px" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon "></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -87,7 +87,7 @@ export default function Navbar({ user }) {
                   <>
                     <div className="btn-txt-grp">
                       <p className='user-name'>{userData.fullname}</p>
-                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
+                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", marginRight:"20px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
                     </div>
                   </>
                 ) : (
@@ -142,9 +142,7 @@ export default function Navbar({ user }) {
                   backdrop-filter: blur(9.6px);
                   margin: 10px 20px 0 20px;
                   -webkit-backdrop-filter: blur(9.6px);
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
+            
                   position: fixed;
                   top: 0;
                   left: 0;
