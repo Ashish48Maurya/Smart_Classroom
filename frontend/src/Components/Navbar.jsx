@@ -103,17 +103,17 @@ export default function Navbar({ user }) {
       <style>{`
                 @import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap')
                 * {
-                  margin: 0 !important;
-                  padding: 0 !important;
-                  box-sizing: border-box !important;
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
                 }
                 a:hover, a {
-                  text-decoration: none !important;
+                  text-decoration: none;
                 }
                 body {
-                  width: 100% !important;
-                  overflow-x: hidden !important;
-                  z-index: 10 !important;
+                  width: 100%;
+                  overflow-x: hidden;
+                  z-index: 10;
                 }
                 .btn-txt-grp p{
                   margin: auto 0 !important;
@@ -123,80 +123,73 @@ export default function Navbar({ user }) {
                   color: #1d46ff !important;
                 }
                 .logo{
-                  width:5vw !important;
-                  height:max-content !important;
-                }
-                .nav-link{
-                  font-size:large !important;
-                }
-                .user-name{
-
+                  width:5vw;
                 }
                 nav {
-                  // margin: 10px 10px 0 10px !important;
-                  background: none !important;
-                  width: 100% !important;
-                  display: flex !important;
-                  justify-content: center !important;
-                  align-items: center !important;
+                  margin: 10px 10px 0 10px;
+                  background: none;
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
                 }
                 .nav-cont {
-                  width: max-content !important;
-                  min-width: 95% !important;
-                  background: rgba(255, 255, 255, 0.26) !important;
-                  border-radius: 50px !important;
-                  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
-                  backdrop-filter: blur(9.6px) !important;
-                  margin: 10px 20px 0 20px !important;
-                  -webkit-backdrop-filter: blur(9.6px) !important;
-                  display: flex !important;
-                  justify-content: center !important;
-                  align-items: center !important;
-                  position: fixed !important;
-                  top: 0 !important;
-                  left: 0 !important;
-                  z-index: 100 !important;
+                  width: max-content;
+                  min-width: 95%;
+                  background: rgba(255, 255, 255, 0.26);
+                  border-radius: 50px;
+                  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                  backdrop-filter: blur(9.6px);
+                  margin: 10px 20px 0 20px;
+                  -webkit-backdrop-filter: blur(9.6px);
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  position: fixed;
+                  top: 0;
+                  left: 0;
+                  z-index: 100;
                 }
                 .gugi-regular {
-                  font-family: "Gugi", sans-serif !important;
-                  font-weight: 400 !important;
-                  font-style: normal !important;
+                  font-family: "Gugi", sans-serif;
+                  font-weight: 400;
+                  font-style: normal;
                 }
                 li {
-                  margin-inline: 10px !important;
+                  margin-inline: 10px;
                 }
                 .nav-item select {
-                  margin-top: 10px !important;
+                  margin-top: 10px;
                 }
                 .navbar-toggler {
-                  position: absolute !important;
-                  top: 5px !important;
-                  right: 2% !important;
-                  max-width: 55px !important;
+                  position: absolute;
+                  top: 10px;
+                  right: 2%;
+                  max-width: 55px;
                 }
                 .btn-txt-grp {
-                  display: flex !important;
-                  justify-content: center !important;
-                  align-items: baseline !important;
+                  display: flex;
+                  justify-content: center;
+                  align-items: baseline;
                 }
                 @media screen and (max-width: 992px) {
                   .btn-txt-grp {
-                    flex-direction: column !important;
+                    flex-direction: column;
                   }
                   .logo{
-                    width:10vw !important;
+                    width:10vw;
                   }
                 }
                 @media screen and (max-width: 650px) {
                   nav {
-                    max-width: 80% !important;
-                    flex-direction: column !important;
+                    max-width: 80%;
+                    flex-direction: column;
                   }
                   .nav-cont {
-                    width: 10vw !important;
+                    width: 10vw;
                   }
                   .logo{
-                    width:15vw !important;
+                    width:15vw;
                   }
                 }
               `}
