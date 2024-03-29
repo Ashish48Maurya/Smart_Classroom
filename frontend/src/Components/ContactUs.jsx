@@ -7,12 +7,6 @@ const ContactUs = () => {
             <Navbar />
             <div class="container d-flex justify-content-center align-items-center">
 
-
-                {/* from: https://www.freepik.com/free-vector/new-message-concept-landing-page_5777076.htm
-          -------------------------------------------------------------
-          -- Note: need to use inline svg to manipulate its components
-  ------------------------------------------------------------ */}
-
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 563" fill="none">
                     <g id="Image">
                         <g id="g14">
@@ -330,7 +324,7 @@ const ContactUs = () => {
 
 
                     <div class="form-group message">
-                        <textarea id="formMessage" class="form-control form-control-lg" rows="7" placeholder="Mensagem"></textarea>
+                        <textarea id="formMessage" class="form-control form-control-lg" rows="7" placeholder="Enter Your Message Here... "></textarea>
                     </div>
 
                     <div class="text-center">
