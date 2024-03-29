@@ -265,7 +265,11 @@ export default function TeacherRegister() {
       box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
       background: #fff; 
       }
-      input[type=password] {
+      input[type="file"]{
+        position:relative;
+        bottom:5px;
+      }
+      input[type=password]{
       margin-bottom: 15px;
       }
       #icon {

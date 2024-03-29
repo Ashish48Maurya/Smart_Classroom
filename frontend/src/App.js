@@ -27,6 +27,9 @@ import GiveAssignments from './Components/GiveAssignments';
 import Assignments from './Components/Assignments';
 import StudentAssignments from './Components/StudentAssignments';
 import AboutUs from './Components/AboutUs';
+import OurServices from './Components/OurServices';
+import ClientReviews from './Components/ClientReviews';
+import ContactUs from './Components/ContactUs';
 
 
 function App() {
@@ -44,8 +47,11 @@ function App() {
       <Routes>
         <Route exact path='/navbar' element={<Navbar />} />
         <Route exact path='/' element={<Home />} />
+        <Route exact path='/our-services' element={<OurServices />} />
         <Route exact path='/aboutUs' element={<AboutUs />} />
         <Route exact path='/login' element={<Login />} />
+        <Route exact path='/client-reviews' element={<ClientReviews />} />
+        <Route exact path='/contact-us' element={<ContactUs />} />
         <Route exact path='/forgetPassEmail' element={<ForgetPasswordEmail />} />
         <Route exact path='/resetPassword/:USER/:token/:id' element={<ForgetPasswordPass />} />
         <Route exact path='/attendance' element={<Attendance />} />

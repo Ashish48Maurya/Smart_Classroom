@@ -39,7 +39,7 @@ export default function Navbar({ user }) {
                   )}
               </>
             )}
-            <button className="navbar-toggler " style={{ "border": "2px solid black", marginRight:"15px" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <button className="navbar-toggler" style={{ "border": "2px solid black", marginRight: "15px" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon "></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
@@ -117,13 +117,13 @@ export default function Navbar({ user }) {
                         <Link className="nav-link active" aria-current="page" to='/aboutUs'>About Us</Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/'>Our Services</Link>
+                        <Link className="nav-link active" aria-current="page" to='/our-services'>Our Services</Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/'>Client Reviews</Link>
+                        <Link className="nav-link active" aria-current="page" to='/client-reviews'>Client Reviews</Link>
                       </li>
                       <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/'>Contact Us</Link>
+                        <Link className="nav-link active" aria-current="page" to='/contact-us'>Contact Us</Link>
                       </li>
                       <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", color: "#0d6efd", background: "none", padding: "4px 8px", fontSize: "15px" }} onClick={() => { navigate('/login') }}>Login</button>
                   </>
@@ -171,15 +171,14 @@ export default function Navbar({ user }) {
                   align-items: center;
                 }
                 .nav-cont {
-                  width: max-content;
-                  min-width: 95%;
+                  width: 97%;
+                  min-width: 90%;
                   background: rgba(255, 255, 255, 0.26);
                   border-radius: 50px;
                   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
                   backdrop-filter: blur(9.6px);
                   margin: 10px 20px 0 20px;
                   -webkit-backdrop-filter: blur(9.6px);
-            
                   position: fixed;
                   top: 0;
                   left: 0;
@@ -201,12 +200,6 @@ export default function Navbar({ user }) {
                 }
                 .nav-item select {
                   margin-top: 10px;
-                }
-                .navbar-toggler {
-                  position: absolute;
-                  top: 10px;
-                  right: 2%;
-                  max-width: 55px;
                 }
                 .btn-txt-grp {
                   display: flex;
