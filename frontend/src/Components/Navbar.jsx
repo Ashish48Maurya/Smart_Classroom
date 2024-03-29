@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './store/auth';
 import logo from '../assets/Logo.png';
@@ -50,6 +50,9 @@ export default function Navbar({ user }) {
                       <>
                         <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link className="nav-link active" aria-current="page" to='/get-assignments'>Assignments</Link>
                         </li>
                         <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/attendance'>Attendance</Link>

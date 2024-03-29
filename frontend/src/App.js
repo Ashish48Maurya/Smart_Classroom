@@ -25,11 +25,12 @@ import Student from './Components/Student';
 import Teachers from './Components/Teachers';
 import GiveAssignments from './Components/GiveAssignments';
 import Assignments from './Components/Assignments';
-import StudentAssignments from './Components/StudentAssignments';
 import AboutUs from './Components/AboutUs';
 import OurServices from './Components/OurServices';
 import ClientReviews from './Components/ClientReviews';
 import ContactUs from './Components/ContactUs';
+import StudentAssignment from './Components/StudentAssignment';
+import AssignmentDetail from './Components/AssignmentDetail';
 
 
 function App() {
@@ -61,13 +62,14 @@ function App() {
         <Route exact path='/edit/:id' element={<Edit />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
         <Route exact path='/give-assignment' element={<GiveAssignments />} />
+        <Route exact path='/get-assignments' element={<StudentAssignment />} />
         <Route exact path='/assignments' element={<Assignments />} />
         <Route exact path='/studentregister' element={<StudentRegister />} />
         <Route exact path='/teacherregister' element={<TeacherRegister />} />
         <Route exact path='/adminregister' element={<AdminRegister />} />
         <Route exact path='/teachers' element={<Teacher />} />
         <Route exact path='/students' element={<Students />} />
-        <Route exact path='/get_assignments' element={<StudentAssignments />} />
+        <Route exact path='/assignment-details' element={<AssignmentDetail />} />
         <Route exact path='/get_student/:id' element={<Student />} />
         <Route exact path='/get_teacher/:id' element={<Teachers />} />
       </Routes>
