@@ -32,15 +32,15 @@ const Teachers = () => {
     return (
         <>
             <Navbar />
-            <h1 style={{ textAlign: "center" }}>Teacher Details</h1>
             <div className="teacher-cont">
                 {teacherData && (
                     <div className="teacher-details">
                         <div className="class-1">
-                            <h1>Teacher : <b style={{
+                            <h1 style={{ textAlign: "center" }}>Teacher Details</h1>
+                            <h2>Teacher : <b style={{
                                 textDecoration: "underline",
                                 backgroundColor: "yellow"
-                            }}>{teacherData.fullname}</b></h1>
+                            }}>{teacherData.fullname}</b></h2>
                             <p><strong>Full Name:</strong> {teacherData.fullname}</p>
                             <p><strong>Email:</strong> {teacherData.email}</p>
                             <p><strong>TeacherID:</strong> {teacherData.teacherID}</p>

@@ -59,11 +59,15 @@ const Student = () => {
                 )}
             </div>
             <style>{`
+            body{
+                margin-top:100px;
+            }
                 .student-cont {
                     display: flex;
-                    justify-content: space-evenly;
+                    justify-content: center;
                     align-items: center;
                     min-height: 100vh;
+                    margin-top:0 !important;
                 }
 
                 .profile-img{

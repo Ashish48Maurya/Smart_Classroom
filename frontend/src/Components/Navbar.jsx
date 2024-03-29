@@ -14,18 +14,36 @@ export default function Navbar({ user }) {
     <>
       <div className="nav-cont">
         <nav style={{ maxWidth: "100%" }} className="navbar navbar-expand-lg my-auto py-1">
-          <div className="container-fluid">
-            <Link className="navbar-brand" to='/'>
+          <div className="container-fluid" style={{ padding: "10px" }}>
+            {!isLoggedIn && (<Link className="navbar-brand d-flex" to='/'>
               <img src={logo} className='logo' alt="" />
-            </Link>
+            </Link>)}
+            {userData && (
+              <>{
+                userData.user === "Student" && (
+                  <Link className="navbar-brand d-flex" to='/'>
+                    <h1 className='dname'>Student Dashboard</h1>
+                  </Link>
+                )}
+                {
+                  userData.user === "Admin" && (
+                    <Link className="navbar-brand d-flex" to='/'>
+                      <h1 className='dname'>Admin Dashboard</h1>
+                    </Link>
+                  )}
+                {
+                  userData.user === "Teacher" && (
+                    <Link className="navbar-brand d-flex" to='/'>
+                      <h1 className='dname'>Teacher Dashboard</h1>
+                    </Link>
+                  )}
+              </>
+            )}
             <button className="navbar-toggler " style={{ "border": "2px solid black", marginRight:"15px" }} type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon "></span>
             </button>
             <div className="collapse navbar-collapse" id="navbarSupportedContent">
               <ul className="navbar-nav ms-auto mb-lg-0 fs-5 fw-semibold">
-                {/* <li className="nav-item">
-                  <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
-                </li> */}
                 {userData && (
                   <>
                     {userData.user === "Student" && (
@@ -87,12 +105,27 @@ export default function Navbar({ user }) {
                   <>
                     <div className="btn-txt-grp">
                       <p className='user-name'>{userData.fullname}</p>
-                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", marginRight:"20px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
+                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", marginRight: "20px", fontSize: "15px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
                     </div>
                   </>
                 ) : (
-                  <>
-                      <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px" }} onClick={() => { navigate('/login') }}>Login</button>
+                    <>
+                      <li className="nav-item">
+                        <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link active" aria-current="page" to='/aboutUs'>About Us</Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link active" aria-current="page" to='/'>Our Services</Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link active" aria-current="page" to='/'>Client Reviews</Link>
+                      </li>
+                      <li className="nav-item">
+                        <Link className="nav-link active" aria-current="page" to='/'>Contact Us</Link>
+                      </li>
+                      <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", color: "#0d6efd", background: "none", padding: "4px 8px", fontSize: "15px" }} onClick={() => { navigate('/login') }}>Login</button>
                   </>
                 )}
               </form>
@@ -114,6 +147,10 @@ export default function Navbar({ user }) {
                   width: 100%;
                   overflow-x: hidden;
                   z-index: 10;
+                }
+                .dname{
+                  color:black !important;
+                  font-size:25px !important;
                 }
                 .btn-txt-grp p{
                   margin: auto 0 !important;
@@ -153,8 +190,14 @@ export default function Navbar({ user }) {
                   font-weight: 400;
                   font-style: normal;
                 }
+                .navbar-nav{
+                  margin-right:20px;
+                }
                 li {
                   margin-inline: 10px;
+                }
+                .nav-item{
+                  font-size: 16px !important;
                 }
                 .nav-item select {
                   margin-top: 10px;

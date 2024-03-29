@@ -26,6 +26,7 @@ import Teachers from './Components/Teachers';
 import GiveAssignments from './Components/GiveAssignments';
 import Assignments from './Components/Assignments';
 import StudentAssignments from './Components/StudentAssignments';
+import AboutUs from './Components/AboutUs';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
       <Routes>
         <Route exact path='/navbar' element={<Navbar />} />
         <Route exact path='/' element={<Home />} />
+        <Route exact path='/aboutUs' element={<AboutUs />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/forgetPassEmail' element={<ForgetPasswordEmail />} />
         <Route exact path='/resetPassword/:USER/:token/:id' element={<ForgetPasswordPass />} />
