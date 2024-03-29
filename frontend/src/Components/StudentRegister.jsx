@@ -121,7 +121,7 @@ export default function StudentRegister() {
         var output = document.getElementById("output");
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function () {
-            URL.revokeObjectURL(output.src); // free memory
+            URL.revokeObjectURL(output.src);
         };
         setImage(event.target.files[0]);
     };
@@ -173,9 +173,10 @@ export default function StudentRegister() {
                         <img
                             style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
                             id="output"
-                            src=""
+                            src=''
                         />
                     </div>
+
                     {loading && (
                         <div className="loader">
                             <Loader />

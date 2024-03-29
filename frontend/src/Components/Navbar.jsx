@@ -14,7 +14,7 @@ export default function Navbar({ user }) {
     <>
       <div className="nav-cont">
         <nav style={{ maxWidth: "100%" }} className="navbar navbar-expand-lg my-auto py-1">
-          <div className="container-fluid" style={{ padding: "10px" }}>
+          <div className="container-fluid">
             {!isLoggedIn && (<Link className="navbar-brand d-flex" to='/'>
               <img src={logo} className='logo' alt="" />
             </Link>)}
@@ -22,19 +22,19 @@ export default function Navbar({ user }) {
               <>{
                 userData.user === "Student" && (
                   <Link className="navbar-brand d-flex" to='/'>
-                    <h1 className='dname'>Student Dashboard</h1>
+                    <h1 className='dname'><img src="Images/student.png" height={"40px"} width={"40px"} alt="" /></h1>
                   </Link>
                 )}
                 {
                   userData.user === "Admin" && (
                     <Link className="navbar-brand d-flex" to='/'>
-                      <h1 className='dname'>Admin Dashboard</h1>
+                      <h1 className='dname'><img src="Images/admin.png" height={"50px"} width={"50px"} alt="" /></h1>
                     </Link>
                   )}
                 {
                   userData.user === "Teacher" && (
                     <Link className="navbar-brand d-flex" to='/'>
-                      <h1 className='dname'>Teacher Dashboard</h1>
+                      <h1 className='dname'><img src="Images/female.png"  height={"50px"} width={"50px"} alt="" /></h1>
                     </Link>
                   )}
               </>
@@ -104,8 +104,8 @@ export default function Navbar({ user }) {
                 {isLoggedIn ? (
                   <>
                     <div className="btn-txt-grp">
-                      <p className='user-name'>{userData.fullname}</p>
-                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", marginRight: "20px", fontSize: "15px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
+                      <p className='user-name' style={{marginRight:"20px"}}>{userData.fullname}</p>
+                      <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", fontSize: "15px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
                     </div>
                   </>
                 ) : (
