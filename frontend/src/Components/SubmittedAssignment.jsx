@@ -2,14 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from './store/auth';
 import Navbar from './Navbar';
 
-const StudentAssignments = () => {
-    const { backend_api, token } = useAuth();
+const SubmittedAssignment = () => {
+    const { backend_api, token, person } = useAuth();
     const [file, setFile] = useState("");
     const [assignments, setAssignments] = useState([]);
 
-    const liveAssignments = async () => {
+    const data = localStorage.getItem("USER");
+  const userData = JSON.parse(data);
+
+    const submittedAssignments = async () => {
         try {
-            const res = await fetch(`${backend_api}/live_assignments`, {
+            const res = await fetch(`${backend_api}/submitted_assignments`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,30 +31,8 @@ const StudentAssignments = () => {
         }
     }
 
-    const handleSubmit = async (id) => {
-        const formData = new FormData();
-        formData.append("file", file);
-        try {
-            const res = await fetch(`${backend_api}/submit_assignment/${id}`, {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer  ${token}`
-                },
-                body: formData,
-            });
-            if (res.ok) {
-                const data = await res.json();
-                console.log(data.msg);
-            } else {
-                console.error('Assignment Submission Failed');
-            }
-        } catch (error) {
-            console.error('Server Error', error);
-        }
-    }
-
     useEffect(() => {
-        liveAssignments();
+        submittedAssignments();
     }, []);
 
     return (
@@ -70,7 +51,7 @@ const StudentAssignments = () => {
                                 <th>Year of Study</th>
                                 <th>Department</th>
                                 <th>Document</th>
-                                <th>Submit</th>
+                                <th>Submitted Doc</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,16 +65,8 @@ const StudentAssignments = () => {
                                     <td>{assignment.department}</td>
                                     <td>{assignment.file && <a href={`http://localhost:8000/${assignment.file}`}>View File</a>}</td>
                                     <td>
-                                        <form encType="multipart/form-data">
-                                        <input
-                                            type="file"
-                                            accept="file/*"
-                                            name="file"
-                                            onChange={(event) => setFile(event.target.files[0])}
-                                        />
-                                        <button onClick={(event) => {event.preventDefault(); handleSubmit(assignment._id)}}>Submit</button>
-                                        </form>
-                                        </td>
+                                    {<a href={`http://localhost:8000/${assignment.students_output.find(submission => submission.sapID === userData.sapID).assignmentPath}`} target="_blank" rel="noopener noreferrer">View Submitted</a>}
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -193,4 +166,4 @@ const StudentAssignments = () => {
     );
 }
 
-export default StudentAssignments;
+export default SubmittedAssignment;

@@ -83,7 +83,7 @@ export default function TeacherRegister() {
                             })
                             .then(res_data => {
                                 console.log("response from server ", res_data);
-                                storeTokenInLS(res_data.token);
+                                // storeTokenInLS(res_data.token);
                                 navigate('/teachers');
                                 toast.success("Registration Successful !!!");
                             })
@@ -120,6 +120,7 @@ export default function TeacherRegister() {
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data);
                 setUrl(data.url);
                 setLoading(false);
                 setPosted(true); // Set posted to true after image upload
