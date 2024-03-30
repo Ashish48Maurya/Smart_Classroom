@@ -128,7 +128,7 @@ export default function Navbar({ user }) {
                       <li className="nav-item">
                         <Link className="nav-link active" aria-current="page" to='/contact-us'>Contact Us</Link>
                       </li>
-                      <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", color: "#0d6efd", background: "none", padding: "4px 8px", fontSize: "15px" }} onClick={() => { navigate('/login') }}>Login</button>
+                      <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", color: "#0d6efd", background: "none", padding: "4px 8px", fontSize: "15px", maxWidth: "70px" }} onClick={() => { navigate('/login') }}>Login</button>
                   </>
                 )}
               </form>
@@ -224,6 +224,7 @@ export default function Navbar({ user }) {
                   }
                   .nav-cont {
                     width: 10vw;
+                    padding: 5px !important;
                   }
                   .logo{
                     width:15vw;

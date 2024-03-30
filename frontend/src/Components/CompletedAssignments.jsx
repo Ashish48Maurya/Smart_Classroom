@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const CompletedAssignments = () => {
+    const navigate = useNavigate();
     const [assignments, setAssignments] = useState([]);
 
     const getData = async () => {
@@ -22,6 +24,11 @@ const CompletedAssignments = () => {
     useEffect(() => {
         getData();
     }, []);
+
+    const handleAssignmentClick = (assignment) => {
+        navigate(`/assignment-details`, { state: { assignment } });
+    };
+
     return (
         <div>
             <div className="table-responsive">
@@ -39,7 +46,7 @@ const CompletedAssignments = () => {
                         </thead>
                         <tbody>
                             {assignments.map((assignment) => (
-                                <tr key={assignment._id}>
+                                <tr onClick={() => handleAssignmentClick(assignment)}>
                                     <td>{assignment.title}</td>
                                     <td>{assignment.description}</td>
                                     <td>{new Date(assignment.dueDate).toLocaleDateString()}</td>

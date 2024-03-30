@@ -108,7 +108,6 @@ export default function TeacherRegister() {
 
     // image to cloudinary
     const postDetails = () => {
-        console.log(image);
         setLoading(true);
         const data = new FormData();
         data.append("file", image);
