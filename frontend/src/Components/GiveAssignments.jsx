@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function Assignments() {
-    const { storeTokenInLS, backend_api, token, loggedUser } = useAuth();
+    const {  backend_api, token } = useAuth();
     const navigate = useNavigate();
     const [file, setFile] = useState("");
     const [title, setTitle] = useState('');
@@ -46,8 +46,8 @@ export default function Assignments() {
             if (response.status === 200) {
                 const res_data = await response.json();
                 console.log("response from server ", res_data);
-                storeTokenInLS(res_data.token);
-                navigate('/students');
+                // storeTokenInLS(res_data.token);
+                navigate('/assignments');
                 toast.success("Assignment assigned successfully !!!");
             } else {
                 return console.log(response);
