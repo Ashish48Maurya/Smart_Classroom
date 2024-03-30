@@ -10,7 +10,7 @@ export default function StudentRegister() {
     const { storeTokenInLS, backend_api, token } = useAuth();
 
     const [image, setImage] = useState("");
-    const [url, setUrl] = useState("");
+    // const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [posted, setPosted] = useState(false);
 
@@ -39,7 +39,7 @@ export default function StudentRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        postDetails();
+        const url = await postDetails();
 
         if (url) {
             if (!username || !password || !mail) {
@@ -78,7 +78,6 @@ export default function StudentRegister() {
                 if (response.status === 200) {
                     const res_data = await response.json();
                     console.log("response from server ", res_data);
-                    storeTokenInLS(res_data.token);
                     navigate('/students');
                     toast.success("Registration Successfull !!!");
                 } else {
@@ -106,7 +105,7 @@ export default function StudentRegister() {
         })
             .then(res => res.json())
             .then(data => {
-                setUrl(data.url);
+                // setUrl(data.url);
                 setLoading(false);
                 setPosted(true); // Set posted to true after image upload
             })
@@ -114,6 +113,7 @@ export default function StudentRegister() {
                 setLoading(false);
                 console.log(err);
             });
+        return data.url;
     };
 
 
