@@ -46,7 +46,6 @@ export default function Assignments() {
             if (response.status === 200) {
                 const res_data = await response.json();
                 console.log("response from server ", res_data);
-                storeTokenInLS(res_data.token);
                 navigate('/students');
                 toast.success("Assignment assigned successfully !!!");
             } else {
