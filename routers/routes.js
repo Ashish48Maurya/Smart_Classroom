@@ -648,9 +648,12 @@ router.post('/give_assignment', authmiddleware(Teacher), upload.single('file'), 
     }
 });
 
-router.get('/get_assignments', async (req, res) => {
+//find by department and yearOfStudy
+router.get('/live_assignments',authmiddleware(Student), async (req, res) => {
+    const {department,yearOfStudy,sapID} = req.user;
     try {
-        const data = await Assignment.find({});
+        //  const data = await Assignment.find({ department, yearOfStudy });
+        const data = await Assignment.find({ department, yearOfStudy, "students_output.sapID": { $nin: [sapID] } });
         res.status(200).json({ data })
     }
     catch (error) {
@@ -658,6 +661,19 @@ router.get('/get_assignments', async (req, res) => {
         return res.json({ msg: `An error occurred : ${error}` })
     }
 })
+
+router.get('/submitted_assignments', authmiddleware(Student), async (req, res) => {
+    const { department, yearOfStudy, sapID } = req.user;
+
+    try {
+        const data = await Assignment.find({ department, yearOfStudy, "students_output.sapID": sapID });
+        res.status(200).json({ data });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ msg: `An error occurred: ${error.message}` });
+    }
+});
+
 
 
 
@@ -749,22 +765,38 @@ router.get('/sendNotification', async (req, res) => {
 
 
 router.post('/submit_assignment/:id', authmiddleware(Student), upload.single('file'), async (req, res) => {
+    const { id } = req.params;
+    const assignment = await Assignment.findById(id);
+    
+    if (!assignment) {
+        return res.status(404).json({ error: "Assignment Not Found" });
+    } 
+
+    const currentDate = new Date();
+    const dueDate = new Date(assignment.dueDate);
+    if (currentDate > dueDate) {
+        return res.status(400).json({ error: "Assignment submission time has expired" });
+    }
+
     try {
-        const { id } = req.params;
-        const assignment = await Assignment.findById(id);
-        
-        if (!assignment) {
-            return res.status(404).json({ error: "Assignment Not Found" });
-        }
         const { originalname, path } = req.file;
         const parts = originalname.split('.');
         const ext = parts[parts.length - 1];
         const newPath = path + '.' + ext;
         fs.renameSync(path, newPath);
 
-        const {fullname,sapID} = req.user; 
-        console.log(fullname,sapID);
-        assignment.students_output.push({ sapID, fullname, assignmentPath: newPath });
+        const { fullname, sapID } = req.user; 
+        const existingSubmission = assignment.students_output.find(submission => submission.sapID === sapID);
+        
+        if (existingSubmission) {
+            // If the student has already submitted, update the existing document
+            existingSubmission.fullname = fullname;
+            existingSubmission.assignmentPath = newPath;
+        } else {
+            // If the student hasn't submitted yet, create a new submission
+            assignment.students_output.push({ sapID, fullname, assignmentPath: newPath });
+        }
+
         await assignment.save();
 
         return res.status(200).json({ msg: "Assignment Submitted" });
@@ -773,6 +805,8 @@ router.post('/submit_assignment/:id', authmiddleware(Student), upload.single('fi
         return res.status(500).json({ error: `Server Error: ${err.message}` });
     }
 });
+
+
 
 
 module.exports = router;

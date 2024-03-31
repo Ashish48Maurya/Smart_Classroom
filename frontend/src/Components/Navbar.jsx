@@ -52,10 +52,13 @@ export default function Navbar({ user }) {
                           <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
                         </li>
                         <li className="nav-item">
-                          <Link className="nav-link active" aria-current="page" to='/get-assignments'>Assignments</Link>
+                          <Link className="nav-link active" aria-current="page" to='/see_assignments'>Live_Assignments</Link>
                         </li>
                         <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/attendance'>Attendance</Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link className="nav-link active" aria-current="page" to='/submitted_assignments'>Past_Assignment</Link>
                         </li>
                       </>
                     )}

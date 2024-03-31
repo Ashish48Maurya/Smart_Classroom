@@ -13,7 +13,6 @@ import ClassRoom from './Components/ClassRoom';
 import Attendance from './Components/Attendance';
 import { useAuth } from './Components/store/auth';
 import TAttendance from './Components/TAttendance';
-import Assignment from './Components/Assignment';
 import Manage from './Components/Manage';
 import Edit from './Components/Edit';
 import './index.css';
@@ -31,6 +30,8 @@ import ClientReviews from './Components/ClientReviews';
 import ContactUs from './Components/ContactUs';
 import StudentAssignment from './Components/StudentAssignment';
 import AssignmentDetail from './Components/AssignmentDetail';
+import StudentAssignments from './Components/StudentAssignments';
+import SubmittedAssignment from './Components/SubmittedAssignment';
 
 
 function App() {
@@ -57,12 +58,13 @@ function App() {
         <Route exact path='/resetPassword/:USER/:token/:id' element={<ForgetPasswordPass />} />
         <Route exact path='/attendance' element={<Attendance />} />
         <Route exact path='/tattendance' element={<TAttendance />} />
-        <Route exact path='/connect' element={<Assignment />} />
         <Route exact path='/manage' element={<Manage />} />
         <Route exact path='/edit/:id' element={<Edit />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
         <Route exact path='/give-assignment' element={<GiveAssignments />} />
-        <Route exact path='/get-assignments' element={<StudentAssignment />} />
+        {/* <Route exact path='/get-assignments' element={<StudentAssignment />} /> */}
+        <Route exact path='/see_assignments' element={<StudentAssignments />} />
+        <Route exact path='/submitted_assignments' element={<SubmittedAssignment />} />
         <Route exact path='/assignments' element={<Assignments />} />
         <Route exact path='/studentregister' element={<StudentRegister />} />
         <Route exact path='/teacherregister' element={<TeacherRegister />} />
