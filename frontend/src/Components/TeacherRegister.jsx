@@ -8,7 +8,7 @@ const Loader = () => <h1>Registering teacher please wait....</h1>;
 
 export default function TeacherRegister() {
     const navigate = useNavigate();
-    const { token, storeTokenInLS, backend_api } = useAuth();
+    const { token, backend_api } = useAuth();
 
     const [image, setImage] = useState("");
     const [url, setUrl] = useState("");
@@ -39,69 +39,56 @@ export default function TeacherRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        postDetails();
+        console.log(url);
 
-        if (!username || !password || !mail) {
-            return toast.error("All Fields Are Required!!!");
-        }
+        if (url && posted) {
+            if (!username || !password || !mail) {
+                return toast.error("All Fields Are Required!!!");
+            }
 
-        if (!emailRegex.test(mail)) {
-            toast.error("Invalid Email");
-            return;
-        } else if (!passRege.test(password)) {
-            toast.error("Password must contain at least 8 characters, including at least 1 number, 1 lowercase and 1 uppercase letter, and 1 special character.");
-            return;
-        }
+            if (!emailRegex.test(mail)) {
+                toast.error("Invalid Email");
+                return;
+            }
+            else if (!passRege.test(password)) {
+                toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+                return;
+            }
 
-        try {
-            postDetails()
-                .then(() => {
-                    // Proceed with API call only if URL is available
-                    if (url) {
-                        fetch(`${backend_api}/registerFaculty`, {
-                            method: "post",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer  ${token}`
-                            },
-                            body: JSON.stringify({
-                                fullname: username,
-                                department,
-                                subject,
-                                password,
-                                email: mail,
-                                phoneNo: phone,
-                                teacherID: teacher_id,
-                                teacher_photo: url
-                            }),
-                        })
-                            .then(response => {
-                                if (response.status === 200) {
-                                    return response.json();
-                                } else {
-                                    throw new Error(response.statusText);
-                                }
-                            })
-                            .then(res_data => {
-                                console.log("response from server ", res_data);
-                                storeTokenInLS(res_data.token);
-                                navigate('/teachers');
-                                toast.success("Registration Successful !!!");
-                            })
-                            .catch(error => {
-                                console.error("Error:", error);
-                                toast.error("Failed to register teacher !!");
-                            });
-                    } else {
-                        toast.error("Failed to register teacher !!");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    toast.error("Failed to upload image !!");
+
+            try {
+                const response = await fetch(`${backend_api}/registerFaculty`, {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer  ${token}`
+                    },
+                    body: JSON.stringify({
+                        fullname: username,
+                        department,
+                        subject,
+                        password,
+                        email: mail,
+                        phoneNo: phone,
+                        teacherID: teacher_id,
+                        teacher_photo: url
+                    }),
                 });
-        } catch (error) {
-            toast.error(error);
-        }
+
+                if (response.status === 200) {
+                    const res_data = await response.json();
+                    console.log("response from server ", res_data);
+                    navigate('/teachers');
+                    toast.success("Registration Successfull !!!");
+                } else {
+                    return console.log(response);
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        } else { toast.error("Failed to register teacher !!!") }
     };
 
 
@@ -135,7 +122,7 @@ export default function TeacherRegister() {
         var output = document.getElementById("output");
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function () {
-            URL.revokeObjectURL(output.src); // free memory
+            URL.revokeObjectURL(output.src);
         };
         setImage(event.target.files[0]);
     };

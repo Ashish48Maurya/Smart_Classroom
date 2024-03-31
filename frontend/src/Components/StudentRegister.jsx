@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
 import { useNavigate } from 'react-router-dom';
@@ -7,10 +7,10 @@ import { toast } from 'react-toastify';
 const Loader = () => <h1>Registering student please wait....</h1>;
 
 export default function StudentRegister() {
-    const { storeTokenInLS, backend_api, token } = useAuth();
+    const { backend_api, token } = useAuth();
 
     const [image, setImage] = useState("");
-    // const [url, setUrl] = useState("");
+    const [url, setUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [posted, setPosted] = useState(false);
 
@@ -39,9 +39,10 @@ export default function StudentRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = await postDetails();
+        postDetails();
+        console.log(url);
 
-        if (url) {
+        if (url && posted) {
             if (!username || !password || !mail) {
                 return toast.error("All Fields Are Required!!!");
             }
@@ -92,7 +93,6 @@ export default function StudentRegister() {
 
     // image to cloudinary
     const postDetails = () => {
-        console.log(image);
         setLoading(true);
         const data = new FormData();
         data.append("file", image);
@@ -105,7 +105,7 @@ export default function StudentRegister() {
         })
             .then(res => res.json())
             .then(data => {
-                // setUrl(data.url);
+                setUrl(data.url);
                 setLoading(false);
                 setPosted(true); // Set posted to true after image upload
             })
@@ -113,7 +113,6 @@ export default function StudentRegister() {
                 setLoading(false);
                 console.log(err);
             });
-        return data.url;
     };
 
 
