@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from './Navbar'
 import { useAuth } from './store/auth'
 import { useNavigate } from 'react-router-dom';
@@ -37,13 +37,12 @@ export default function StudentRegister() {
     const [phone, setPhone] = useState('');
     const [department, setDepartment] = useState('');
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
         try {
-            await postDetails();
             console.log(url);
 
-            if (url && posted) {
+            if (url != '' && posted != '') {
+                console.log(url)
                 if (!username || !password || !mail) {
                     return toast.error("All Fields Are Required!!!");
                 }
@@ -77,68 +76,66 @@ export default function StudentRegister() {
                 if (response.status === 200) {
                     const res_data = await response.json();
                     console.log("response from server ", res_data);
-                    setUrl('');
                     navigate('/students');
                     toast.success("Registration Successfull !!!");
                 } else {
-                    setUrl('');
-                    console.log(url);
                     return console.log(response);
                 }
             }
-            else {
-                console.log("Failed url ", url);
-                toast.error("Failed to register student !!!")
-                postDetails();
-            }
+            // else {
+            //     console.log("Failed url ", url);
+            //     toast.error("Failed to register student !!!")
+            // }
         }
         catch (error) {
             console.log(error);
         }
     };
 
+    // posting image to cloudinary
     const postDetails = () => {
-        return new Promise((resolve, reject) => {
-            setLoading(true);
-            const data = new FormData();
-            data.append("file", image);
-            data.append("upload_preset", "smart-allocator");
-            data.append("cloud_name", "djy7my1mw");
+        console.log(url);
+        setLoading(true);
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "smart-allocator");
+        data.append("cloud_name", "djy7my1mw");
 
-            fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
-                method: "post",
-                body: data
+        fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
+            method: "post",
+            body: data
+        })
+            .then(res => res.json())
+            .then(data => {
+                setUrl(data.url);
+                setLoading(false);
+                setPosted(true); // Set posted to true after image upload
             })
-                .then(res => res.json())
-                .then(data => {
-                    setUrl(data.url);
-                    setLoading(false);
-                    setPosted(true); // Set posted to true after image upload
-                    resolve(); // Resolve the promise
-                })
-                .catch(err => {
-                    setLoading(false);
-                    console.log(err);
-                    reject(err); // Reject the promise in case of error
-                });
-        });
+            .catch(err => {
+                setLoading(false);
+                console.log(err);
+            });
     };
 
     const loadfile = (event) => {
         var output = document.getElementById("output");
         output.src = URL.createObjectURL(event.target.files[0]);
         output.onload = function () {
-            URL.revokeObjectURL(output.src);
+            URL.revokeObjectURL(output.src); // free memory
         };
         setImage(event.target.files[0]);
     };
+
+    useEffect(() => {
+        handleSubmit();
+    }, [url, posted])
 
     return (
         <>
             <Navbar />
             <div className="main-block col-12 col-lg-6 col-md-8 col-sm-10">
                 <h1>Student Registration</h1>
-                <form onSubmit={handleSubmit}>
+                <form>
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
                     <input type="text" name="name" id="name" placeholder="Name" value={username} onChange={(e) => setUsername(e.target.value)} required />
                     <label id="icon" htmlFor="name"><i className="fas fa-envelope"></i></label>
@@ -190,7 +187,7 @@ export default function StudentRegister() {
                         </div>
                     )}
                     <div className="button-block">
-                        <button type="submit" href="/">Register</button>
+                        <button onClick={()=>{postDetails()}} type="submit" href="/">Register</button>
                     </div>
                 </form>
             </div>
