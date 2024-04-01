@@ -39,25 +39,23 @@ export default function StudentRegister() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        postDetails();
-        console.log(url);
+        try {
+            await postDetails();
+            console.log(url);
 
-        if (url && posted) {
-            if (!username || !password || !mail) {
-                return toast.error("All Fields Are Required!!!");
-            }
+            if (url && posted) {
+                if (!username || !password || !mail) {
+                    return toast.error("All Fields Are Required!!!");
+                }
 
-            if (!emailRegex.test(mail)) {
-                toast.error("Invalid Email");
-                return;
-            }
-            else if (!passRege.test(password)) {
-                toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
-                return;
-            }
-
-
-            try {
+                if (!emailRegex.test(mail)) {
+                    toast.error("Invalid Email");
+                    return;
+                }
+                else if (!passRege.test(password)) {
+                    toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+                    return;
+                }
                 const response = await fetch(`${backend_api}/registerStudent`, {
                     method: "post",
                     headers: {
@@ -79,42 +77,52 @@ export default function StudentRegister() {
                 if (response.status === 200) {
                     const res_data = await response.json();
                     console.log("response from server ", res_data);
+                    setUrl('');
                     navigate('/students');
                     toast.success("Registration Successfull !!!");
                 } else {
+                    setUrl('');
+                    console.log(url);
                     return console.log(response);
                 }
             }
-            catch (error) {
-                console.log(error);
+            else {
+                console.log("Failed url ", url);
+                toast.error("Failed to register student !!!")
+                postDetails();
             }
-        } else { toast.error("Failed to register student !!!") }
+        }
+        catch (error) {
+            console.log(error);
+        }
     };
 
-    // image to cloudinary
     const postDetails = () => {
-        setLoading(true);
-        const data = new FormData();
-        data.append("file", image);
-        data.append("upload_preset", "smart-allocator");
-        data.append("cloud_name", "djy7my1mw");
+        return new Promise((resolve, reject) => {
+            setLoading(true);
+            const data = new FormData();
+            data.append("file", image);
+            data.append("upload_preset", "smart-allocator");
+            data.append("cloud_name", "djy7my1mw");
 
-        fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
-            method: "post",
-            body: data
-        })
-            .then(res => res.json())
-            .then(data => {
-                setUrl(data.url);
-                setLoading(false);
-                setPosted(true); // Set posted to true after image upload
+            fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
+                method: "post",
+                body: data
             })
-            .catch(err => {
-                setLoading(false);
-                console.log(err);
-            });
+                .then(res => res.json())
+                .then(data => {
+                    setUrl(data.url);
+                    setLoading(false);
+                    setPosted(true); // Set posted to true after image upload
+                    resolve(); // Resolve the promise
+                })
+                .catch(err => {
+                    setLoading(false);
+                    console.log(err);
+                    reject(err); // Reject the promise in case of error
+                });
+        });
     };
-
 
     const loadfile = (event) => {
         var output = document.getElementById("output");
