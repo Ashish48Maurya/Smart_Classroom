@@ -330,44 +330,88 @@ router.patch('/update_info/:id/:USER', async (req, res) => {
     }
 });
 
-
-router.post('/markAttendance/:studentId', authmiddleware(Teacher), async (req, res) => {
-    const { studentId } = req.params;
-    const { subjectName } = req.body;
+// POST route to mark attendance
+router.post('/markAttendance', authmiddleware(Teacher), async (req, res) => {
+    const { studentIds, subjectName } = req.body; // Assuming you're sending an array of studentIds from the frontend
 
     try {
-        const student = await Student.findById(studentId);
+        // Iterate through each student ID and update attendance
+        for (const studentId of studentIds) {
+            const student = await Student.findById(studentId);
 
-        if (!student) {
-            return res.status(404).json({ "error": "Student not found" });
+            if (!student) {
+                return res.status(404).json({ "error": "Student not found" });
+            }
+
+            const subject = student.subjects.find(subj => subj.name === subjectName);
+
+            if (!subject) {
+                return res.status(404).json({ "error": `Subject "${subjectName}" not found for the student` });
+            }
+
+            const today = new Date().toISOString().split('T')[0];
+
+            const existingAttendanceRecord = subject.attendance.find(record => record.date.toISOString().split('T')[0] === today);
+
+            if (existingAttendanceRecord) {
+                return res.status(400).json({ "error": "Attendance already marked for today" });
+            }
+
+            subject.attendance.push({
+                date: new Date(),
+                count: subject.attendance.length + 1,
+            });
+
+            await student.save();
         }
-
-        const subject = student.subjects.find(subj => subj.name === subjectName);
-
-        if (!subject) {
-            return res.status(404).json({ "error": `Subject "${subjectName}" not found for the student` });
-        }
-
-        const today = new Date().toISOString().split('T')[0];
-
-        const existingAttendanceRecord = subject.attendance.find(record => record.date.toISOString().split('T')[0] === today);
-
-        if (existingAttendanceRecord) {
-            return res.status(400).json({ "error": "Attendance already marked for today" });
-        }
-
-        subject.attendance.push({
-            date: new Date(),
-            count: subject.attendance.length + 1,
-        });
-
-        await student.save();
 
         return res.status(200).json({ "message": "Attendance marked successfully" });
     } catch (err) {
         return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
     }
 });
+
+module.exports = router;
+
+
+
+// router.post('/markAttendance/:studentId', authmiddleware(Teacher), async (req, res) => {
+//     const { studentId } = req.params;
+//     const { subjectName } = req.body;
+
+//     try {
+//         const student = await Student.findById(studentId);
+
+//         if (!student) {
+//             return res.status(404).json({ "error": "Student not found" });
+//         }
+
+//         const subject = student.subjects.find(subj => subj.name === subjectName);
+
+//         if (!subject) {
+//             return res.status(404).json({ "error": `Subject "${subjectName}" not found for the student` });
+//         }
+
+//         const today = new Date().toISOString().split('T')[0];
+
+//         const existingAttendanceRecord = subject.attendance.find(record => record.date.toISOString().split('T')[0] === today);
+
+//         if (existingAttendanceRecord) {
+//             return res.status(400).json({ "error": "Attendance already marked for today" });
+//         }
+
+//         subject.attendance.push({
+//             date: new Date(),
+//             count: subject.attendance.length + 1,
+//         });
+
+//         await student.save();
+
+//         return res.status(200).json({ "message": "Attendance marked successfully" });
+//     } catch (err) {
+//         return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
+//     }
+// });
 
 
 //Admin Updating Users Info (e.g) year if study
