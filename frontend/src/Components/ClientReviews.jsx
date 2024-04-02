@@ -20,7 +20,7 @@ const ClientReviews = () => {
             <Slider {...settings}>
                 <div>
                     <div className='card'>
-                        <figure class="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample35.jpg" alt="profile-sample6" />
+                        <figure className="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample35.jpg" alt="profile-sample6" />
                             <figcaption>
                                 <blockquote>
                                     <p> The only skills I have the patience to learn are those that have no real application in life. </p>
@@ -29,7 +29,7 @@ const ClientReviews = () => {
                                 <h5>Public Relations</h5>
                             </figcaption>
                         </figure>
-                        <div class="review-info">
+                        <div className="review-info">
                             <h2>MABEL PAYNE</h2>
                             <h3>UI/UX Designer</h3>
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonumy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
@@ -38,7 +38,7 @@ const ClientReviews = () => {
                 </div>
                 <div>
                     <div className='card'>
-                        <figure class="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample37.jpg" alt="profile-sample7" />
+                        <figure className="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample37.jpg" alt="profile-sample7" />
                             <figcaption>
                                 <blockquote>
                                     <p>I'm killing time while I wait for life to shower me with meaning and happiness.</p>
@@ -47,7 +47,7 @@ const ClientReviews = () => {
                                 <h5>Web Designer</h5>
                             </figcaption>
                         </figure>
-                        <div class="review-info">
+                        <div className="review-info">
                             <h2>MABEL PAYNE</h2>
                             <h3>UI/UX Designer</h3>
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonumy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
@@ -56,7 +56,7 @@ const ClientReviews = () => {
                 </div>
                 <div>
                     <div className='card'>
-                        <figure class="snip1574">
+                        <figure className="snip1574">
                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample40.jpg" alt="profile-sample2" />
                             <figcaption>
                                 <blockquote>
@@ -66,7 +66,7 @@ const ClientReviews = () => {
                                 <h5>Founder</h5>
                             </figcaption>
                         </figure>
-                        <div class="review-info">
+                        <div className="review-info">
                             <h2>MABEL PAYNE</h2>
                             <h3>UI/UX Designer</h3>
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonumy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
@@ -75,7 +75,7 @@ const ClientReviews = () => {
                 </div>
                 <div>
                     <div className='card'>
-                        <figure class="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample35.jpg" alt="profile-sample6" />
+                        <figure className="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample35.jpg" alt="profile-sample6" />
                             <figcaption>
                                 <blockquote>
                                     <p>The only skills I have the patience to learn are those that have no real application in life. </p>
@@ -84,7 +84,7 @@ const ClientReviews = () => {
                                 <h5>Public Relations</h5>
                             </figcaption>
                         </figure>
-                        <div class="review-info">
+                        <div className="review-info">
                             <h2>MABEL PAYNE</h2>
                             <h3>UI/UX Designer</h3>
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonumy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
@@ -93,7 +93,7 @@ const ClientReviews = () => {
                 </div>
                 <div>
                     <div className='card'>
-                        <figure class="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample37.jpg" alt="profile-sample7" />
+                        <figure className="snip1574"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample37.jpg" alt="profile-sample7" />
                             <figcaption>
                                 <blockquote>
                                     <p>I'm killing time while I wait for life to shower me with meaning and happiness.</p>
@@ -102,7 +102,7 @@ const ClientReviews = () => {
                                 <h5>Web Designer</h5>
                             </figcaption>
                         </figure>
-                        <div class="review-info">
+                        <div className="review-info">
                             <h2>MABEL PAYNE</h2>
                             <h3>UI/UX Designer</h3>
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonumy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>
@@ -111,7 +111,7 @@ const ClientReviews = () => {
                 </div>
                 <div>
                     <div className='card'>
-                        <figure class="snip1574">
+                        <figure className="snip1574">
                             <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/331810/sq-sample40.jpg" alt="profile-sample2" />
                             <figcaption>
                                 <blockquote>
@@ -121,7 +121,7 @@ const ClientReviews = () => {
                                 <h5>Founder</h5>
                             </figcaption>
                         </figure>
-                        <div class="review-info">
+                        <div className="review-info">
                             <h2>MABEL PAYNE</h2>
                             <h3>UI/UX Designer</h3>
                             <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonumy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat.</p>

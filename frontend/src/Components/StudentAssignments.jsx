@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from './store/auth';
 import Navbar from './Navbar';
+import { toast } from 'react-toastify';
 
 const StudentAssignments = () => {
     const { backend_api, token } = useAuth();
@@ -18,7 +19,7 @@ const StudentAssignments = () => {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log(data);
+                // console.log(data);
                 setAssignments(data.data); // Access the 'data' property of the response
             } else {
                 console.error('Failed to fetch assignments:', res.statusText);
@@ -41,6 +42,7 @@ const StudentAssignments = () => {
             });
             if (res.ok) {
                 const data = await res.json();
+                toast.success(data.msg)
                 console.log(data.msg);
             } else {
                 console.error('Assignment Submission Failed');
@@ -91,7 +93,7 @@ const StudentAssignments = () => {
                                             name="file"
                                             onChange={(event) => setFile(event.target.files[0])}
                                         />
-                                        <button onClick={(event) => {event.preventDefault(); handleSubmit(assignment._id)}}>Submit</button>
+                                            <button className='submit-btn' onClick={(event) => { event.preventDefault(); handleSubmit(assignment._id) }}>Submit</button>
                                         </form>
                                         </td>
                                 </tr>
@@ -186,6 +188,17 @@ const StudentAssignments = () => {
                 #assignments tbody tr:focus{
                     font-weight: bold;
                     background-color: #dddddd;
+                }
+
+                .submit-btn{
+                    padding:5px 10px;
+                    border:none;
+                    color:white;
+                    border-radius:5px;
+                    background-color:#007bff;
+                }
+                .submit-btn:hover{
+                    background-color:#397ac0;
                 }
                 `}
             </style>
