@@ -16,7 +16,7 @@ export default function StudentRegister() {
 
     const inputref = useRef(null)
     const iconref = useRef(null);
-    const [iconState, setIcon] = useState(false)
+    const [iconState, setIcon] = useState(false);
     const handleClick = () => {
         const inputattr = inputref.current.getAttribute('type');
         inputattr === 'password'
@@ -37,76 +37,72 @@ export default function StudentRegister() {
     const [phone, setPhone] = useState('');
     const [department, setDepartment] = useState('');
 
-    const handleSubmit = async () => {
-        try {
-            console.log(url);
+    useEffect(() => {
+        if (url && posted) {
+            console.log(url, posted);
 
-            if (url != '' && posted != '') {
-                console.log(url)
-                if (!username || !password || !mail) {
-                    return toast.error("All Fields Are Required!!!");
-                }
-
-                if (!emailRegex.test(mail)) {
-                    toast.error("Invalid Email");
-                    return;
-                }
-                else if (!passRege.test(password)) {
-                    toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
-                    return;
-                }
-                const response = await fetch(`${backend_api}/registerStudent`, {
-                    method: "post",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer  ${token}`
-                    },
-                    body: JSON.stringify({
-                        fullname: username,
-                        department,
-                        password,
-                        email: mail,
-                        phoneNo: phone,
-                        sapID: student_id,
-                        subjects,
-                        student_photo: url
-                    }),
-                });
-
-                if (response.status === 200) {
-                    const res_data = await response.json();
-                    console.log("response from server ", res_data);
-                    navigate('/students');
-                    toast.success("Registration Successfull !!!");
-                } else {
-                    return console.log(response);
-                }
+            if (!username || !password || !mail) {
+                return toast.error("All Fields Are Required!!!");
             }
-            // else {
-            //     console.log("Failed url ", url);
-            //     toast.error("Failed to register student !!!")
-            // }
+
+            if (!emailRegex.test(mail)) {
+                toast.error("Invalid Email");
+                return;
+            }
+            else if (!passRege.test(password)) {
+                toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+                return;
+            }
+
+            fetch(`${backend_api}/registerStudent`, {
+                method: "post",
+                headers: {
+                    "content-type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    fullname: username,
+                    department,
+                    password,
+                    email: mail,
+                    phoneNo: phone,
+                    sapID: student_id,
+                    subjects,
+                    student_photo: url
+                })
+            })
+                .then(res => res.json)
+                .then(data => {
+                    if (data.error) {
+                        toast.error(data.error);
+                    } else {
+                        toast.success("Student Registered Successfully !!!");
+                        navigate('/students');
+                    }
+                })
+                .catch(err => console.log(err));
+        } 
+        else {
+            console.log(url, posted);
         }
-        catch (error) {
-            console.log(error);
-        }
-    };
+    }, [url, posted])
+
 
     // posting image to cloudinary
-    const postDetails = () => {
-        console.log(url);
+    const postDetails = async () => {
         setLoading(true);
         const data = new FormData();
         data.append("file", image);
-        data.append("upload_preset", "smart-allocator");
+        data.append("upload_preset", "insta-clone");
         data.append("cloud_name", "djy7my1mw");
 
-        fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
+        await fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
             method: "post",
             body: data
         })
             .then(res => res.json())
             .then(data => {
+                console.log(data.url);
                 setUrl(data.url);
                 setLoading(false);
                 setPosted(true); // Set posted to true after image upload
@@ -117,6 +113,7 @@ export default function StudentRegister() {
             });
     };
 
+
     const loadfile = (event) => {
         var output = document.getElementById("output");
         output.src = URL.createObjectURL(event.target.files[0]);
@@ -126,9 +123,6 @@ export default function StudentRegister() {
         setImage(event.target.files[0]);
     };
 
-    useEffect(() => {
-        handleSubmit();
-    }, [url, posted])
 
     return (
         <>
@@ -137,15 +131,16 @@ export default function StudentRegister() {
                 <h1>Student Registration</h1>
                 <form>
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
-                    <input type="text" name="name" id="name" placeholder="Name" value={username} onChange={(e) => setUsername(e.target.value)} required />
+                    <input type="text" name="name" id="name" placeholder="Name" value={username}
+                        onChange={(e) => setUsername(e.target.value)} required />
                     <label id="icon" htmlFor="name"><i className="fas fa-envelope"></i></label>
-                    <input type="text" name="name" id="name" placeholder="Email" value={mail}
+                    <input type="text" name="name" id="email" placeholder="Email" value={mail}
                         onChange={(e) => setMail(e.target.value)} required />
                     <label id="icon" htmlFor="name"><i className="fas fa-id-card"></i></label>
-                    <input type="text" name="name" id="name" placeholder="SAP ID" value={student_id}
+                    <input type="text" name="name" id="sapid" placeholder="SAP ID" value={student_id}
                         onChange={(e) => setStudentId(e.target.value)} required />
                     <label id="icon" htmlFor="name"><i className="fa fa-phone"></i></label>
-                    <input type="text" name="name" id="name" placeholder="Phone Number" value={phone}
+                    <input type="text" name="name" id="phono" placeholder="Phone Number" value={phone}
                         onChange={(e) => setPhone(e.target.value)} required />
                     <label id="icon" htmlFor="name"><i className="fa fa-laptop"></i></label>
                     <input type="text" name="name" id="dept" placeholder="Department" value={department}
@@ -157,7 +152,7 @@ export default function StudentRegister() {
                     <input
                         type="password"
                         name="name"
-                        id="name"
+                        id="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -174,10 +169,13 @@ export default function StudentRegister() {
                         onChange={(event) => loadfile(event)}
                     />
                     <div className='text-center m-2'>
-                        <img
-                            style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
+                        <img style={{
+                            "height": "200px",
+                            "width": "50px",
+                            "marginLeft": "auto"
+                        }}
                             id="output"
-                            src=''
+                            src=""
                         />
                     </div>
 
