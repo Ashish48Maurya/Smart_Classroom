@@ -27,7 +27,7 @@ export default function Studentmanage() {
                                     <td className="text-center">{ele.classroom_no}</td>
                                     <td className="text-center">{ele.strength}</td>
                                     <td className='text-center'>
-                                        <Link class="btn btn-success me-2" type="button" id="button-addon2" to={`/edit/${ele._id}`}>Edit</Link>
+                                        <Link className="btn btn-success me-2" type="button" id="button-addon2" to={`/edit/${ele._id}`}>Edit</Link>
                                     </td>
                                 </tr>
                             ))}

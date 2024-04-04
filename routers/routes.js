@@ -370,12 +370,10 @@ router.patch('/update_info/:id/:USER', async (req, res) => {
     }
 });
 
-// POST route to mark attendance
 router.post('/markAttendance', authmiddleware(Teacher), async (req, res) => {
-    const { studentIds, subjectName } = req.body; // Assuming you're sending an array of studentIds from the frontend
+    const { studentIds, subjectName } = req.body; 
 
     try {
-        // Iterate through each student ID and update attendance
         for (const studentId of studentIds) {
             const student = await Student.findById(studentId);
 
@@ -410,8 +408,6 @@ router.post('/markAttendance', authmiddleware(Teacher), async (req, res) => {
         return res.status(500).json({ "error": `Internal Server Error -> ${err}` });
     }
 });
-
-module.exports = router;
 
 
 

@@ -79,9 +79,9 @@ export default function ClassRoom() {
         <>
             <Navbar />
             <div className="container mt-5">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Class Strength" aria-label="Recipient's username" aria-describedby="button-addon2" value={strength} onChange={(e) => { setStrength(e.target.value) }} />
-                    <button class="btn btn-success" type="button" id="button-addon2" onClick={handleSubmit}>Search Class</button>
+                <div className="input-group mb-3">
+                    <input type="text" className="form-control" placeholder="Class Strength" aria-label="Recipient's username" aria-describedby="button-addon2" value={strength} onChange={(e) => { setStrength(e.target.value) }} />
+                    <button className="btn btn-success" type="button" id="button-addon2" onClick={handleSubmit}>Search Class</button>
                 </div>
 
                 <div className="table-responsive mt-5">
@@ -101,7 +101,7 @@ export default function ClassRoom() {
                                     <td className="text-center">{ele.facility}</td>
                                     <td className="text-center">{ele.classroom_no}</td>
                                     <td className="text-center">
-                                        <button class="btn btn-primary" type="button" id="button-addon2" onClick={() => allocate(ele._id)}>Allocate</button>
+                                        <button className="btn btn-primary" type="button" id="button-addon2" onClick={() => allocate(ele._id)}>Allocate</button>
                                     </td>
                                 </tr>
                             ))}

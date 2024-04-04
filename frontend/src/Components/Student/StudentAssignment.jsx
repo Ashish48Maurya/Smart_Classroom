@@ -10,18 +10,16 @@ const StudentAssignment = () => {
         <div>
             <Navbar />
             <div className="container">
-                <h2 style={{ textAlign: "center" }}>Student Assignments</h2>
                 <div className="btn-grp">
-                    <button onClick={() => { setType("All") }}>All</button>
-                    <button onClick={() => { setType("Pending") }}>Pending</button>
-                    <button onClick={() => { setType("Completed") }}>Completed</button>
+                    <button style={type === "All" ? { backgroundColor: "#2e416e" } : {}} onClick={() => { setType("All") }}>All</button>
+                    <button style={type === "Pending" ? { backgroundColor: "#2e416e" } : {}} onClick={() => { setType("Pending") }}>Pending</button>
+                    <button style={(type !== "All" && type !== "Pending") ? { backgroundColor: "#2e416e" } : {}} onClick={() => { setType("Completed") }}>Completed</button>
                 </div>
                 <div className="ass-cont">
                     {
                         type === "All" ? <AllAssignments /> :
                             type === "Pending" ? <PendingAssignments /> :
                                 <CompletedAssignments />
-                        // type === "Completed" ? <CompletedAssignments />
                     }
                 </div>
             </div>

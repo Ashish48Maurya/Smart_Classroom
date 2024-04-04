@@ -7,14 +7,14 @@ const OurServices = () => {
     <>
       <Navbar />
       <section>
-        <div class="row">
-          <h2 class="section-heading">Our Services</h2>
+        <div className="row">
+          <h2 className="section-heading">Our Services</h2>
         </div>
-        <div class="row">
-          <div class="column">
-            <div class="card">
-              <div class="icon-wrapper">
-                <i class="fas fa-hammer"></i>
+        <div className="row">
+          <div className="column">
+            <div className="card">
+              <div className="icon-wrapper">
+                <i className="fas fa-hammer"></i>
               </div>
               <h3>Service Heading</h3>
               <p>
@@ -23,10 +23,10 @@ const OurServices = () => {
               </p>
             </div>
           </div>
-          <div class="column">
-            <div class="card">
-              <div class="icon-wrapper">
-                <i class="fas fa-brush"></i>
+          <div className="column">
+            <div className="card">
+              <div className="icon-wrapper">
+                <i className="fas fa-brush"></i>
               </div>
               <h3>Service Heading</h3>
               <p>
@@ -35,10 +35,10 @@ const OurServices = () => {
               </p>
             </div>
           </div>
-          <div class="column">
-            <div class="card">
-              <div class="icon-wrapper">
-                <i class="fas fa-wrench"></i>
+          <div className="column">
+            <div className="card">
+              <div className="icon-wrapper">
+                <i className="fas fa-wrench"></i>
               </div>
               <h3>Service Heading</h3>
               <p>
@@ -47,10 +47,10 @@ const OurServices = () => {
               </p>
             </div>
           </div>
-          <div class="column">
-            <div class="card">
-              <div class="icon-wrapper">
-                <i class="fas fa-truck-pickup"></i>
+          <div className="column">
+            <div className="card">
+              <div className="icon-wrapper">
+                <i className="fas fa-truck-pickup"></i>
               </div>
               <h3>Service Heading</h3>
               <p>
@@ -59,10 +59,10 @@ const OurServices = () => {
               </p>
             </div>
           </div>
-          <div class="column">
-            <div class="card">
-              <div class="icon-wrapper">
-                <i class="fas fa-broom"></i>
+          <div className="column">
+            <div className="card">
+              <div className="icon-wrapper">
+                <i className="fas fa-broom"></i>
               </div>
               <h3>Service Heading</h3>
               <p>
@@ -71,10 +71,10 @@ const OurServices = () => {
               </p>
             </div>
           </div>
-          <div class="column">
-            <div class="card">
-              <div class="icon-wrapper">
-                <i class="fas fa-plug"></i>
+          <div className="column">
+            <div className="card">
+              <div className="icon-wrapper">
+                <i className="fas fa-plug"></i>
               </div>
               <h3>Service Heading</h3>
               <p>
