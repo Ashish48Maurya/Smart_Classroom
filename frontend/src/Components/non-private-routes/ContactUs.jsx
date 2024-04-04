@@ -5,7 +5,7 @@ const ContactUs = () => {
     return (
         <div>
             <Navbar />
-            <div class="container d-flex justify-content-center align-items-center">
+            <div className="container d-flex justify-content-center align-items-center">
 
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 790 563" fill="none">
                     <g id="Image">
@@ -304,31 +304,31 @@ const ContactUs = () => {
                 </svg>
 
                 <form>
-                    <h1 class="title text-center mb-4">Talk to Us</h1>
+                    <h1 className="title text-center mb-4">Talk to Us</h1>
 
 
-                    <div class="form-group position-relative">
-                        <label for="formName" class="d-block">
-                            <i class="icon" data-feather="user"></i>
+                    <div className="form-group position-relative">
+                        <label for="formName" className="d-block">
+                            <i className="icon" data-feather="user"></i>
                         </label>
-                        <input type="text" id="formName" class="form-control form-control-lg thick" placeholder="Name" />
+                        <input type="text" id="formName" className="form-control form-control-lg thick" placeholder="Name" />
                     </div>
 
 
-                    <div class="form-group position-relative">
-                        <label for="formEmail" class="d-block">
-                            <i class="icon" data-feather="mail"></i>
+                    <div className="form-group position-relative">
+                        <label for="formEmail" className="d-block">
+                            <i className="icon" data-feather="mail"></i>
                         </label>
-                        <input type="email" id="formEmail" class="form-control form-control-lg thick" placeholder="E-mail" />
+                        <input type="email" id="formEmail" className="form-control form-control-lg thick" placeholder="E-mail" />
                     </div>
 
 
-                    <div class="form-group message">
-                        <textarea id="formMessage" class="form-control form-control-lg" rows="7" placeholder="Enter Your Message Here... "></textarea>
+                    <div className="form-group message">
+                        <textarea id="formMessage" className="form-control form-control-lg" rows="7" placeholder="Enter Your Message Here... "></textarea>
                     </div>
 
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary" tabIndex="-1">Send message</button>
+                    <div className="text-center">
+                        <button type="submit" className="btn btn-primary" tabIndex="-1">Send message</button>
                     </div>
                 </form>
 

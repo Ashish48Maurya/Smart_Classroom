@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './store/auth';
 import logo from '../assets/Logo.png';
@@ -64,7 +64,7 @@ export default function Navbar() {
                           <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
                         </li>
                         <li className="nav-item">
-                          <Link className="nav-link active" aria-current="page" to='/see_assignments'>Live_Assignments</Link>
+                          <Link className="nav-link active" aria-current="page" to='/get-assignments'>Assignments</Link>
                         </li>
                         <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/attendance'>Attendance</Link>
@@ -125,7 +125,7 @@ export default function Navbar() {
                       <p className='user-name' style={{marginRight:"20px"}}>{userData.fullname}</p>
                       <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", fontSize: "15px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
                       <span className='my-auto'>
-                      <i class="fa-solid fa-pen-to-square" onClick={handleClick}></i>
+                      <i className="fa-solid fa-pen-to-square" onClick={handleClick}></i>
                       </span>
                     </div>
                   </>

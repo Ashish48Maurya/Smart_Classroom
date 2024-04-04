@@ -69,17 +69,17 @@ const EditStudent = () => {
             <h1 className='text-center'>User Information</h1>
             {
                 studentData && (
-                    <div class="container">
+                    <div className="container">
                         <div className="left">
-                            <div class="info-item">
+                            <div className="info-item">
                                 <strong>Full Name:</strong>
                                 <input value={name} onChange={(e) => { setName(e.target.value) }} type="text" />
                             </div>
-                            <div class="info-item">
+                            <div className="info-item">
                                 <strong>Email:</strong>
                                 <input value={email} onChange={(e) => { setEmail(e.target.value) }} type="text" />
                             </div>
-                            <div class="info-item">
+                            <div className="info-item">
                                 <strong>Phone Number:</strong>
                                 <input value={phoneNo} onChange={(e) => { setPhone(e.target.value) }} type="text" />
                             </div>

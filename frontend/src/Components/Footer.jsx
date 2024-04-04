@@ -4,151 +4,151 @@ import Logo from '../assets/Logo.png'
 const Footer = () => {
   return (
       <>
-      <footer class="footer" style={{ "background-image": "url('/Images/footer-bg.png')" }}>
+      <footer className="footer" style={{ "background-image": "url('/Images/footer-bg.png')" }}>
 
-        <div class="footer-top section">
-          <div class="container1 grid-list">
+        <div className="footer-top section">
+          <div className="container1 grid-list">
 
-            <div class="footer-brand">
+            <div className="footer-brand">
 
-              <a href="#" class="logo">
+              <a href="#" className="logo">
                 <img src={Logo} width="162" height="50" alt="EduWeb logo" />
               </a>
 
-              <p class="footer-brand-text">
+              <p className="footer-brand-text">
                 Lorem ipsum dolor amet consecto adi pisicing elit sed eiusm tempor incidid unt labore dolore.
               </p>
 
-              <div class="wrapper">
-                <span class="span">Add:</span>
+              <div className="wrapper">
+                <span className="span">Add:</span>
 
-                <address class="address">70-80 Upper St Norwich NR2</address>
+                <address className="address">70-80 Upper St Norwich NR2</address>
               </div>
 
-              <div class="wrapper">
-                <span class="span">Call:</span>
+              <div className="wrapper">
+                <span className="span">Call:</span>
 
-                <a href="tel:+011234567890" class="footer-link">+01 123 4567 890</a>
+                <a href="tel:+011234567890" className="footer-link">+01 123 4567 890</a>
               </div>
 
-              <div class="wrapper">
-                <span class="span">Email:</span>
+              <div className="wrapper">
+                <span className="span">Email:</span>
 
-                <a href="mailto:info@eduweb.com" class="footer-link">info@eduweb.com</a>
+                <a href="mailto:info@eduweb.com" className="footer-link">info@eduweb.com</a>
               </div>
 
             </div>
 
-            <ul class="footer-list">
+            <ul className="footer-list">
 
               <li>
-                <p class="footer-list-title">Online Platform</p>
+                <p className="footer-list-title">Online Platform</p>
               </li>
 
               <li>
-                <a href="#" class="footer-link">About</a>
+                <a href="#" className="footer-link">About</a>
               </li>
 
               <li>
-                <a href="#" class="footer-link">Courses</a>
+                <a href="#" className="footer-link">Courses</a>
               </li>
 
               <li>
-                <a href="#" class="footer-link">Instructor</a>
+                <a href="#" className="footer-link">Instructor</a>
               </li>
 
               <li>
-                <a href="#" class="footer-link">Events</a>
+                <a href="#" className="footer-link">Events</a>
               </li>
 
               <li>
-                <a href="#" class="footer-link">Instructor Profile</a>
+                <a href="#" className="footer-link">Instructor Profile</a>
               </li>
 
               <li>
-                <a href="#" class="footer-link">Purchase Guide</a>
-              </li>
-
-            </ul>
-
-            <ul class="footer-list">
-
-              <li>
-                <p class="footer-list-title">Links</p>
-              </li>
-
-              <li>
-                <a href="#" class="footer-link">Contact Us</a>
-              </li>
-
-              <li>
-                <a href="#" class="footer-link">Gallery</a>
-              </li>
-
-              <li>
-                <a href="#" class="footer-link">News & Articles</a>
-              </li>
-
-              <li>
-                <a href="#" class="footer-link">FAQ's</a>
-              </li>
-
-              <li>
-                <a href="#" class="footer-link">Sign In/Registration</a>
-              </li>
-
-              <li>
-                <a href="#" class="footer-link">Coming Soon</a>
+                <a href="#" className="footer-link">Purchase Guide</a>
               </li>
 
             </ul>
 
-            <div class="footer-list">
+            <ul className="footer-list">
 
-              <p class="footer-list-title">Contacts</p>
+              <li>
+                <p className="footer-list-title">Links</p>
+              </li>
 
-              <p class="footer-list-text">
+              <li>
+                <a href="#" className="footer-link">Contact Us</a>
+              </li>
+
+              <li>
+                <a href="#" className="footer-link">Gallery</a>
+              </li>
+
+              <li>
+                <a href="#" className="footer-link">News & Articles</a>
+              </li>
+
+              <li>
+                <a href="#" className="footer-link">FAQ's</a>
+              </li>
+
+              <li>
+                <a href="#" className="footer-link">Sign In/Registration</a>
+              </li>
+
+              <li>
+                <a href="#" className="footer-link">Coming Soon</a>
+              </li>
+
+            </ul>
+
+            <div className="footer-list">
+
+              <p className="footer-list-title">Contacts</p>
+
+              <p className="footer-list-text">
                 Enter your email address to register to our newsletter subscription
               </p>
 
-              <form action="" class="newsletter-form">
-                <input type="email" name="email_address" placeholder="Your email" required class="input-field" />
+              <form action="" className="newsletter-form">
+                <input type="email" name="email_address" placeholder="Your email" required className="input-field" />
 
-                <button type="submit" class="btn has-before">
-                  <span class="span">Subscribe</span>
+                <button type="submit" className="btn has-before">
+                  <span className="span">Subscribe</span>
 
                   <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                 </button>
               </form>
 
-              <ul class="social-list">
+              <ul className="social-list">
 
                 <li>
-                  <a href="#" class="social-link">
+                  <a href="#" className="social-link">
                     <ion-icon name="logo-facebook"></ion-icon>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="social-link">
+                  <a href="#" className="social-link">
                     <ion-icon name="logo-linkedin"></ion-icon>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="social-link">
+                  <a href="#" className="social-link">
                     <ion-icon name="logo-instagram"></ion-icon>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="social-link">
+                  <a href="#" className="social-link">
                     <ion-icon name="logo-twitter"></ion-icon>
                   </a>
                 </li>
 
                 <li>
-                  <a href="#" class="social-link">
+                  <a href="#" className="social-link">
                     <ion-icon name="logo-youtube"></ion-icon>
                   </a>
                 </li>
@@ -160,11 +160,11 @@ const Footer = () => {
           </div>
         </div>
 
-        <div class="footer-bottom">
-          <div class="container1">
+        <div className="footer-bottom">
+          <div className="container1">
 
-            <p class="copyright">
-              Copyright 2022 All Rights Reserved by <a href="#" class="copyright-link">codewithsadee</a>
+            <p className="copyright">
+              Copyright 2022 All Rights Reserved by <a href="#" className="copyright-link">codewithsadee</a>
             </p>
 
           </div>

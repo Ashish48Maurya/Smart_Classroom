@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AllAssignments = () => {
@@ -28,94 +28,209 @@ const AllAssignments = () => {
         navigate(`/assignment-details`, { state: { assignment } });
     };
 
-  return (
-      <div>
-          <div className="table-responsive">
-              <div className="scrollable-table">
-                  <table id="assignments">
-                      <thead>
-                          <tr>
-                              <th>Title</th>
-                              <th>Description</th>
-                              <th>Due Date</th>
-                              <th>Subject</th>
-                              <th>Year of Study</th>
-                              <th>Department</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          {assignments.map((assignment) => (
-                              <tr onClick={() => handleAssignmentClick(assignment)}>
-                                  <td>{assignment.title}</td>
-                                  <td>{assignment.description}</td>
-                                  <td>{new Date(assignment.dueDate).toLocaleDateString()}</td>
-                                  <td>{assignment.subject}</td>
-                                  <td>{assignment.yearOfStudy}</td>
-                                  <td>{assignment.department}</td>
-                              </tr>
-                          ))}
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-          <style>
-              {`
-                .table-responsive {
-                    overflow-x: auto;
+    return (
+        <div className="assignment-container">
+            <h2>All Assignments</h2>
+            {/* {assignments.map((assignment) => (
+                <div className="ass-card" onClick={() => handleAssignmentClick(assignment)} key={assignment._id}>
+                    <div className="ass-title">{assignment.title}</div>
+                    <div className="ass-desc">{assignment.description}</div>
+                    <div className="ass-date">{new Date(assignment.dueDate).toLocaleDateString()}</div>
+                    <div className="ass-details">
+                        <span className="ass-subject">{assignment.subject}</span>
+                        <span className="ass-yos">{assignment.yearOfStudy}</span>
+                    </div>
+                    <span className="ass-dept">{assignment.department}</span>
+                </div>
+            ))} */}
+            <div className="ass-card">
+                <div className="ass-title">CN Assignment 1</div>
+                <div className="ass-desc">This is your CN Assignment 1</div>
+                <div className="ass-date">05-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">CN</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">DAA Assignment</div>
+                <div className="ass-desc">This is your DAA Assignment</div>
+                <div className="ass-date">06-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">DAA</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">CN Assignment 1</div>
+                <div className="ass-desc">This is your CN Assignment 1</div>
+                <div className="ass-date">05-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">CN</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">DAA Assignment</div>
+                <div className="ass-desc">This is your DAA Assignment</div>
+                <div className="ass-date">06-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">DAA</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">CN Assignment 1</div>
+                <div className="ass-desc">This is your CN Assignment 1</div>
+                <div className="ass-date">05-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">CN</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">DAA Assignment</div>
+                <div className="ass-desc">This is your DAA Assignment</div>
+                <div className="ass-date">06-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">DAA</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">CN Assignment 1</div>
+                <div className="ass-desc">This is your CN Assignment 1</div>
+                <div className="ass-date">05-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">CN</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">DAA Assignment</div>
+                <div className="ass-desc">This is your DAA Assignment</div>
+                <div className="ass-date">06-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">DAA</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">CN Assignment 1</div>
+                <div className="ass-desc">This is your CN Assignment 1</div>
+                <div className="ass-date">05-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">CN</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">DAA Assignment</div>
+                <div className="ass-desc">This is your DAA Assignment</div>
+                <div className="ass-date">06-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">DAA</span>
+            </div>
+            <style>
+                {`
+                .assignment-container {
+                    display: flex;
+                    flex-direction:column;
+                    justify-content: center;
+                    gap: 20px;
+                    width:100%;
                 }
 
-                .scrollable-table {
-                    min-width: 100%;
-                    overflow-x: auto;
+                .assignment-container h2{
+                    text-align:center;
                 }
 
-                #assignments {
-                    border-collapse: collapse;
+                .ass-card {
+                    display:flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    text-align:center;
+                    background-color: #fff;
                     border-radius: 10px;
-                    font-size: 0.9em;
-                    font-family: sans-serif;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                    background: rgb(246,243,249);
+                    background: linear-gradient(163deg, rgba(246,243,249,1) 14%, rgba(112,137,174,1) 100%);
+                    padding: 20px;
                     width: 100%;
-                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-                    background-color: white;
+                    cursor:pointer;
+                    transition: all 0.3s ease;
                 }
 
-                #assignments thead tr {
-                    background-color: #3e79ff;
-                    color: #ffffff;
-                    text-align: left;
+                .ass-card:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
                 }
 
-                th, td {
-                    padding: 12px 15px;
-                }
-
-                #assignments tbody tr {
-                    border-bottom: 1px solid #dddddd;
-                    cursor: pointer;
-                }
-
-                #assignments tbody tr:nth-of-type(even) {
-                    background-color: #f3f3f3;
-                }
-
-                #assignments tbody tr:last-of-type {
-                    border-bottom: 2px solid #3e79ff;
-                }
-
-                #assignments tbody tr.active-row {
+                .ass-title {
+                    font-size: 1.2rem;
                     font-weight: bold;
-                    color: #3e79ff;
+                    margin-bottom: 10px;
                 }
 
-                #assignments tbody tr:hover,
-                #assignments tbody tr:focus {
+                .ass-desc {
+                    margin-bottom: 10px;
+                }
+
+                .ass-date {
+                    font-style: italic;
+                    margin-bottom: 10px;
+                }
+
+                .ass-details {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+
+                .ass-details span{
+                    margin: 0 5px 0 5px;
+                }
+
+                .ass-subject{
+                    font-weight:bold;
+                    color:white;
+                    background: rgb(0,102,255);
+                    background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
+                    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                    padding:20px;
+                    text-align:center;
+                    width:max-content;
+                    border-radius: 10%;
+                }
+
+                .ass-yos,
+                .ass-dept {
+                    font-size: 0.9rem;
                     font-weight: bold;
-                    background-color: #dddddd;
+                    text-transform: uppercase;
+                }
+
+                @media screen and (max-width:770px){
+                    .ass-card{
+                        flex-direction:column;
+                    }
                 }
                 `}
-          </style>
-    </div>
-  )
+            </style>
+        </div>
+    );
 }
 
-export default AllAssignments
+export default AllAssignments;

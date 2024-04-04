@@ -51,101 +51,101 @@ export default function Home() {
         </article>
       </main>
 
-      <section class="section category" aria-label="category">
-        <div class="container1">
+      <section className="section category" aria-label="category">
+        <div className="container1">
 
-          <p class="section-subtitle">Categories</p>
+          <p className="section-subtitle">Categories</p>
 
-          <h2 class="h2 section-title">
-            Online <span class="span">Classes</span> For Remote Learning.
+          <h2 className="h2 section-title">
+            Online <span className="span">Classes</span> For Remote Learning.
           </h2>
 
-          <p class="section-text">
+          <p className="section-text">
             Consectetur adipiscing elit sed do eiusmod tempor.
           </p>
 
-          <ul class="grid-list">
+          <ul className="grid-list">
 
             <li>
-              <div class="category-card" style={{ "--color": "170, 75%, 41%" }}>
+              <div className="category-card" style={{ "--color": "170, 75%, 41%" }}>
 
-                <div class="card-icon">
+                <div className="card-icon">
                   <img src="Images/category-1.svg" width="40" height="40" loading="lazy"
-                    alt="Online Degree Programs" class="img" />
+                    alt="Online Degree Programs" className="img" />
                 </div>
 
-                <h3 class="h3">
-                  <a href="#" class="card-title">Online Degree Programs</a>
+                <h3 className="h3">
+                  <a href="#" className="card-title">Online Degree Programs</a>
                 </h3>
 
-                <p class="card-text">
+                <p className="card-text">
                   Lorem ipsum dolor consec tur elit adicing sed umod tempor.
                 </p>
 
-                <span class="card-badge">7 Courses</span>
+                <span className="card-badge">7 Courses</span>
 
               </div>
             </li>
 
             <li>
-              <div class="category-card" style={{ "--color": "351, 83%, 61%" }}>
+              <div className="category-card" style={{ "--color": "351, 83%, 61%" }}>
 
-                <div class="card-icon">
+                <div className="card-icon">
                   <img src="Images/category-2.svg" width="40" height="40" loading="lazy"
-                    alt="Non-Degree Programs" class="img" />
+                    alt="Non-Degree Programs" className="img" />
                 </div>
 
-                <h3 class="h3">
-                  <a href="#" class="card-title">Non-Degree Programs</a>
+                <h3 className="h3">
+                  <a href="#" className="card-title">Non-Degree Programs</a>
                 </h3>
 
-                <p class="card-text">
+                <p className="card-text">
                   Lorem ipsum dolor consec tur elit adicing sed umod tempor.
                 </p>
 
-                <span class="card-badge">4 Courses</span>
+                <span className="card-badge">4 Courses</span>
 
               </div>
             </li>
 
             <li>
-              <div class="category-card" style={{ "--color": "229, 75%, 58%" }}>
+              <div className="category-card" style={{ "--color": "229, 75%, 58%" }}>
 
-                <div class="card-icon">
+                <div className="card-icon">
                   <img src="Images/category-3.svg" width="40" height="40" loading="lazy"
-                    alt="Off-Campus Programs" class="img" />
+                    alt="Off-Campus Programs" className="img" />
                 </div>
 
-                <h3 class="h3">
-                  <a href="#" class="card-title">Off-Campus Programs</a>
+                <h3 className="h3">
+                  <a href="#" className="card-title">Off-Campus Programs</a>
                 </h3>
 
-                <p class="card-text">
+                <p className="card-text">
                   Lorem ipsum dolor consec tur elit adicing sed umod tempor.
                 </p>
 
-                <span class="card-badge">8 Courses</span>
+                <span className="card-badge">8 Courses</span>
 
               </div>
             </li>
 
             <li>
-              <div class="category-card" style={{ "--color": "42, 94%, 55%" }}>
+              <div className="category-card" style={{ "--color": "42, 94%, 55%" }}>
 
-                <div class="card-icon">
+                <div className="card-icon">
                   <img src="Images/category-4.svg" width="40" height="40" loading="lazy"
-                    alt="Hybrid Distance Programs" class="img" />
+                    alt="Hybrid Distance Programs" className="img" />
                 </div>
 
-                <h3 class="h3">
-                  <a href="#" class="card-title">Hybrid Distance Programs</a>
+                <h3 className="h3">
+                  <a href="#" className="card-title">Hybrid Distance Programs</a>
                 </h3>
 
-                <p class="card-text">
+                <p className="card-text">
                   Lorem ipsum dolor consec tur elit adicing sed umod tempor.
                 </p>
 
-                <span class="card-badge">8 Courses</span>
+                <span className="card-badge">8 Courses</span>
 
               </div>
             </li>
@@ -155,65 +155,65 @@ export default function Home() {
         </div>
       </section>
 
-      <section class="section about" id="about" aria-label="about">
-        <div class="container1">
+      <section className="section about" id="about" aria-label="about">
+        <div className="container1">
 
-          <figure class="about-banner">
+          <figure className="about-banner">
 
-            <div class="img-holder" style={{ "--width": "520; --height: 370;" }}>
+            <div className="img-holder" style={{ "--width": "520; --height: 370;" }}>
               <img src="Images/about-banner.jpg" width="520" height="370" loading="lazy" alt="about banner"
-                class="img-cover" />
+                className="img-cover" />
             </div>
 
             <img src="Images/about-shape-1.svg" width="360" height="420" loading="lazy" alt=""
-              class="shape about-shape-1" />
+              className="shape about-shape-1" />
 
             <img src="Images/about-shape-2.svg" width="371" height="220" loading="lazy" alt=""
-              class="shape about-shape-2" />
+              className="shape about-shape-2" />
 
             <img src="Images/about-shape-3.png" width="722" height="528" loading="lazy" alt=""
-              class="shape about-shape-3" />
+              className="shape about-shape-3" />
 
           </figure>
 
-          <div class="about-content">
+          <div className="about-content">
 
-            <p class="section-subtitle">About Us</p>
+            <p className="section-subtitle">About Us</p>
 
-            <h2 class="h2 section-title">
-              Over 10 Years in <span class="span">Distant learning</span> for Skill Development
+            <h2 className="h2 section-title">
+              Over 10 Years in <span className="span">Distant learning</span> for Skill Development
             </h2>
 
-            <p class="section-text">
+            <p className="section-text">
               Lorem ipsum dolor sit amet consectur adipiscing elit sed eiusmod ex tempor incididunt labore dolore magna
               aliquaenim ad
               minim.
             </p>
 
-            <ul class="about-list">
+            <ul className="about-list">
 
-              <li class="about-item">
+              <li className="about-item">
                 <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
 
-                <span class="span">Expert Trainers</span>
+                <span className="span">Expert Trainers</span>
               </li>
 
-              <li class="about-item">
+              <li className="about-item">
                 <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
 
-                <span class="span">Online Remote Learning</span>
+                <span className="span">Online Remote Learning</span>
               </li>
 
-              <li class="about-item">
+              <li className="about-item">
                 <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
 
-                <span class="span">Lifetime Access</span>
+                <span className="span">Lifetime Access</span>
               </li>
 
             </ul>
 
             <img src="Images/about-shape-4.svg" width="100" height="100" loading="lazy" alt=""
-              class="shape about-shape-4" />
+              className="shape about-shape-4" />
 
           </div>
 
@@ -221,53 +221,53 @@ export default function Home() {
       </section>
 
 
-      <section class="section blog has-bg-image" id="blog" aria-label="blog"
+      <section className="section blog has-bg-image" id="blog" aria-label="blog"
         style={{ "background-image": "url('Images/blog-bg.svg')" }}>
-        <div class="container1">
+        <div className="container1">
 
-          <p class="section-subtitle">Latest Articles</p>
+          <p className="section-subtitle">Latest Articles</p>
 
-          <h2 class="h2 section-title">Get News With AcademiaHub</h2>
+          <h2 className="h2 section-title">Get News With AcademiaHub</h2>
 
-          <ul class="grid-list">
+          <ul className="grid-list">
 
             <li>
-              <div class="blog-card">
+              <div className="blog-card">
 
-                <figure class="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
+                <figure className="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
                   <img src="Images/blog-1.jpg" width="370" height="370" loading="lazy"
-                    alt="Become A Better Blogger: Content Planning" class="img-cover" />
+                    alt="Become A Better Blogger: Content Planning" className="img-cover" />
                 </figure>
 
-                <div class="card-content">
+                <div className="card-content">
 
-                  <a href="#" class="card-btn" aria-label="read more">
+                  <a href="#" className="card-btn" aria-label="read more">
                     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                   </a>
 
-                  <a href="#" class="card-subtitle">Online</a>
+                  <a href="#" className="card-subtitle">Online</a>
 
-                  <h3 class="h3">
-                    <a href="#" class="card-title">Become A Better Blogger: Content Planning</a>
+                  <h3 className="h3">
+                    <a href="#" className="card-title">Become A Better Blogger: Content Planning</a>
                   </h3>
 
-                  <ul class="card-meta-list">
+                  <ul className="card-meta-list">
 
-                    <li class="card-meta-item">
+                    <li className="card-meta-item">
                       <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
 
-                      <span class="span">Oct 10, 2021</span>
+                      <span className="span">Oct 10, 2021</span>
                     </li>
 
-                    <li class="card-meta-item">
+                    <li className="card-meta-item">
                       <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
 
-                      <span class="span">Com 09</span>
+                      <span className="span">Com 09</span>
                     </li>
 
                   </ul>
 
-                  <p class="card-text">
+                  <p className="card-text">
                     Lorem Ipsum Dolor Sit Amet Cons Tetur Adipisicing Sed.
                   </p>
 
@@ -277,42 +277,42 @@ export default function Home() {
             </li>
 
             <li>
-              <div class="blog-card">
+              <div className="blog-card">
 
-                <figure class="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
+                <figure className="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
                   <img src="Images/blog-2.jpg" width="370" height="370" loading="lazy"
-                    alt="Become A Better Blogger: Content Planning" class="img-cover" />
+                    alt="Become A Better Blogger: Content Planning" className="img-cover" />
                 </figure>
 
-                <div class="card-content">
+                <div className="card-content">
 
-                  <a href="#" class="card-btn" aria-label="read more">
+                  <a href="#" className="card-btn" aria-label="read more">
                     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                   </a>
 
-                  <a href="#" class="card-subtitle">Online</a>
+                  <a href="#" className="card-subtitle">Online</a>
 
-                  <h3 class="h3">
-                    <a href="#" class="card-title">Become A Better Blogger: Content Planning</a>
+                  <h3 className="h3">
+                    <a href="#" className="card-title">Become A Better Blogger: Content Planning</a>
                   </h3>
 
-                  <ul class="card-meta-list">
+                  <ul className="card-meta-list">
 
-                    <li class="card-meta-item">
+                    <li className="card-meta-item">
                       <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
 
-                      <span class="span">Oct 10, 2021</span>
+                      <span className="span">Oct 10, 2021</span>
                     </li>
 
-                    <li class="card-meta-item">
+                    <li className="card-meta-item">
                       <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
 
-                      <span class="span">Com 09</span>
+                      <span className="span">Com 09</span>
                     </li>
 
                   </ul>
 
-                  <p class="card-text">
+                  <p className="card-text">
                     Lorem Ipsum Dolor Sit Amet Cons Tetur Adipisicing Sed.
                   </p>
 
@@ -322,42 +322,42 @@ export default function Home() {
             </li>
 
             <li>
-              <div class="blog-card">
+              <div className="blog-card">
 
-                <figure class="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
+                <figure className="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
                   <img src="Images/blog-3.jpg" width="370" height="370" loading="lazy"
-                    alt="Become A Better Blogger: Content Planning" class="img-cover" />
+                    alt="Become A Better Blogger: Content Planning" className="img-cover" />
                 </figure>
 
-                <div class="card-content">
+                <div className="card-content">
 
-                  <a href="#" class="card-btn" aria-label="read more">
+                  <a href="#" className="card-btn" aria-label="read more">
                     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                   </a>
 
-                  <a href="#" class="card-subtitle">Online</a>
+                  <a href="#" className="card-subtitle">Online</a>
 
-                  <h3 class="h3">
-                    <a href="#" class="card-title">Become A Better Blogger: Content Planning</a>
+                  <h3 className="h3">
+                    <a href="#" className="card-title">Become A Better Blogger: Content Planning</a>
                   </h3>
 
-                  <ul class="card-meta-list">
+                  <ul className="card-meta-list">
 
-                    <li class="card-meta-item">
+                    <li className="card-meta-item">
                       <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
 
-                      <span class="span">Oct 10, 2021</span>
+                      <span className="span">Oct 10, 2021</span>
                     </li>
 
-                    <li class="card-meta-item">
+                    <li className="card-meta-item">
                       <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
 
-                      <span class="span">Com 09</span>
+                      <span className="span">Com 09</span>
                     </li>
 
                   </ul>
 
-                  <p class="card-text">
+                  <p className="card-text">
                     Lorem Ipsum Dolor Sit Amet Cons Tetur Adipisicing Sed.
                   </p>
 
@@ -369,7 +369,7 @@ export default function Home() {
           </ul>
 
           <img src="Images/blog-shape.png" width="186" height="186" loading="lazy" alt=""
-            class="shape blog-shape" />
+            className="shape blog-shape" />
 
         </div>
       </section>
@@ -377,7 +377,7 @@ export default function Home() {
       <Footer />
 
 
-      <a href="#top" class="back-top-btn" aria-label="back top top" data-back-top-btn>
+      <a href="#top" className="back-top-btn" aria-label="back top top" data-back-top-btn>
         <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
       </a>
       <style>

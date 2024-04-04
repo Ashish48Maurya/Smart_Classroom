@@ -54,8 +54,9 @@ export default function TAttendance() {
 
     const updateAttendance = async () => {
         const presentStudents = Object.keys(attendance).filter(studentId => attendance[studentId]);
+        console.log(presentStudents);
         try {
-            const response = await fetch(`${backend_api}/markAttendance`, {
+            const response = await fetch(`http://localhost:8000/markAttendance`, {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
@@ -67,10 +68,12 @@ export default function TAttendance() {
                 }),
             });
 
-            if (response.ok) {
+            if (response.status === 200) {
                 const data = await response.json();
                 toast.success(data.message);
             } else {
+                const error = await response.json();
+                toast.error(error.error);
                 console.error("An unexpected error occurred", response.status, response.statusText);
             }
         } catch (error) {

@@ -29,7 +29,7 @@ import AboutUs from './Components/non-private-routes/AboutUs';
 import OurServices from './Components/non-private-routes/OurServices';
 import ClientReviews from './Components/non-private-routes/ClientReviews';
 import ContactUs from './Components/non-private-routes/ContactUs';
-// import StudentAssignment from './Components/StudentAssignment';
+import StudentAssignment from './Components/Student/StudentAssignment';
 import AssignmentDetail from './Components/Student/AssignmentDetail';
 import StudentAssignments from './Components/Student/StudentAssignments';
 import SubmittedAssignment from './Components/Student/SubmittedAssignment';
@@ -65,8 +65,8 @@ function App() {
         <Route exact path='/editStudent/:id' element={<EditStudent />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
         <Route exact path='/give-assignment' element={<GiveAssignments />} />
-        {/* <Route exact path='/get-assignments' element={<StudentAssignment />} /> */}
-        <Route exact path='/see_assignments' element={<StudentAssignments />} />
+        <Route exact path='/get-assignments' element={<StudentAssignment />} />
+        {/* <Route exact path='/see_assignments' element={<StudentAssignments />} /> */}
         <Route exact path='/submitted_assignments' element={<SubmittedAssignment />} />
         <Route exact path='/assignments' element={<Assignments />} />
         <Route exact path='/studentregister' element={<StudentRegister />} />
