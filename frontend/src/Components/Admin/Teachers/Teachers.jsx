@@ -35,7 +35,7 @@ const Teachers = () => {
         <>
             <Navbar />
             <div className="container">
-                <h1>Teachers List</h1>
+                <h3 className='text-center'>Teachers List</h3>
                 <div className="table-responsive">
                     <table>
                         <thead>
@@ -72,6 +72,9 @@ const Teachers = () => {
                     align-items: center;
                     min-height: 100vh;
                     margin-top:0 !important;
+                }
+                body{
+                    margin-top:100px;
                 }
 
                 .table-responsive {

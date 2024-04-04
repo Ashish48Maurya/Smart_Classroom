@@ -35,7 +35,7 @@ const Students = () => {
         <>
             <Navbar />
             <div className="container">
-                <h1>Students List</h1>
+                <h3 className='text-center'>Students List</h3>
                 <div className="table-responsive">
                     <table id='students'>
                         <thead>
@@ -99,6 +99,7 @@ const Students = () => {
 
                 th, td {
                     padding: 12px 15px;
+                    text-align:center;
                 }
 
                 #students tbody tr {
