@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../Navbar'
 import Logo from '../../assets/Logo.png'
-import Footer from '../Footer'
+import Footer from './Footer'
 export default function Home() {
   return (
     <>

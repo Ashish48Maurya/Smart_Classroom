@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAuth } from './store/auth';
-import Navbar from './Navbar';
+import { useAuth } from '../store/auth';
+import Navbar from '../Navbar';
 import {toast} from 'react-toastify'
 
-const EditStudent = () => {
-    const { backend_api, token } = useAuth();
+const EditTeacher = () => {
+    const { backend_api, token, loggedUser } = useAuth();
+    console.log(loggedUser)
     const { id } = useParams();
     const data = localStorage.getItem("USER");
     const userData = JSON.parse(data);
-    const [studentData, setStudentData] = useState(null);
+    const [teacherData, setTeacherData] = useState(null);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phoneNo, setPhone] = useState('');
 
-    const updateStudent = async () => {
+    const updateTeacher = async () => {
         try {
             const res = await fetch(`${backend_api}/update_info/${id}/${userData.user}`, {
                 method: "PATCH",
@@ -33,14 +34,14 @@ const EditStudent = () => {
                 toast.success("Edited Successfully");
             }
         } catch (error) {
-            toast.error(error);
+            console.log(error);
         }
     }
 
 
-    const getStudent = async () => {
+    const getTeacher = async () => {
         try {
-            const res = await fetch(`${backend_api}/stud/${id}`, {
+            const res = await fetch(`${backend_api}/teach/${id}`, {
                 method: "get",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -48,10 +49,10 @@ const EditStudent = () => {
             });
             if (res.status === 200) {
                 const res_data = await res.json();
-                setStudentData(res_data.student);
-                setName(res_data.student.fullname);
-                setEmail(res_data.student.email);
-                setPhone(res_data.student.phoneNo);
+                setTeacherData(res_data.teacher);
+                setName(res_data.teacher.fullname);
+                setEmail(res_data.teacher.email);
+                setPhone(res_data.teacher.phoneNo);
             }
         } catch (error) {
             console.log(error);
@@ -59,7 +60,7 @@ const EditStudent = () => {
     }
 
     useEffect(() => {
-        getStudent();
+        getTeacher();
     }, [])
 
 
@@ -68,7 +69,7 @@ const EditStudent = () => {
             <Navbar />
             <h1 className='text-center'>User Information</h1>
             {
-                studentData && (
+                teacherData && (
                     <div className="container">
                         <div className="left">
                             <div className="info-item">
@@ -83,10 +84,10 @@ const EditStudent = () => {
                                 <strong>Phone Number:</strong>
                                 <input value={phoneNo} onChange={(e) => { setPhone(e.target.value) }} type="text" />
                             </div>
-                            <button className='btn btn-outline-success fw-bolder' onClick={updateStudent}>Edit</button>
+                            <button className='btn btn-outline-success fw-bolder' onClick={updateTeacher}>Edit</button>
                         </div>
                         <div className='right'>
-                            <img src={`${backend_api}/${studentData.file}`} alt="" height={"200px"} width={"200px"} />
+                            <img src={`${backend_api}/${teacherData.file}`} alt="" height={"200px"} width={"200px"} />
                         </div>
                     </div>
                 )
@@ -99,10 +100,10 @@ const EditStudent = () => {
                 input{
                     margin-left:10px;
                     border:none;
-                    width:300px;
-                    outline:none;
                 }
-                
+                input::focus{
+                    outline:red;
+                }
                 .left{
                     margin-top:auto;
                     margin-bottom:auto;
@@ -149,4 +150,4 @@ const EditStudent = () => {
     );
 }
 
-export default EditStudent;
+export default EditTeacher;

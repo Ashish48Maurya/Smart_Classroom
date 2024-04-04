@@ -33,8 +33,8 @@ import StudentAssignment from './Components/Student/StudentAssignment';
 import AssignmentDetail from './Components/Student/AssignmentDetail';
 import StudentAssignments from './Components/Student/StudentAssignments';
 import SubmittedAssignment from './Components/Student/SubmittedAssignment';
-import EditTeacher from './Components/EditTeacher';
-import EditStudent from './Components/EditStudent';
+import EditTeacher from './Components/Teacher/EditTeacher';
+import EditStudent from './Components/Student/EditStudent';
 
 
 function App() {

@@ -1,9 +1,9 @@
 import React from 'react';
-import Logo from '../assets/Logo.png'
+import Logo from '../../assets/Logo.png';
 
 const Footer = () => {
   return (
-      <>
+    <>
       <footer className="footer" style={{ "background-image": "url('/Images/footer-bg.png')" }}>
 
         <div className="footer-top section">
@@ -170,7 +170,7 @@ const Footer = () => {
           </div>
         </div>
 
-      </footer>  
+      </footer>
       <style>
         {`
         /*-----------------------------------*\

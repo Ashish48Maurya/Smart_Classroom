@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../Navbar'
 import { Link, useNavigate } from 'react-router-dom'
-import Footer from '../Footer';
+import Footer from './Footer';
 
 const AboutUs = () => {
   const navigate = useNavigate();
@@ -24,13 +24,13 @@ const AboutUs = () => {
               <div className="card__overlay">
                 <div className="card__header">
                   <svg className="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                  <img className="card__thumb" src="https://i.imgur.com/7D7I6dI.png" alt="" />
+                  <img className="card__thumb" src="https://media.licdn.com/dms/image/D4D03AQFuOJBwzRKS3g/profile-displayphoto-shrink_400_400/0/1675950175452?e=1717027200&v=beta&t=dLTmUKMtFdyDVPI9Qdq_mLYseVhhc9zuQRhs0faAfw0" alt="Divy Arun Mav" />
                   <div className="card__header-text">
-                    <h3 className="card__title">Jessica Parker</h3>
-                    <span className="card__status">1 hour ago</span>
+                    <h3 className="card__title">Divy Arun Mav</h3>
+                    <span className="card__status">MERN-Stack Developer</span>
                   </div>
                 </div>
-                <p className="card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+                <p className="card__description">Divy Arun Mav is student at Dwarkadas.J.Sanghvi College of Engineering Vile Parle , currently pursuing B.Tech in CSE(IOT and Cybersecurity with Blockchain Technology).</p>
               </div>
             </a>
           </li>
@@ -40,13 +40,13 @@ const AboutUs = () => {
               <div className="card__overlay">
                 <div className="card__header">
                   <svg className="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                  <img className="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" />
+                  <img className="card__thumb" src="https://avatars.githubusercontent.com/u/118504361?v=4" alt="Ashish Vinod Maurya" />
                   <div className="card__header-text">
-                    <h3 className="card__title">kim Cattrall</h3>
-                    <span className="card__status">3 hours ago</span>
+                    <h3 className="card__title">Ashish Vinod Maurya</h3>
+                    <span className="card__status">MERN-Stack Developer</span>
                   </div>
                 </div>
-                <p className="card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+                <p className="card__description">Ashish Vinod Maurya is student at Dwarkadas.J.Sanghvi College of Engineering Vile Parle , currently pursuing B.Tech in CSE(IOT and Cybersecurity with Blockchain Technology).</p>
               </div>
             </a>
           </li>
@@ -56,13 +56,13 @@ const AboutUs = () => {
               <div className="card__overlay">
                 <div className="card__header">
                   <svg className="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                  <img className="card__thumb" src="https://i.imgur.com/7D7I6dI.png" alt="" />
+                  <img className="card__thumb" src="https://media.licdn.com/dms/image/D4D03AQEJv1UBMfKy2g/profile-displayphoto-shrink_400_400/0/1674321046278?e=1717027200&v=beta&t=cGdtJMaGC8-penyTjEumzt0n-jsdq_lGKXd6Ur-HfpU" alt="Vipul Rajesh Mahtre" />
                   <div className="card__header-text">
-                    <h3 className="card__title">Jessica Parker</h3>
-                    <span className="card__status">1 hour ago</span>
+                    <h3 className="card__title">Vipul Rajesh Mhatre</h3>
+                    <span className="card__status">Team Lead</span>
                   </div>
                 </div>
-                <p className="card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+                <p className="card__description">Vipul Rajesh Mhatre is student at Dwarkadas.J.Sanghvi College of Engineering Vile Parle , currently pursuing B.Tech in CSE(IOT and Cybersecurity with Blockchain Technology).</p>
               </div>
             </a>
           </li>
@@ -72,24 +72,25 @@ const AboutUs = () => {
               <div className="card__overlay">
                 <div className="card__header">
                   <svg className="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                  <img className="card__thumb" src="https://i.imgur.com/sjLMNDM.png" alt="" />
+                  <img className="card__thumb" src="https://avatars.githubusercontent.com/u/112983519?v=4g" alt="" />
                   <div className="card__header-text">
-                    <h3 className="card__title">kim Cattrall</h3>
-                    <span className="card__status">3 hours ago</span>
+                    <h3 className="card__title">Kaushal Shambhusharan Jha</h3>
+                    <span className="card__status">App Developer</span>
                   </div>
                 </div>
-                <p className="card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores, blanditiis?</p>
+                <p className="card__description">Kaushal Shambhusharan Jha is student at Dwarkadas.J.Sanghvi College of Engineering Vile Parle , currently pursuing B.Tech in CSE(IOT and Cybersecurity with Blockchain Technology).</p>
               </div>
             </a>
           </li>
         </ul>
       </>
-      <Footer />
+
       <style>
         {`
 body {
   font-family: Arial, Helvetica, sans-serif;
   margin-top: 100px;
+  // overflow:hidden;
 }
 
 html {
@@ -222,6 +223,7 @@ body {
   -webkit-line-clamp: 3;
   overflow: hidden;
 }    
+
 @media screen and (max-width: 650px) {
   .column {
     width: 100%;

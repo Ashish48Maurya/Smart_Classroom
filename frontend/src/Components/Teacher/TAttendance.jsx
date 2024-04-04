@@ -64,7 +64,7 @@ export default function TAttendance() {
                 },
                 body: JSON.stringify({
                     studentIds: presentStudents,
-                    subjectName: loggedUser.subject
+                    subjectName: userData.subject
                 }),
             });
 
