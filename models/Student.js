@@ -53,7 +53,7 @@ const studentSchema = new Schema({
         type: Number,
         required: true,
     },
-    student_photo: {
+    file: {
         type: String
     },
     AdmissionDate: {

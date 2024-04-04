@@ -1,58 +1,69 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useAuth } from '../../store/auth';
 import Navbar from '../../Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const Teachers = () => {
-    const { backend_api, token } = useAuth();
-    const { id } = useParams();
-    const [teacherData, setTeacherData] = useState(null);
+    const navigate = useNavigate();
+    const { backend_api } = useAuth();
+    const [teachers, setTeachers] = useState([]);
 
-    const getTeacher = async () => {
+    const getData = async () => {
         try {
-            const res = await fetch(`${backend_api}/Teacher/${id}`, {
-                method: "get",
-                headers: {
-                    "Authorization": `Bearer ${token}`
-                }
+            const response = await fetch(`${backend_api}/get_teachers`, {
+                method: 'get',
             });
-            if (res.status === 200) {
-                const res_data = await res.json();
-                setTeacherData(res_data.teacher);
+
+            if (response.status === 200) {
+                const res_data = await response.json();
+                setTeachers(res_data.msg);
             }
         } catch (error) {
             console.log(error);
         }
-    }
+    };
 
     useEffect(() => {
-        getTeacher();
+        getData();
     }, []);
+
+    const getTeacherDetails = (id) => {
+        navigate(`/get_teacher/${id}`);
+    }
 
     return (
         <>
             <Navbar />
-            <div className="teacher-cont">
-                {teacherData && (
-                    <div className="teacher-details">
-                        <div className="class-1">
-                            <h1 style={{ textAlign: "center" }}>Teacher Details</h1>
-                            <h2>Teacher : <b style={{
-                                textDecoration: "underline",
-                                backgroundColor: "yellow"
-                            }}>{teacherData.fullname}</b></h2>
-                            <p><strong>Full Name:</strong> {teacherData.fullname}</p>
-                            <p><strong>Email:</strong> {teacherData.email}</p>
-                            <p><strong>TeacherID:</strong> {teacherData.teacherID}</p>
-                            <p><strong>Department:</strong> {teacherData.department}</p>
-                            <p><strong>Phone Number:</strong> {teacherData.phoneNo}</p>
-                            <p><strong>Joining Date:</strong> {Date(teacherData.joiningDate).toString().replace("T", ",").replace(/\.\d{3}Z$/, ",")}</p>
-                            <h2>Subject:</h2>
-                            <p>{teacherData.subject}</p>
-                        </div>
-                        <img className='profile-img' src={teacherData.teacher_photo || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"} alt="Teacher Profile" />
-                    </div>
-                )}
+            <div className="container">
+                <h1>Teachers List</h1>
+                <div className="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Department</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <th>Joining Date</th>
+                                <th>Teacher Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {teachers.map((teacher) => (
+                                <tr key={teacher._id} onClick={() => getTeacherDetails(teacher._id)} role="button">
+                                    <td>{teacher.fullname}</td>
+                                    <td>{teacher.department}</td>
+                                    <td>{teacher.email}</td>
+                                    <td>{teacher.phoneNo}</td>
+                                    <td>{new Date(teacher.joiningDate).toLocaleDateString()}</td>
+                                    <td>
+                                        <button className='btn-teacher'>Get Teacher Details</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <style>{`
                 .teacher-cont {
@@ -63,15 +74,16 @@ const Teachers = () => {
                     margin-top:0 !important;
                 }
 
-                .profile-img{
-                    width:25vw;
-                    max-width:40vw;
-                    min-width:10vw;
-                    height:25vw;
+                .table-responsive {
+                    overflow-x: auto;
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;   
+                    background-color:white;
+                    border:none;
                     border-radius:10px;
-                    border:2px solid black;
-                    padding:2px;
-                    background-color:gray;
                 }
 
                 .teacher-details {
@@ -86,22 +98,30 @@ const Teachers = () => {
                     margin:10px 50px;
                 }
 
-                .teacher-details h1 {
-                    margin-bottom: 20px;
-                    font-size: 24px;
-                    color: #333;
+                th, td {
+                    border: 1px solid #dddddd;
+                    text-align: center;
+                    padding: 8px;
+                }
+                td{
+                    cursor:pointer;
+                }
+                tr:hover,td:hover{
+                    background-color:#d4d4d4;
                 }
 
-                .teacher-details h2 {
-                    margin-top: 20px;
-                    font-size: 20px;
-                    color: #555;
+                th {
+                    background-color: #f2f2f2;
                 }
 
-                .teacher-details p {
-                    margin-bottom: 10px;
-                    font-size: 16px;
-                    color: #555;
+                .btn-teacher{
+                    border:1px solid blue;
+                    color:blue;
+                    background:none;
+                    padding:10px;
+                    font-size:15px;
+                    font-weight:500;
+                    border-radius:5px;
                 }
                 @media screen and (max-width:700px){
                     .teacher-details{
@@ -114,9 +134,10 @@ const Teachers = () => {
                         margin-bottom:30px
                     }
                 }
-            `}</style>
+                `}
+            </style>
         </>
     );
-}
+};
 
 export default Teachers;

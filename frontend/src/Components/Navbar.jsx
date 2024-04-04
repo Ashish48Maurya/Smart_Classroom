@@ -1,14 +1,26 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from './store/auth';
 import logo from '../assets/Logo.png';
 
-export default function Navbar({ user }) {
+export default function Navbar() {
   const { isLoggedIn, LogoutUser } = useAuth();
-  const navigate = useNavigate();
-
   const data = localStorage.getItem("USER");
   const userData = JSON.parse(data);
+
+  const navigate = useNavigate();
+
+
+  const handleClick=(e)=>{
+    e.preventDefault();
+    if(userData.user === "Student"){
+      navigate(`/editStudent/${userData._id}`)
+    }
+    else{
+      navigate(`/editTeacher/${userData._id}`)
+    }
+  }
+
 
   return (
     <>
@@ -112,6 +124,9 @@ export default function Navbar({ user }) {
                     <div className="btn-txt-grp">
                       <p className='user-name' style={{marginRight:"20px"}}>{userData.fullname}</p>
                       <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", fontSize: "15px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
+                      <span className='my-auto'>
+                      <i class="fa-solid fa-pen-to-square" onClick={handleClick}></i>
+                      </span>
                     </div>
                   </>
                 ) : (
@@ -154,6 +169,11 @@ export default function Navbar({ user }) {
                   overflow-x: hidden;
                   z-index: 10;
                 }
+                .fa-pen-to-square{
+                  margin-left:10px;
+                  font-size:30px;
+
+                }
                 .dname{
                   color:black !important;
                   font-size:25px !important;
@@ -168,6 +188,7 @@ export default function Navbar({ user }) {
                 .logo{
                   width:5vw;
                 }
+                
                 nav {
                   margin: 10px 10px 0 10px;
                   background: none;

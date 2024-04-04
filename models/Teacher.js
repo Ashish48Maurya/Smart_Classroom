@@ -27,7 +27,7 @@ const teacherSchema = new Schema({
         type: String,
         required: true,
     },
-    teacher_photo: {
+    file: {
         type: String
     },
     teacherID:{

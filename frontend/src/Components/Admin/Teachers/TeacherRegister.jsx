@@ -4,16 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../../Navbar';
 import { toast } from 'react-toastify';
 
-const Loader = () => <h1>Registering teacher please wait....</h1>;
 
 export default function TeacherRegister() {
     const navigate = useNavigate();
-    const { token, storeTokenInLS, backend_api } = useAuth();
+    const { token, backend_api } = useAuth();
 
-    const [image, setImage] = useState("");
-    const [url, setUrl] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [posted, setPosted] = useState(false);
 
     const inputref = useRef(null)
     const iconref = useRef(null);
@@ -36,117 +31,57 @@ export default function TeacherRegister() {
     const [subject, setSubject] = useState('');
     const [phone, setPhone] = useState('');
     const [department, setDepartment] = useState('');
+    const [file, setFile] = useState('');
 
-    const handleSubmit = async (e) => {
+    const postDetails = (e) => {
         e.preventDefault();
-
-        if (!username || !password || !mail) {
+        if (!username || !password || !mail || !file) {
             return toast.error("All Fields Are Required!!!");
         }
 
         if (!emailRegex.test(mail)) {
             toast.error("Invalid Email");
             return;
-        } else if (!passRege.test(password)) {
-            toast.error("Password must contain at least 8 characters, including at least 1 number, 1 lowercase and 1 uppercase letter, and 1 special character.");
+        }
+        else if (!passRege.test(password)) {
+            toast.error("Password must contain at least 8 characters, including at least 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
             return;
         }
 
-        try {
-            postDetails()
-                .then(() => {
-                    if (url) {
-                        fetch(`${backend_api}/registerFaculty`, {
-                            method: "post",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "Authorization": `Bearer  ${token}`
-                            },
-                            body: JSON.stringify({
-                                fullname: username,
-                                department,
-                                subject,
-                                password,
-                                email: mail,
-                                phoneNo: phone,
-                                teacherID: teacher_id,
-                                teacher_photo: url
-                            }),
-                        })
-                            .then(response => {
-                                if (response.status === 200) {
-                                    return response.json();
-                                } else {
-                                    throw new Error(response.statusText);
-                                }
-                            })
-                            .then(res_data => {
-                                console.log("response from server ", res_data);
-                                storeTokenInLS(res_data.token);
-                                navigate('/teachers');
-                                toast.success("Registration Successful !!!");
-                            })
-                            .catch(error => {
-                                console.error("Error:", error);
-                                toast.error("Failed to register teacher !!");
-                            });
-                    } else {
-                        toast.error("Failed to register teacher !!");
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    toast.error("Failed to upload image !!");
-                });
-        } catch (error) {
-            toast.error(error);
-        }
-    };
+        const formData = new FormData();
+        formData.append("fullname", username);
+        formData.append("department", department);
+        formData.append("password", password);
+        formData.append("email", mail);
+        formData.append("phoneNo", phone);
+        formData.append("teacherID", teacher_id);
+        formData.append("subject", subject);
+        formData.append("file", file);
 
-
-
-    // image to cloudinary
-    const postDetails = () => {
-        console.log(image);
-        setLoading(true);
-        const data = new FormData();
-        data.append("file", image);
-        data.append("upload_preset", "smart-allocator");
-        data.append("cloud_name", "djy7my1mw");
-
-        fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
+        fetch(`${backend_api}/registerFaculty`, {
             method: "post",
-            body: data
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
         })
             .then(res => res.json())
             .then(data => {
-                setUrl(data.url);
-                setLoading(false);
-                setPosted(true); // Set posted to true after image upload
+                if (data.error) {
+                    toast.error(data.error);
+                } else {
+                    toast.success("Student Registered Successfully !!!");
+                }
             })
-            .catch(err => {
-                setLoading(false);
-                console.log(err);
-            });
-    };
-
-
-    const loadfile = (event) => {
-        var output = document.getElementById("output");
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function () {
-            URL.revokeObjectURL(output.src); // free memory
-        };
-        setImage(event.target.files[0]);
-    };
-
+            .catch(err => console.log(err));
+    }
 
     return (
         <>
             <Navbar />
             <div className="main-block  col-12 col-lg-6 col-md-8 col-sm-10">
-                <h2>Teacher Registration</h2>
-                <form id="registerForm" onSubmit={handleSubmit}>
+                <h1>Teacher Registration</h1>
+                <form id="registerForm" onSubmit={postDetails} encType='multipart/form-data'>
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
                     <input type="text" name="name" id="name" placeholder="Full Name" value={username}
                         onChange={(e) => setUsername(e.target.value)} required />
@@ -183,21 +118,19 @@ export default function TeacherRegister() {
                     <input
                         type="file"
                         accept="image/*"
-                        onChange={(event) => loadfile(event)}
+                        onChange={(event) => setFile(event.target.files[0])}
                     />
                     <div className='text-center m-2'>
-                        <img
-                            style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
-                            id="output"
-                            src=""
-                        />
+                        {
+                            file && (
+                                <img
+                                    style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
+                                    id="output"
+                                    src={URL.createObjectURL(file)}
+                                />
+                            )
+                        }
                     </div>
-                    {loading && (
-                        <div className="loader">
-                            <Loader />
-                        </div>
-                    )}
-
                     <div className="button-block">
                         <button type="submit">Register</button>
                     </div>
@@ -315,19 +248,7 @@ export default function TeacherRegister() {
         min-width:10vw;
         max-width:60vw;
       }
-       .loader{
-                            display:${loading ? "flex" : "none"};
-                            justify-content:center;
-                            align-items:center;
-                            position:absolute;
-                            top:8%;
-                            left:33%;
-                            border:0px solid black;
-                            border-radius:10px;
-                            height:500px;
-                            width:600px;
-                            background-color:white;
-                            box-shadow:1px 1px 10px black;
+
       `}
             </style>
 

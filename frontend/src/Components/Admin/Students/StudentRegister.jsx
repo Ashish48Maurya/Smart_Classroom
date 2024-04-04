@@ -1,18 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Navbar from '../../Navbar'
 import { useAuth } from '../../store/auth'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-const Loader = () => <h1>Registering student please wait....</h1>;
-
 export default function StudentRegister() {
     const { backend_api, token } = useAuth();
-
-    const [image, setImage] = useState("");
-    const [url, setUrl] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [posted, setPosted] = useState(false);
 
     const inputref = useRef(null)
     const iconref = useRef(null);
@@ -36,100 +29,57 @@ export default function StudentRegister() {
     const [subjects, setSubjects] = useState([]);
     const [phone, setPhone] = useState('');
     const [department, setDepartment] = useState('');
+    const [file, setFile] = useState('');
 
-    useEffect(() => {
-        if (url && posted) {
-            console.log(url, posted);
-
-            if (!username || !password || !mail) {
-                return toast.error("All Fields Are Required!!!");
-            }
-
-            if (!emailRegex.test(mail)) {
-                toast.error("Invalid Email");
-                return;
-            }
-            else if (!passRege.test(password)) {
-                toast.error("Password must contain atleast 8 characters, including atleast 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
-                return;
-            }
-
-            fetch(`${backend_api}/registerStudent`, {
-                method: "post",
-                headers: {
-                    "content-type": "application/json",
-                    "Authorization": `Bearer ${token}`
-                },
-                body: JSON.stringify({
-                    fullname: username,
-                    department,
-                    password,
-                    email: mail,
-                    phoneNo: phone,
-                    sapID: student_id,
-                    subjects,
-                    student_photo: url
-                })
-            })
-                .then(res => res.json)
-                .then(data => {
-                    if (data.error) {
-                        toast.error(data.error);
-                    } else {
-                        toast.success("Student Registered Successfully !!!");
-                        navigate('/students');
-                    }
-                })
-                .catch(err => console.log(err));
+    const postDetails = (e) => {
+        e.preventDefault();
+        if (!username || !password || !mail || !file) {
+            return toast.error("All Fields Are Required!!!");
         }
-        else {
-            console.log(url, posted);
+
+        if (!emailRegex.test(mail)) {
+            toast.error("Invalid Email");
+            return;
         }
-    }, [url, posted])
+        else if (!passRege.test(password)) {
+            toast.error("Password must contain at least 8 characters, including at least 1 number and 1 includes both lower and uppercase letters and special characters for example #,?!");
+            return;
+        }
 
+        const formData = new FormData();
+        formData.append("fullname", username);
+        formData.append("department", department);
+        formData.append("password", password);
+        formData.append("email", mail);
+        formData.append("phoneNo", phone);
+        formData.append("sapID", student_id);
+        formData.append("subjects", JSON.stringify(subjects));
+        formData.append("file", file);
 
-    // posting image to cloudinary
-    const postDetails = async () => {
-        setLoading(true);
-        const data = new FormData();
-        data.append("file", image);
-        data.append("upload_preset", "insta-clone");
-        data.append("cloud_name", "djy7my1mw");
-
-        await fetch("https://api.cloudinary.com/v1_1/djy7my1mw/image/upload", {
+        fetch(`${backend_api}/registerStudent`, {
             method: "post",
-            body: data
+            headers: {
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data.url);
-                setUrl(data.url);
-                setLoading(false);
-                setPosted(true); // Set posted to true after image upload
+                if (data.error) {
+                    toast.error(data.error);
+                } else {
+                    toast.success("Student Registered Successfully !!!");
+                }
             })
-            .catch(err => {
-                setLoading(false);
-                console.log(err);
-            });
-    };
-
-
-    const loadfile = (event) => {
-        var output = document.getElementById("output");
-        output.src = URL.createObjectURL(event.target.files[0]);
-        output.onload = function () {
-            URL.revokeObjectURL(output.src); // free memory
-        };
-        setImage(event.target.files[0]);
-    };
-
+            .catch(err => console.log(err));
+    }
 
     return (
         <>
             <Navbar />
-            <div className="main-block col-12 col-lg-6">
-                <h2>Student Registration</h2>
-                <form>
+            <div className="main-block col-12 col-lg-6 col-md-8 col-sm-10">
+                <h1>Student Registration</h1>
+                <form onSubmit={postDetails} encType="multipart/form-data">
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
                     <input type="text" name="name" id="name" placeholder="Name" value={username}
                         onChange={(e) => setUsername(e.target.value)} required />
@@ -166,22 +116,24 @@ export default function StudentRegister() {
                     <input
                         type="file"
                         accept="image/*"
-                        onChange={(event) => loadfile(event)}
+                        onChange={(event) => setFile(event.target.files[0])}
                     />
                     <div className='text-center m-2'>
-                        <img
-                            style={{ "height": "200px", "widht": "50px", "marginLeft": "auto" }}
-                            id="output"
-                            src=""
-                        />
+                        {file && (
+                            <img
+                                style={{
+                                    "height": "200px",
+                                    "width": "200px", // Adjusted width
+                                    "marginLeft": "auto"
+                                }}
+                                id="output"
+                                src={URL.createObjectURL(file)}
+                                alt="Uploaded Image"
+                            />
+                        )}
                     </div>
-                    {loading && (
-                        <div className="loader">
-                            <Loader />
-                        </div>
-                    )}
                     <div className="button-block">
-                        <button onClick={() => { postDetails() }} type="submit" href="/">Register</button>
+                        <button type="submit">Register</button>
                     </div>
                 </form>
             </div>
@@ -299,20 +251,6 @@ export default function StudentRegister() {
         min-width:10vw;
         max-width:60vw;
       }
-       .loader{
-                            display:${loading ? "flex" : "none"};
-                            justify-content:center;
-                            align-items:center;
-                            position:absolute;
-                            top:8%;
-                            left:33%;
-                            border:0px solid black;
-                            border-radius:10px;
-                            height:500px;
-                            width:600px;
-                            background-color:white;
-                            box-shadow:1px 1px 10px black;
-                        }
                 `}
             </style>
         </>

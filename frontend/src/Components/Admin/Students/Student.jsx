@@ -19,6 +19,7 @@ const Student = () => {
             if (res.status === 200) {
                 const res_data = await res.json();
                 console.log(res_data.student);
+                res_data.student.AdmissionDate = new Date(res_data.student.AdmissionDate);
                 setStudentData(res_data.student);
             }
         } catch (error) {
@@ -29,7 +30,7 @@ const Student = () => {
     useEffect(() => {
         getStudent();
     }, []);
-
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return (
         <>
             <Navbar />
@@ -44,7 +45,7 @@ const Student = () => {
                             <p><strong>Phone Number:</strong> {studentData.phoneNo}</p>
                             <p><strong>SAP ID:</strong> {studentData.sapID}</p>
                             <p><strong>Year of Study:</strong> {studentData.yearOfStudy}</p>
-                            <p><strong>Admission Date:</strong> {studentData.AdmissionDate}</p>
+                            <p><strong>Admission Date:</strong> {studentData.AdmissionDate.toLocaleDateString('en-US', options)}</p>
                             <h2>Subjects:</h2>
                             <ol>
                                 {studentData.subjects.map((subject, index) => (
@@ -53,7 +54,7 @@ const Student = () => {
                             </ol>
                         </div>
                         <img className='profile-img' src={
-                            studentData.student_photo || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
+                            `${backend_api}/${studentData.file}` || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
                         } />
                     </div>
                 )}
