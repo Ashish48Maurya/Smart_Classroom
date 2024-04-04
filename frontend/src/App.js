@@ -33,6 +33,8 @@ import ContactUs from './Components/non-private-routes/ContactUs';
 import AssignmentDetail from './Components/Student/AssignmentDetail';
 import StudentAssignments from './Components/Student/StudentAssignments';
 import SubmittedAssignment from './Components/Student/SubmittedAssignment';
+import EditTeacher from './Components/EditTeacher';
+import EditStudent from './Components/EditStudent';
 
 
 function App() {
@@ -59,7 +61,8 @@ function App() {
         <Route exact path='/attendance' element={<Attendance />} />
         <Route exact path='/tattendance' element={<TAttendance />} />
         <Route exact path='/manage' element={<Manage />} />
-        <Route exact path='/edit-class' element={<Edit />} />
+        <Route exact path='/editTeacher/:id' element={<EditTeacher />} />
+        <Route exact path='/editStudent/:id' element={<EditStudent />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
         <Route exact path='/give-assignment' element={<GiveAssignments />} />
         {/* <Route exact path='/get-assignments' element={<StudentAssignment />} /> */}
