@@ -12,7 +12,7 @@ export default function Connect() {
 
     const sendMail = async () => {
         // Use the selectedBranch state variable in your fetch request or any other logic
-        console.log('Selected Branch:', selectedBranch);
+        // console.log('Selected Branch:', selectedBranch);
 
         const ans = await fetch(`${backend_api}/sendNotification`, {
             method: 'POST',

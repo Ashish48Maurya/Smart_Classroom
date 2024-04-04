@@ -14,7 +14,6 @@ import Attendance from './Components/Attendance';
 import { useAuth } from './Components/store/auth';
 import TAttendance from './Components/TAttendance';
 import Manage from './Components/Manage';
-import Edit from './Components/Edit';
 import './index.css';
 import Teacher from './Components/Teacher';
 import Students from './Components/Students';
@@ -32,22 +31,24 @@ import StudentAssignment from './Components/StudentAssignment';
 import AssignmentDetail from './Components/AssignmentDetail';
 import StudentAssignments from './Components/StudentAssignments';
 import SubmittedAssignment from './Components/SubmittedAssignment';
+import Connect from './Components/Connect';
+import EditTeacher from './Components/EditTeacher';
+import EditStudent from './Components/EditStudent';
 
 
 function App() {
-  const { person } = useAuth();
   const [user, setUser] = useState('');
 
   useEffect(() => {
     const ans = localStorage.getItem('USER');
     setUser(ans ? JSON.parse(ans) : null);
-    // console.log("PERSON", person);
   }, []);
 
   return (
     <>
       <Routes>
         <Route exact path='/navbar' element={<Navbar />} />
+        <Route exact path='/connect' element={<Connect />} />
         <Route exact path='/' element={<Home />} />
         <Route exact path='/our-services' element={<OurServices />} />
         <Route exact path='/aboutUs' element={<AboutUs />} />
@@ -59,7 +60,8 @@ function App() {
         <Route exact path='/attendance' element={<Attendance />} />
         <Route exact path='/tattendance' element={<TAttendance />} />
         <Route exact path='/manage' element={<Manage />} />
-        <Route exact path='/edit/:id' element={<Edit />} />
+        <Route exact path='/editTeacher/:id' element={<EditTeacher />} />
+        <Route exact path='/editStudent/:id' element={<EditStudent />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
         <Route exact path='/give-assignment' element={<GiveAssignments />} />
         {/* <Route exact path='/get-assignments' element={<StudentAssignment />} /> */}
@@ -69,11 +71,11 @@ function App() {
         <Route exact path='/studentregister' element={<StudentRegister />} />
         <Route exact path='/teacherregister' element={<TeacherRegister />} />
         <Route exact path='/adminregister' element={<AdminRegister />} />
-        <Route exact path='/teachers' element={<Teacher />} />
+        <Route exact path='/teachers' element={<Teachers />} />
         <Route exact path='/students' element={<Students />} />
         <Route exact path='/assignment-details' element={<AssignmentDetail />} />
         <Route exact path='/get_student/:id' element={<Student />} />
-        <Route exact path='/get_teacher/:id' element={<Teachers />} />
+        <Route exact path='/get_teacher/:id' element={<Teacher />} />
       </Routes>
       <ToastContainer />
     </>

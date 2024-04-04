@@ -207,6 +207,33 @@ router.post('/login/:USER', async (req, res) => {
 })
 
 
+router.post('/sendNotification',async (req, res) => {
+    const { branch, msg } = req.body;
+    if (!branch || !msg) {
+      return res.status(422).json({ error: 'All Fields Are Required!' });
+    }
+    try {
+      const mailid = await Student.find({department :  branch }, 'email');
+      const emailAddresses = mailid.map(student => student.email);
+        
+      const info = await transporter.sendMail({
+        from: mail,
+        to: emailAddresses.join(','),
+        subject: "From DJSCE",
+        text: "Hello world?",
+        html: `<b>${msg}</b>`,
+      });
+  
+      return res.status(200).json({ message: 'Message sent successfully!' });
+  
+    } catch (err) {
+      console.error(`Error sending message: ${err}`);
+      return res.status(500).json({ error: `Internal Server Error -> ${err}` });
+    }
+});
+  
+
+
 router.get('/forgetPass/:email/:USER', async (req, res) => {
     const { USER, email } = req.params;
     console.log(USER);
@@ -461,13 +488,23 @@ router.patch('/update_user_info/:id/:USER', authmiddleware(Admin), async (req, r
 });
 
 
-router.get('/Student/:studentId', authmiddleware(Admin || Student), async (req, res) => {//done
+router.get('/Student/:studentId', authmiddleware(Admin), async (req, res) => {//done
     try {
         const { studentId } = req.params;
         const student = await Student.findById(studentId);
         const userData = req.User;
         console.log(userData);
         console.log(student);
+        res.status(200).json({ student })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.get('/stud/:studentId', authmiddleware(Student), async (req, res) => {//done
+    try {
+        const { studentId } = req.params;
+        const student = await Student.findById(studentId);
         res.status(200).json({ student })
     } catch (error) {
         console.log(error)
@@ -486,13 +523,22 @@ router.get('/Admin', authmiddleware(Admin), (req, res) => {//done
 })
 
 
-router.get('/Teacher/:teacherId', authmiddleware(Admin || Teacher), async (req, res) => {//done
+router.get('/Teacher/:teacherId', authmiddleware(Admin), async (req, res) => {//done
     try {
         const { teacherId } = req.params;
         const teacher = await Teacher.findById(teacherId);
         const userData = req.User;
-        console.log(userData);
-        console.log(teacher);
+        res.status(200).json({ teacher })
+    } catch (error) {
+        console.log(error)
+    }
+})
+
+router.get('/teach/:id',authmiddleware(Teacher), async (req, res) => {//done
+    try {
+        const { id } = req.params;
+        console.log("ID:",id);
+        const teacher = await Teacher.findById(id);
         res.status(200).json({ teacher })
     } catch (error) {
         console.log(error)
@@ -735,8 +781,8 @@ router.get('/submitted_assignments', authmiddleware(Student), async (req, res) =
 
 
 //Working Code
-router.get('/sendNotification', async (req, res) => {
-    try {
+// router.get('/sendNotification', async (req, res) => {
+//     try {
         // const { department, yearOfStudy, data } = req.body;
         // const students = await Student.find({ department, yearOfStudy }, 'tokens');
 
@@ -753,35 +799,36 @@ router.get('/sendNotification', async (req, res) => {
         //     },
         //     tokens: registrationTokens,
         // };
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-        });
+//         admin.initializeApp({
+//             credential: admin.credential.cert(serviceAccount),
+//         });
 
 
-        const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
+//         const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
 
 
-        const payload = {
-            notification: {
-                title: 'Test Notification',
-                body: 'This is a test notification from your backend server.'
-            }
-        };
+//         const payload = {
+//             notification: {
+//                 title: 'Test Notification',
+//                 body: 'This is a test notification from your backend server.'
+//             }
+//         };
 
 
-        admin.messaging().sendToDevice(deviceToken, payload)
-            .then((response) => {
-                console.log('Successfully sent test notification:', response);
-            })
-            .catch((error) => {
-                console.error('Error sending test notification:', error);
-            });
+//         admin.messaging().sendToDevice(deviceToken, payload)
+//             .then((response) => {
+//                 console.log('Successfully sent test notification:', response);
+//             })
+//             .catch((error) => {
+//                 console.error('Error sending test notification:', error);
+//             });
 
-    } catch (error) {
-        console.error('Error sending message1:', error);
-        res.status(500).send('Error sending message');
-    }
-});
+//     } catch (error) {
+//         console.error('Error sending message1:', error);
+//         res.status(500).send('Error sending message');
+//     }
+// });
+
 
 
 // admin.initializeApp({
