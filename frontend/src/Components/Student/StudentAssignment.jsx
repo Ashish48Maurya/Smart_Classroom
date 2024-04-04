@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar';
+import Navbar from '../Navbar';
 import AllAssignments from './AllAssignments';
 import PendingAssignments from './PendingAssignments';
 import CompletedAssignments from './CompletedAssignments';
@@ -20,8 +20,8 @@ const StudentAssignment = () => {
                     {
                         type === "All" ? <AllAssignments /> :
                             type === "Pending" ? <PendingAssignments /> :
-                                <CompletedAssignments/>
-                                // type === "Completed" ? <CompletedAssignments />
+                                <CompletedAssignments />
+                        // type === "Completed" ? <CompletedAssignments />
                     }
                 </div>
             </div>

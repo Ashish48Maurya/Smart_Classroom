@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import Navbar from './Navbar'
-import { useAuth } from './store/auth'
+import Navbar from '../Navbar'
+import { useAuth } from '../store/auth'
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 export default function Assignments() {
-    const {  backend_api, token } = useAuth();
+    const { backend_api, token } = useAuth();
     const navigate = useNavigate();
     const [file, setFile] = useState("");
     const [title, setTitle] = useState('');
@@ -64,7 +64,7 @@ export default function Assignments() {
         output.src = URL.createObjectURL(event.target.files[0]);
         setSrc(output.src);
         output.onload = function () {
-            URL.revokeObjectURL(output.src); 
+            URL.revokeObjectURL(output.src);
         };
         setFile(event.target.files[0]);
         output.style.height = "max-content";
@@ -98,7 +98,7 @@ export default function Assignments() {
                     <span style={{
                         color: "white"
                     }}>Preview</span>
-                    
+
                     <iframe src={src} frameBorder="0" id="output" className='preview' />
                     <div className="button-block">
                         <button type="submit" href="/">Post</button>

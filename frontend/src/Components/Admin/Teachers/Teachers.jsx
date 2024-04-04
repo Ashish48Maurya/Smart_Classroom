@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useAuth } from './store/auth';
-import Navbar from './Navbar';
+import { useAuth } from '../../store/auth';
+import Navbar from '../../Navbar';
 
-const Student = () => {
+const Teachers = () => {
     const { backend_api, token } = useAuth();
     const { id } = useParams();
-    const [studentData, setStudentData] = useState(null);
+    const [teacherData, setTeacherData] = useState(null);
 
-    const getStudent = async () => {
+    const getTeacher = async () => {
         try {
-            const res = await fetch(`${backend_api}/Student/${id}`, {
+            const res = await fetch(`${backend_api}/Teacher/${id}`, {
                 method: "get",
                 headers: {
                     "Authorization": `Bearer ${token}`
@@ -18,8 +18,7 @@ const Student = () => {
             });
             if (res.status === 200) {
                 const res_data = await res.json();
-                console.log(res_data.student);
-                setStudentData(res_data.student);
+                setTeacherData(res_data.teacher);
             }
         } catch (error) {
             console.log(error);
@@ -27,42 +26,36 @@ const Student = () => {
     }
 
     useEffect(() => {
-        getStudent();
+        getTeacher();
     }, []);
 
     return (
         <>
             <Navbar />
-            <div className="student-cont">
-                {studentData && (
-                    <div className="student-details">
+            <div className="teacher-cont">
+                {teacherData && (
+                    <div className="teacher-details">
                         <div className="class-1">
-                            <h1>Student Details</h1>
-                            <p><strong>Full Name:</strong> {studentData.fullname}</p>
-                            <p><strong>Email:</strong> {studentData.email}</p>
-                            <p><strong>Department:</strong> {studentData.department}</p>
-                            <p><strong>Phone Number:</strong> {studentData.phoneNo}</p>
-                            <p><strong>SAP ID:</strong> {studentData.sapID}</p>
-                            <p><strong>Year of Study:</strong> {studentData.yearOfStudy}</p>
-                            <p><strong>Admission Date:</strong> {studentData.AdmissionDate}</p>
-                            <h2>Subjects:</h2>
-                            <ol>
-                                {studentData.subjects.map((subject, index) => (
-                                    <li key={index}>{subject.name}</li>
-                                ))}
-                            </ol>
+                            <h1 style={{ textAlign: "center" }}>Teacher Details</h1>
+                            <h2>Teacher : <b style={{
+                                textDecoration: "underline",
+                                backgroundColor: "yellow"
+                            }}>{teacherData.fullname}</b></h2>
+                            <p><strong>Full Name:</strong> {teacherData.fullname}</p>
+                            <p><strong>Email:</strong> {teacherData.email}</p>
+                            <p><strong>TeacherID:</strong> {teacherData.teacherID}</p>
+                            <p><strong>Department:</strong> {teacherData.department}</p>
+                            <p><strong>Phone Number:</strong> {teacherData.phoneNo}</p>
+                            <p><strong>Joining Date:</strong> {Date(teacherData.joiningDate).toString().replace("T", ",").replace(/\.\d{3}Z$/, ",")}</p>
+                            <h2>Subject:</h2>
+                            <p>{teacherData.subject}</p>
                         </div>
-                        <img className='profile-img' src={
-                            studentData.student_photo || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"
-                        } />
+                        <img className='profile-img' src={teacherData.teacher_photo || "https://upload.wikimedia.org/wikipedia/commons/9/99/Sample_User_Icon.png"} alt="Teacher Profile" />
                     </div>
                 )}
             </div>
             <style>{`
-            body{
-                margin-top:100px;
-            }
-                .student-cont {
+                .teacher-cont {
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -81,7 +74,7 @@ const Student = () => {
                     background-color:gray;
                 }
 
-                .student-details {
+                .teacher-details {
                     display:flex;
                     justify-content:space-between;
                     align-items:space-between;
@@ -93,25 +86,25 @@ const Student = () => {
                     margin:10px 50px;
                 }
 
-                .student-details h1 {
+                .teacher-details h1 {
                     margin-bottom: 20px;
                     font-size: 24px;
                     color: #333;
                 }
 
-                .student-details h2 {
+                .teacher-details h2 {
                     margin-top: 20px;
                     font-size: 20px;
                     color: #555;
                 }
 
-                .student-details p {
+                .teacher-details p {
                     margin-bottom: 10px;
                     font-size: 16px;
                     color: #555;
                 }
                 @media screen and (max-width:700px){
-                    .student-details{
+                    .teacher-details{
                         flex-direction:column-reverse;
                         margin:10px 30px;
                     }
@@ -126,4 +119,4 @@ const Student = () => {
     );
 }
 
-export default Student;
+export default Teachers;

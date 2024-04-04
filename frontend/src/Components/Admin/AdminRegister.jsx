@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import Navbar from './Navbar'
-import { useAuth } from './store/auth'
+import Navbar from '../Navbar'
+import { useAuth } from '../store/auth'
 import { Navigate, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 export default function AdminRegister() {
     const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     const passRege = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
-    const {person,storeTokenInLS,backend_api} = useAuth();
+    const { person, storeTokenInLS, backend_api } = useAuth();
     const navigate = useNavigate();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -39,8 +39,8 @@ export default function AdminRegister() {
                     username,
                     mail,
                     password,
-                    type:person
-                    }),
+                    type: person
+                }),
             });
 
             if (response.status === 200) {
@@ -66,19 +66,19 @@ export default function AdminRegister() {
                 <div className="form-body">
                     <form id="registerForm" onSubmit={handleSubmit}>
                         <div className="form-group">
-                        <label htmlFor="username">Username:</label>
-            <input type="username" id="username" name="username" value={username}
-                onChange={(e) => setUsername(e.target.value)} required />
+                            <label htmlFor="username">Username:</label>
+                            <input type="username" id="username" name="username" value={username}
+                                onChange={(e) => setUsername(e.target.value)} required />
                         </div>
                         <div className="form-group">
-                        <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" value={mail}
-                onChange={(e) => setMail(e.target.value)} required />
+                            <label htmlFor="email">Email:</label>
+                            <input type="email" id="email" name="email" value={mail}
+                                onChange={(e) => setMail(e.target.value)} required />
                         </div>
                         <div className="form-group">
-                        <label htmlFor="password">Password:</label>
-            <input type="password" id="password" name="password" value={password}
-                onChange={(e) => setPassword(e.target.value)} required />
+                            <label htmlFor="password">Password:</label>
+                            <input type="password" id="password" name="password" value={password}
+                                onChange={(e) => setPassword(e.target.value)} required />
                         </div>
                         <div className="form-group">
                             <button type="submit">SignUp</button>

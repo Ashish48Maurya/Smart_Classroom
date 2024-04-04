@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from './Navbar';
-import { Link } from 'react-router-dom';
-import { useAuth } from './store/auth';
+import Navbar from '../../Navbar';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../store/auth';
 
 export default function Manage() {
     const [klass, setKlass] = useState([]);
     const { backend_api, token } = useAuth();
+    const navigate = useNavigate();
+
+    const EditClass = (classData) => {
+        navigate(`/edit-class`, { state: { classData } })
+    }
 
     useEffect(() => {
         const getClassrooms = async () => {
@@ -13,7 +18,7 @@ export default function Manage() {
                 const response = await fetch(`${backend_api}/get_classrooms`, {
                     method: 'GET',
                     headers: {
-                        Authorization: `${token}`,
+                        Authorization: `Bearer ${token}`,
                     },
                 });
 
@@ -74,14 +79,14 @@ export default function Manage() {
                                         <td className="text-center">{ele.classroom_no}</td>
                                         <td className="text-center">{ele.strength}</td>
                                         <td className="text-center">
-                                            <Link
+                                            <button
                                                 className="btn btn-success me-2"
                                                 type="button"
                                                 id="button-addon2"
-                                                to={`/edit/${ele._id}`}
+                                                onClick={() => { EditClass(ele) }}
                                             >
                                                 Edit
-                                            </Link>
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

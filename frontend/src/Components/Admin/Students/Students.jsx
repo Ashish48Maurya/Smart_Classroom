@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from './store/auth';
-import Navbar from './Navbar';
+import { useAuth } from '../../store/auth';
+import Navbar from '../../Navbar';
 import { useNavigate } from 'react-router-dom';
 
 const Students = () => {
@@ -37,7 +37,7 @@ const Students = () => {
             <div className="container">
                 <h1>Students List</h1>
                 <div className="table-responsive">
-                    <table>
+                    <table id='students'>
                         <thead>
                             <tr className='text-center'>
                                 <th>Full Name</th>
@@ -69,44 +69,61 @@ const Students = () => {
             </div>
             <style>
                 {`
-                .container {
-                    margin-top: 100px;
+                body{
+                    margin-top:100px;
                 }
-
                 .table-responsive {
                     overflow-x: auto;
                 }
 
-                table {
-                    width: 100%;
-                    border-collapse: collapse;   
-                    background-color:white;
-                    border:none;
-                    border-radius:10px;
+                .scrollable-table {
+                    min-width: 100%;
+                    overflow-x: auto;
                 }
 
-                tbody{
-                    text-align: center;
-                    border:none;
-                    border-radius:100px;
+                #students {
+                    border-collapse: collapse;
+                    border-radius: 10px;
+                    font-size: 0.9em;
+                    font-family: sans-serif;
+                    width: 100%;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                    background-color: white;
+                }
+
+                #students thead tr {
+                    background-color: #3e79ff;
+                    color: #ffffff;
+                    text-align: left;
                 }
 
                 th, td {
-                    border: 1px solid #dddddd;
-                    // text-align: left;
-                    padding: 8px;
-                }
-                td{
-                    cursor:pointer;
-                }
-                tr:hover,td:hover{
-                    background-color:#d4d4d4;
+                    padding: 12px 15px;
                 }
 
-                th {
-                    background-color: #f2f2f2;
+                #students tbody tr {
+                    border-bottom: 1px solid #dddddd;
+                    cursor: pointer;
                 }
 
+                #students tbody tr:nth-of-type(even) {
+                    background-color: #f3f3f3;
+                }
+
+                #students tbody tr:last-of-type {
+                    border-bottom: 2px solid #3e79ff;
+                }
+
+                #students tbody tr.active-row {
+                    font-weight: bold;
+                    color: #3e79ff;
+                }
+
+                #students tbody tr:hover,
+                #students tbody tr:focus {
+                    font-weight: bold;
+                    background-color: #dddddd;
+                }
                 .btn-stdnt{
                     border:1px solid blue;
                     color:blue;

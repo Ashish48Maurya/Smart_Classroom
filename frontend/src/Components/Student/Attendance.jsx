@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Chart } from "react-google-charts";
-import { useAuth } from './store/auth';
-import Navbar from './Navbar';
+import { useAuth } from '../store/auth';
+import Navbar from '../Navbar';
 
 export const options = {
     title: "Student Attendance Portal",

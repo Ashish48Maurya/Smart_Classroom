@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './Navbar';
-import { useAuth } from './store/auth';
+import Navbar from '../Navbar';
+import { useAuth } from '../store/auth';
 import { toast } from 'react-toastify';
 
 export default function TAttendance() {

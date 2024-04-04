@@ -1,9 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Navbar from './Navbar';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from './store/auth';
+import React, { useEffect, useState } from 'react';
+import Navbar from '../../Navbar';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../store/auth';
+import { toast } from 'react-toastify';
 
 export default function Edit() {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const classData = location.state.classData;
+
+    const [id, setId] = useState(classData._id || '');
     const [classroom_no, setClassroomNo] = useState('');
     const [faculty_name, setFacultyName] = useState('');
     const [facility, setFacility] = useState('');
@@ -11,10 +17,7 @@ export default function Edit() {
     const [displayedStrength, setDisplayedStrength] = useState('');
     const [isReserved, setIsReserved] = useState(false);
     const [isLab, setIsLab] = useState(false);
-    const navigate = useNavigate();
     const { backend_api, token } = useAuth();
-
-    const { id } = useParams();
 
     const handleSubmit = async () => {
         try {
@@ -35,9 +38,10 @@ export default function Edit() {
             });
 
             if (ans.ok) {
+                navigate('/manage');
+                toast.success("Classrooms Updated Successfully !!!");
                 const dataa = await ans.json();
                 console.log('Response:', dataa.msg);
-                // Update the state with the response data
                 setClassroomNo(dataa.msg.classroom_no);
                 setFacultyName(dataa.msg.faculty_name);
                 setFacility(dataa.msg.facility);
@@ -52,6 +56,17 @@ export default function Edit() {
             console.error('Error during fetch:', error);
         }
     };
+
+    useEffect(() => {
+        setId(classData._id);
+        setClassroomNo(classData.classroom_no || '');
+        setFacultyName(classData.faculty_name || '');
+        setFacility(classData.facility || '');
+        setStrength(classData.strength || '');
+        setDisplayedStrength(classData.strength || '');
+        setIsReserved(classData.isReserved || false);
+        setIsLab(classData.isLab || false);
+    }, [classData]);
 
     const handleIncrease = () => {
         setStrength((prevStrength) => {
@@ -69,45 +84,12 @@ export default function Edit() {
         });
     };
 
-
-    const getClassrooms = useCallback(async () => {
-        try {
-            const ans = await fetch(`${backend_api}/class/${id}`, {
-                method: 'GET',
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            });
-
-            if (ans.ok) {
-                const dataa = await ans.json();
-                console.log(dataa);
-
-                setClassroomNo(dataa.msg.classroom_no);
-                setFacultyName(dataa.msg.faculty_name);
-                setFacility(dataa.msg.facility);
-                setStrength(dataa.msg.strength);
-                setDisplayedStrength(dataa.msg.strength);
-                setIsReserved(dataa.msg.isReserved);
-                setIsLab(dataa.msg.isLab);
-            } else {
-                console.error('Error:', ans.statusText);
-            }
-        } catch (error) {
-            console.error('Error during fetch:', error);
-        }
-    }, [backend_api, token, id]);
-
-    useEffect(() => {
-        getClassrooms();
-    })
-
     return (
         <>
             <Navbar />
             <div className="container">
                 <div className="col-lg-6 col-md-8 col-sm-10 mx-auto cont-form">
-                    <h2>Update Classroom</h2>
+                    <h2 style={{ marginBottom: "50px" }}>Update Classroom</h2>
                     <div className="input-group mb-3">
                         <div className="col-md-4">
                             <label htmlFor="room">Enter Classroom No.</label>
@@ -172,7 +154,10 @@ export default function Edit() {
                                 aria-label="Recipient's username"
                                 aria-describedby="basic-addon2"
                                 value={displayedStrength}
-                                onChange={(e) => setDisplayedStrength(e.target.value)}
+                                onChange={(e) => {
+                                    setDisplayedStrength(e.target.value);
+                                    setStrength(parseInt(e.target.value)); // Ensure strength is an integer
+                                }}
                             />
                             <div className="btns-update-grp">
                                 <div className="btn1-grp">
@@ -204,76 +189,11 @@ export default function Edit() {
                             </div>
                         </div>
                     </div>
-                    <div className="input-group mb-3">
-                        <div className="col-md-4">
-                            <label>Is Reserved?</label>
-                        </div>
-                        <div className="col-md-8">
-                            <div className="form-check form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="isReserved"
-                                    id="reservedYes"
-                                    checked={isReserved}
-                                    onChange={() => setIsReserved(true)}
-                                />
-                                <label className="form-check-label" htmlFor="reservedYes">
-                                    Yes
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="isReserved"
-                                    id="reservedNo"
-                                    checked={!isReserved}
-                                    onChange={() => setIsReserved(false)}
-                                />
-                                <label className="form-check-label" htmlFor="reservedNo">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="input-group mb-3">
-                        <div className="col-md-4">
-                            <label>Is Lab?</label>
-                        </div>
-                        <div className="col-md-8">
-                            <div className="form-check form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="isLab"
-                                    id="labYes"
-                                    checked={isLab}
-                                    onChange={() => setIsLab(true)}
-                                />
-                                <label className="form-check-label" htmlFor="labYes">
-                                    Yes
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input
-                                    className="form-check-input"
-                                    type="radio"
-                                    name="isLab"
-                                    id="labNo"
-                                    checked={!isLab}
-                                    onChange={() => setIsLab(false)}
-                                />
-                                <label className="form-check-label" htmlFor="labNo">
-                                    No
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                     <div className="text-center">
                         <button
+                            style={{ marginTop: "20px" }}
                             className="btn btn-success"
-                            onClick={() => handleSubmit()}
+                            onClick={handleSubmit} // Don't invoke handleSubmit, just pass a reference
                         >
                             Change
                         </button>
@@ -293,9 +213,10 @@ export default function Edit() {
                     justify-content: center;
                     align-items: center;
                     flex-direction: column;
-                    background: rgba(255, 255, 255, 0.26);
-                    border-radius: 50px;
+                    background: rgb(246,243,249);
+                    background: linear-gradient(163deg, rgba(246,243,249,1) 14%, rgba(112,137,174,1) 100%);
                     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+                    border-radius: 50px;
                     backdrop-filter: blur(9.6px);
                     margin: 10px 20px 0 20px;
                     -webkit-backdrop-filter: blur(9.6px);
@@ -311,6 +232,16 @@ export default function Edit() {
                     width: 100%;
                     text-align: center;
                     margin-bottom: 20px;
+                }
+                .text-center button{
+                    background: rgb(0,102,255);
+                    background: linear-gradient(163deg, rgba(0,102,255,1) 0%, rgba(110,55,165,1) 82%);
+                    border:none;
+                    cursor:pointer;
+                }
+                .text-center button:hover{
+                    background: rgb(0,102,255);
+                    background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
                 }
                 .str-btns {
                     display: flex;
@@ -338,7 +269,7 @@ export default function Edit() {
                     margin-top: 20px;
                 }
                 .strngth-lbl {
-                    margin-bottom: 30px;
+                    margin-bottom: 70px;
                 }
                 @media screen and (max-width:768px) {
                     .strngth-lbl {

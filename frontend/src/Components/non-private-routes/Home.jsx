@@ -1,14 +1,14 @@
 import React from 'react'
-import Navbar from './Navbar'
-import Logo from '../assets/Logo.png'
-import Footer from './Footer'
+import Navbar from '../Navbar'
+import Logo from '../../assets/Logo.png'
+import Footer from '../Footer'
 export default function Home() {
   return (
     <>
-    <Navbar/>
-    <main>
-    <article>
-    <section className="section hero has-bg-image" id="home" aria-label="home">
+      <Navbar />
+      <main>
+        <article>
+          <section className="section hero has-bg-image" id="home" aria-label="home">
             <div className="container1">
 
               <div className="hero-content">
@@ -48,10 +48,10 @@ export default function Home() {
             </div>
           </section>
 
-    </article>
-  </main>
+        </article>
+      </main>
 
-  <section class="section category" aria-label="category">
+      <section class="section category" aria-label="category">
         <div class="container1">
 
           <p class="section-subtitle">Categories</p>
@@ -67,7 +67,7 @@ export default function Home() {
           <ul class="grid-list">
 
             <li>
-              <div class="category-card" style={{"--color": "170, 75%, 41%"}}>
+              <div class="category-card" style={{ "--color": "170, 75%, 41%" }}>
 
                 <div class="card-icon">
                   <img src="Images/category-1.svg" width="40" height="40" loading="lazy"
@@ -88,7 +88,7 @@ export default function Home() {
             </li>
 
             <li>
-              <div class="category-card" style={{"--color": "351, 83%, 61%"}}>
+              <div class="category-card" style={{ "--color": "351, 83%, 61%" }}>
 
                 <div class="card-icon">
                   <img src="Images/category-2.svg" width="40" height="40" loading="lazy"
@@ -109,7 +109,7 @@ export default function Home() {
             </li>
 
             <li>
-              <div class="category-card" style={{"--color": "229, 75%, 58%"}}>
+              <div class="category-card" style={{ "--color": "229, 75%, 58%" }}>
 
                 <div class="card-icon">
                   <img src="Images/category-3.svg" width="40" height="40" loading="lazy"
@@ -130,11 +130,11 @@ export default function Home() {
             </li>
 
             <li>
-              <div class="category-card" style={{"--color": "42, 94%, 55%"}}>
+              <div class="category-card" style={{ "--color": "42, 94%, 55%" }}>
 
                 <div class="card-icon">
                   <img src="Images/category-4.svg" width="40" height="40" loading="lazy"
-                    alt="Hybrid Distance Programs" class="img"/>
+                    alt="Hybrid Distance Programs" class="img" />
                 </div>
 
                 <h3 class="h3">
@@ -160,7 +160,7 @@ export default function Home() {
 
           <figure class="about-banner">
 
-            <div class="img-holder" style={{"--width": "520; --height: 370;"}}>
+            <div class="img-holder" style={{ "--width": "520; --height: 370;" }}>
               <img src="Images/about-banner.jpg" width="520" height="370" loading="lazy" alt="about banner"
                 class="img-cover" />
             </div>
@@ -213,7 +213,7 @@ export default function Home() {
             </ul>
 
             <img src="Images/about-shape-4.svg" width="100" height="100" loading="lazy" alt=""
-              class="shape about-shape-4"/>
+              class="shape about-shape-4" />
 
           </div>
 
@@ -222,7 +222,7 @@ export default function Home() {
 
 
       <section class="section blog has-bg-image" id="blog" aria-label="blog"
-        style={{"background-image": "url('Images/blog-bg.svg')"}}>
+        style={{ "background-image": "url('Images/blog-bg.svg')" }}>
         <div class="container1">
 
           <p class="section-subtitle">Latest Articles</p>
@@ -234,9 +234,9 @@ export default function Home() {
             <li>
               <div class="blog-card">
 
-                <figure class="card-banner img-holder has-after" style={{"--width": "370", "--height": "370"}}>
+                <figure class="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
                   <img src="Images/blog-1.jpg" width="370" height="370" loading="lazy"
-                    alt="Become A Better Blogger: Content Planning" class="img-cover"/>
+                    alt="Become A Better Blogger: Content Planning" class="img-cover" />
                 </figure>
 
                 <div class="card-content">
@@ -279,9 +279,9 @@ export default function Home() {
             <li>
               <div class="blog-card">
 
-                <figure class="card-banner img-holder has-after" style={{"--width": "370", "--height": "370"}}>
+                <figure class="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
                   <img src="Images/blog-2.jpg" width="370" height="370" loading="lazy"
-                    alt="Become A Better Blogger: Content Planning" class="img-cover"/>
+                    alt="Become A Better Blogger: Content Planning" class="img-cover" />
                 </figure>
 
                 <div class="card-content">
@@ -324,9 +324,9 @@ export default function Home() {
             <li>
               <div class="blog-card">
 
-                <figure class="card-banner img-holder has-after" style={{"--width": "370", "--height": "370"}}>
+                <figure class="card-banner img-holder has-after" style={{ "--width": "370", "--height": "370" }}>
                   <img src="Images/blog-3.jpg" width="370" height="370" loading="lazy"
-                    alt="Become A Better Blogger: Content Planning" class="img-cover"/>
+                    alt="Become A Better Blogger: Content Planning" class="img-cover" />
                 </figure>
 
                 <div class="card-content">
@@ -369,7 +369,7 @@ export default function Home() {
           </ul>
 
           <img src="Images/blog-shape.png" width="186" height="186" loading="lazy" alt=""
-            class="shape blog-shape"/>
+            class="shape blog-shape" />
 
         </div>
       </section>
@@ -377,11 +377,11 @@ export default function Home() {
       <Footer />
 
 
-  <a href="#top" class="back-top-btn" aria-label="back top top" data-back-top-btn>
-    <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
-  </a>
-  <style>
-    {`
+      <a href="#top" class="back-top-btn" aria-label="back top top" data-back-top-btn>
+        <ion-icon name="chevron-up" aria-hidden="true"></ion-icon>
+      </a>
+      <style>
+        {`
     /*-----------------------------------*\
     #style.css
   \*-----------------------------------*/
@@ -1507,7 +1507,7 @@ export default function Home() {
                   }
                 }
     `}
-  </style>
+      </style>
     </>
   )
 }

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import Navbar from './Navbar';
-import { useAuth } from './store/auth';
+import Navbar from '../Navbar';
+import { useAuth } from '../store/auth';
 
 export default function ClassRoom() {
     const [data, setData] = useState('');

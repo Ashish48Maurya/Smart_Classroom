@@ -5,33 +5,33 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Navbar from './Components/Navbar';
 import Login from './Components/Login';
-import AdminRegister from './Components/AdminRegister';
-import StudentRegister from './Components/StudentRegister';
-import TeacherRegister from './Components/TeacherRegister';
-import Home from './Components/Home';
-import ClassRoom from './Components/ClassRoom';
-import Attendance from './Components/Attendance';
+import AdminRegister from './Components/Admin/AdminRegister';
+import StudentRegister from './Components/Admin/Students/StudentRegister';
+import TeacherRegister from './Components/Admin/Teachers/TeacherRegister';
+import Home from './Components/non-private-routes/Home';
+import ClassRoom from './Components/Teacher/ClassRoom';
+import Attendance from './Components/Student/Attendance';
 import { useAuth } from './Components/store/auth';
-import TAttendance from './Components/TAttendance';
-import Manage from './Components/Manage';
-import Edit from './Components/Edit';
+import TAttendance from './Components/Teacher/TAttendance';
+import Manage from './Components/Admin/Classrooms/Manage';
+import Edit from './Components/Admin/Classrooms/Edit';
 import './index.css';
-import Teacher from './Components/Teacher';
-import Students from './Components/Students';
+import Teacher from './Components/Admin/Teachers/Teacher';
+import Students from './Components/Admin/Students/Students';
 import ForgetPasswordEmail from './Components/ForgetPasswordEmail';
 import ForgetPasswordPass from './Components/ForgetPasswordPass';
-import Student from './Components/Student';
-import Teachers from './Components/Teachers';
-import GiveAssignments from './Components/GiveAssignments';
-import Assignments from './Components/Assignments';
-import AboutUs from './Components/AboutUs';
-import OurServices from './Components/OurServices';
-import ClientReviews from './Components/ClientReviews';
-import ContactUs from './Components/ContactUs';
-import StudentAssignment from './Components/StudentAssignment';
-import AssignmentDetail from './Components/AssignmentDetail';
-import StudentAssignments from './Components/StudentAssignments';
-import SubmittedAssignment from './Components/SubmittedAssignment';
+import Student from './Components/Admin/Students/Student';
+import Teachers from './Components/Admin/Teachers/Teachers';
+import GiveAssignments from './Components/Teacher/GiveAssignments';
+import Assignments from './Components/Teacher/Assignments';
+import AboutUs from './Components/non-private-routes/AboutUs';
+import OurServices from './Components/non-private-routes/OurServices';
+import ClientReviews from './Components/non-private-routes/ClientReviews';
+import ContactUs from './Components/non-private-routes/ContactUs';
+// import StudentAssignment from './Components/StudentAssignment';
+import AssignmentDetail from './Components/Student/AssignmentDetail';
+import StudentAssignments from './Components/Student/StudentAssignments';
+import SubmittedAssignment from './Components/Student/SubmittedAssignment';
 
 
 function App() {
@@ -59,7 +59,7 @@ function App() {
         <Route exact path='/attendance' element={<Attendance />} />
         <Route exact path='/tattendance' element={<TAttendance />} />
         <Route exact path='/manage' element={<Manage />} />
-        <Route exact path='/edit/:id' element={<Edit />} />
+        <Route exact path='/edit-class' element={<Edit />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
         <Route exact path='/give-assignment' element={<GiveAssignments />} />
         {/* <Route exact path='/get-assignments' element={<StudentAssignment />} /> */}

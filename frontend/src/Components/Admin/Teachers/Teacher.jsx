@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from './store/auth';
-import Navbar from './Navbar';
+import { useAuth } from '../../store/auth';
+import Navbar from '../../Navbar';
 import { useNavigate } from 'react-router-dom';
 
 const Teacher = () => {
@@ -37,8 +37,8 @@ const Teacher = () => {
             <div className="container">
                 <h1>Teachers List</h1>
                 <div className="table-responsive">
-                    <table>
-                        <thead>
+                    <table id='teachers'>
+                        <thead style={{ backgroundColor: "black !important" }}>
                             <tr>
                                 <th>Full Name</th>
                                 <th>Department</th>
@@ -67,44 +67,61 @@ const Teacher = () => {
             </div>
             <style>
                 {`
-                .container {
-                    margin-top: 100px;
+                body{
+                    margin-top:100px;
                 }
-
                 .table-responsive {
                     overflow-x: auto;
                 }
 
-                table {
-                    width: 100%;
-                    border-collapse: collapse;   
-                    background-color:white;
-                    border:none;
-                    border-radius:10px;
+                .scrollable-table {
+                    min-width: 100%;
+                    overflow-x: auto;
                 }
 
-                tbody{
-                    border:none;
-                    border-radius:100px;
-                    text-align: center;
+                #teachers {
+                    border-collapse: collapse;
+                    border-radius: 10px;
+                    font-size: 0.9em;
+                    font-family: sans-serif;
+                    width: 100%;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                    background-color: white;
+                }
+
+                #teachers thead tr {
+                    background-color: #3e79ff;
+                    color: #ffffff;
+                    text-align: left;
                 }
 
                 th, td {
-                    border: 1px solid #dddddd;
-                    text-align: center;
-                    padding: 8px;
-                }
-                td{
-                    cursor:pointer;
-                }
-                tr:hover,td:hover{
-                    background-color:#d4d4d4;
+                    padding: 12px 15px;
                 }
 
-                th {
-                    background-color: #f2f2f2;
+                #teachers tbody tr {
+                    border-bottom: 1px solid #dddddd;
+                    cursor: pointer;
                 }
 
+                #teachers tbody tr:nth-of-type(even) {
+                    background-color: #f3f3f3;
+                }
+
+                #teachers tbody tr:last-of-type {
+                    border-bottom: 2px solid #3e79ff;
+                }
+
+                #teachers tbody tr.active-row {
+                    font-weight: bold;
+                    color: #3e79ff;
+                }
+
+                #teachers tbody tr:hover,
+                #teachers tbody tr:focus {
+                    font-weight: bold;
+                    background-color: #dddddd;
+                }
                 .btn-teacher{
                     border:1px solid blue;
                     color:blue;

@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useAuth } from './store/auth';
-import Navbar from './Navbar';
+import { useAuth } from '../store/auth';
+import Navbar from '../Navbar';
+import { toast } from 'react-toastify';
 
-const SubmittedAssignment = () => {
-    const { backend_api, token, person } = useAuth();
+const StudentAssignments = () => {
+    const { backend_api, token } = useAuth();
     const [file, setFile] = useState("");
     const [assignments, setAssignments] = useState([]);
 
-    const data = localStorage.getItem("USER");
-  const userData = JSON.parse(data);
-
-    const submittedAssignments = async () => {
+    const liveAssignments = async () => {
         try {
-            const res = await fetch(`${backend_api}/submitted_assignments`, {
+            const res = await fetch(`${backend_api}/live_assignments`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -21,7 +19,7 @@ const SubmittedAssignment = () => {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log(data);
+                // console.log(data);
                 setAssignments(data.data); // Access the 'data' property of the response
             } else {
                 console.error('Failed to fetch assignments:', res.statusText);
@@ -31,8 +29,31 @@ const SubmittedAssignment = () => {
         }
     }
 
+    const handleSubmit = async (id) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+            const res = await fetch(`${backend_api}/submit_assignment/${id}`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer  ${token}`
+                },
+                body: formData,
+            });
+            if (res.ok) {
+                const data = await res.json();
+                toast.success(data.msg)
+                console.log(data.msg);
+            } else {
+                console.error('Assignment Submission Failed');
+            }
+        } catch (error) {
+            console.error('Server Error', error);
+        }
+    }
+
     useEffect(() => {
-        submittedAssignments();
+        liveAssignments();
     }, []);
 
     return (
@@ -51,7 +72,7 @@ const SubmittedAssignment = () => {
                                 <th>Year of Study</th>
                                 <th>Department</th>
                                 <th>Document</th>
-                                <th>Submitted Doc</th>
+                                <th>Submit</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,7 +86,15 @@ const SubmittedAssignment = () => {
                                     <td>{assignment.department}</td>
                                     <td>{assignment.file && <a href={`http://localhost:8000/${assignment.file}`}>View File</a>}</td>
                                     <td>
-                                    {<a href={`http://localhost:8000/${assignment.students_output.find(submission => submission.sapID === userData.sapID).assignmentPath}`} target="_blank" rel="noopener noreferrer">View Submitted</a>}
+                                        <form encType="multipart/form-data">
+                                            <input
+                                                type="file"
+                                                accept="file/*"
+                                                name="file"
+                                                onChange={(event) => setFile(event.target.files[0])}
+                                            />
+                                            <button className='submit-btn' onClick={(event) => { event.preventDefault(); handleSubmit(assignment._id) }}>Submit</button>
+                                        </form>
                                     </td>
                                 </tr>
                             ))}
@@ -160,10 +189,21 @@ const SubmittedAssignment = () => {
                     font-weight: bold;
                     background-color: #dddddd;
                 }
+
+                .submit-btn{
+                    padding:5px 10px;
+                    border:none;
+                    color:white;
+                    border-radius:5px;
+                    background-color:#007bff;
+                }
+                .submit-btn:hover{
+                    background-color:#397ac0;
+                }
                 `}
             </style>
         </>
     );
 }
 
-export default SubmittedAssignment;
+export default StudentAssignments;

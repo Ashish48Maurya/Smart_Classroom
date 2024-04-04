@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react'
-import { useAuth } from './store/auth'
+import { useAuth } from '../../store/auth'
 import { useNavigate } from 'react-router-dom';
-import Navbar from './Navbar';
+import Navbar from '../../Navbar';
 import { toast } from 'react-toastify';
 
 const Loader = () => <h1>Registering teacher please wait....</h1>;
@@ -145,7 +145,7 @@ export default function TeacherRegister() {
         <>
             <Navbar />
             <div className="main-block  col-12 col-lg-6 col-md-8 col-sm-10">
-                <h1>Teacher Registration</h1>
+                <h2>Teacher Registration</h2>
                 <form id="registerForm" onSubmit={handleSubmit}>
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
                     <input type="text" name="name" id="name" placeholder="Full Name" value={username}
@@ -219,12 +219,11 @@ export default function TeacherRegister() {
       font-size: 16px;
       color: #666;
       }
-      h1 {
+      .main-block h2 {
       padding: 10px 0;
       font-size: 32px;
-      font-weight: 300;
       text-align: center;
-      color: #fff !important;
+      color:black;
       }
       .see{
         position:relative;
@@ -239,13 +238,20 @@ export default function TeacherRegister() {
       opacity: 0.3;
       }
       .main-block {
-      min-height: auto; 
-      padding: 10px 0;
-      margin: 100px auto;
-      border-radius: 20px; 
-      border: solid 1px #ccc;
-      box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
-      background: #134679; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 100px auto;
+        background: rgb(246,243,249);
+        background: linear-gradient(163deg, rgba(246,243,249,1) 14%, rgba(112,137,174,1) 100%);
+        border-radius: 50px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(9.6px);
+        -webkit-backdrop-filter: blur(9.6px);
+        width: 80%;
+        height: auto;
+        padding:20px;
       }
       form {
       margin: 0 30px;
@@ -274,8 +280,9 @@ export default function TeacherRegister() {
       #icon {
       display: inline-block;
       padding: 9.3px 15px;
-      box-shadow: 1px 2px 5px rgba(0,0,0,.09); 
-      background: #1c87c9;
+      background: rgb(0,102,255);
+      background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
       color: #fff;
       text-align: center;
       }
@@ -289,13 +296,16 @@ export default function TeacherRegister() {
       margin: 10px auto;
       border-radius: 5px; 
       border: none;
-      background: #1c87c9; 
+      background: rgb(0,102,255);
+      background: linear-gradient(163deg, rgba(0,102,255,1) 0%, rgba(110,55,165,1) 82%); 
       font-size: 14px;
       font-weight: 600;
       color: #fff;
+      transition:background-color ease 1s;
       }
       button:hover {
-      background: #26a9e0;
+      background: rgb(0,102,255);
+      background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
       }
       .fa-id-card,.fa-graduation-cap,.fa-phone,.fa-laptop,.fa-laptop-code{
         text-align:center;
