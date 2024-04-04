@@ -90,7 +90,7 @@ export default function Login() {
                         required
                     />
                     <div className='flex'>
-                        <select value={person} onChange={(e) => { setPerson(e.target.value) }}>
+                        <select value={person} onChange={(e) => { setPerson(e.target.value) }} className="select">
                             <option value="Teacher">Teacher</option>
                             <option value="Student">Student</option>
                             <option value="Admin">Admin</option>
@@ -134,7 +134,6 @@ export default function Login() {
       font-size: 32px;
       font-weight: 300;
       text-align: center;
-      color: #fff !important;
       }
       p {
       font-size: 12px;
@@ -149,16 +148,22 @@ export default function Login() {
       min-width:80%;
       padding: 50px 25px;
       margin: 100px auto;
-      border-radius: 20px; 
-      border: solid 1px #ccc;
-      box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
-      background: #134679; 
+      background: rgb(246,243,249);
+      background: linear-gradient(163deg, rgba(246,243,249,1) 14%, rgba(112,137,174,1) 100%);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 30px;
       }
       form {
       margin: 0 30px;
       }
       label#icon {
-      margin: 0;
+      display: inline-block;
+      padding: 9.3px 15px;
+      background: rgb(0,102,255);
+      background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      color: #fff;
+      text-align: center;
       border-radius: 5px 0 0 5px;
       }
       input[type=text], input[type=password] , input[type=phone] {
@@ -192,13 +197,37 @@ export default function Login() {
       margin: 10px auto;
       border-radius: 5px; 
       border: none;
-      background: #1c87c9; 
+      background: rgb(0,102,255);
+                    background: linear-gradient(163deg, rgba(0,102,255,1) 0%, rgba(110,55,165,1) 82%);
       font-size: 14px;
       font-weight: 600;
       color: #fff;
       }
+      .select {
+    width: max-content;
+    height: 42px;
+    margin: 13px 0 0 -5px;
+    padding: 10px;
+    border-radius: 5px;
+    text-align:center;
+    border: solid 1px #cbc9c9;
+    box-shadow: 1px 2px 5px rgba(0,0,0,.09);
+    background: #fff;
+}
+
+.select:hover {
+    background: #f3f3f3;
+}
+
+.select:focus {
+    outline: none;
+    border-color: #1c87c9; /* Change border color when focused */
+    box-shadow: 0 0 5px rgba(0,0,0,.1);
+}
+
       button:hover {
-      background: #26a9e0;
+      background: rgb(0,102,255);
+                    background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
       }
       .fa-id-card,.fa-graduation-cap,.fa-phone,.fa-laptop{
         width:15px;

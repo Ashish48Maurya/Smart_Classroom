@@ -130,7 +130,6 @@ export default function Assignments() {
       font-size: 32px;
       font-weight: 300;
       text-align: center;
-      color: #fff !important;
       }
       p {
       font-size: 12px;
@@ -140,13 +139,20 @@ export default function Assignments() {
       opacity: 0.3;
       }
       .main-block {
-      height: auto; 
-      padding: 10px 0;
-      margin: 100px auto;
-      border-radius: 20px; 
-      border: solid 1px #ccc;
-      box-shadow: 1px 2px 5px rgba(0,0,0,.31); 
-      background: #134679; 
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 100px auto;
+        background: rgb(246,243,249);
+        background: linear-gradient(163deg, rgba(246,243,249,1) 14%, rgba(112,137,174,1) 100%);
+        border-radius: 30px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(9.6px);
+        -webkit-backdrop-filter: blur(9.6px);
+        width: 80%;
+        height: auto;
+        padding:20px;
       }
       form {
       margin: 0 30px;
@@ -155,7 +161,13 @@ export default function Assignments() {
       margin: 15px 0;
       }
       label#icon {
-      margin: 0;
+      display: inline-block;
+      padding: 9.3px 15px;
+      background: rgb(0,102,255);
+      background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      color: #fff;
+      text-align: center;
       border-radius: 5px 0 0 5px;
       }
       input[type=text], input[type="date"] , input[type="file"] {
@@ -194,13 +206,16 @@ export default function Assignments() {
       margin: 10px auto;
       border-radius: 5px; 
       border: none;
-      background: #1c87c9; 
+      background: rgb(0,102,255);
+      background: linear-gradient(163deg, rgba(0,102,255,1) 0%, rgba(110,55,165,1) 82%); 
       font-size: 14px;
       font-weight: 600;
       color: #fff;
+      transition:background-color ease 1s;
       }
       button:hover {
-      background: #26a9e0;
+      background: rgb(0,102,255);
+      background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
       }
       .fa-id-card,.fa-graduation-cap,.fa-laptop-code,.fa-laptop{
         width:15px;
