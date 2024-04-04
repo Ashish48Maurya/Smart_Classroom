@@ -207,8 +207,9 @@ router.post('/login/:USER', async (req, res) => {
 })
 
 
-router.post('/sendNotification',async (req, res) => {
+router.post('/sendNotification',authmiddleware(Teacher),async (req, res) => {
     const { branch, msg } = req.body;
+    const {email} = req.user;
     if (!branch || !msg) {
       return res.status(422).json({ error: 'All Fields Are Required!' });
     }
@@ -217,7 +218,7 @@ router.post('/sendNotification',async (req, res) => {
       const emailAddresses = mailid.map(student => student.email);
         
       const info = await transporter.sendMail({
-        from: mail,
+        from: email,
         to: emailAddresses.join(','),
         subject: "From DJSCE",
         text: "Hello world?",
@@ -616,9 +617,8 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
         }
 
         const classrooms = await Classroom.find({
-            isReserved: false,
             strength: { $gte: strength }
-        }).select('classroom_no strength facility isReserved');
+        })
 
         if (classrooms.length === 0) {
             console.log("No classes found with isReserved set to false");
@@ -634,17 +634,15 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
 })
 
 
-//Allocate Class for required amount of time
 router.patch('/reserve_class/:id', authmiddleware(Teacher), async (req, res) => {
     const { id } = req.params;
-    const { time_in_hour, facultyName } = req.body;
-    // const reservedTime = 60 //1 min in seconds
-    const reservedTime = time_in_hour * 60 * 60; //in seconds
-
+    const { minute,hour, facultyName } = req.body;
+    const reservedTimeInSec = minute*60 + hour*60*60;
     try {
+        console.log("reservedTimeInSec:",reservedTimeInSec)
         const updatedClassroom = await Classroom.findByIdAndUpdate(
             id,
-            { $set: { isReserved: true, faculty_name: facultyName, reservedUntil: Date.now() + reservedTime * 1000 } }, // Convert seconds to milliseconds
+            { $set: { isReserved: true, faculty_name: facultyName, reservedUntil: Date.now() + reservedTimeInSec * 1000 } }, // Convert seconds to milliseconds
             { useFindAndModify: false, new: true }
         );
 
@@ -668,7 +666,7 @@ router.patch('/reserve_class/:id', authmiddleware(Teacher), async (req, res) => 
             } catch (err) {
                 console.error("Error unreserving class after reserved time:", err);
             }
-        }, reservedTime * 1000);
+        }, reservedTimeInSec * 1000);
 
         return res.status(200).json({ Updated_Classroom: updatedClassroom });
     } catch (err) {

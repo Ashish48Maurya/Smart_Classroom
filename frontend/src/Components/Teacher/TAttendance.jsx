@@ -9,6 +9,8 @@ export default function TAttendance() {
     const [loading, setLoading] = useState(true);
 
     const { loggedUser, backend_api, token } = useAuth();
+    const data = localStorage.getItem("USER");
+    const userData = JSON.parse(data);
 
     useEffect(() => {
         const fetchStudents = async () => {
@@ -85,7 +87,7 @@ export default function TAttendance() {
             <Navbar />
             <div className='container'>
                 <h4 className='text-center m-3'>Attendance</h4>
-                <h4 className='text-center m-2'>{loggedUser.subject}</h4>
+                <h4 className='text-center m-2'>{userData.subject}</h4>
                 <div className="table-responsive mt-5">
                     <table className="table">
                         <thead>
