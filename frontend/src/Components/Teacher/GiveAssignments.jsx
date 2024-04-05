@@ -30,9 +30,7 @@ export default function Assignments() {
         formData.append("file", file);
         formData.append("yearOfStudy", yos);
         formData.append("department", department)
-
-        // console.log(title, description, dueDate, yos, subject, file, department);
-
+        
         try {
             const response = await fetch(`${backend_api}/give_assignment`, {
                 method: "post",
