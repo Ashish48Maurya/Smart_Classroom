@@ -112,15 +112,15 @@ export default function ClassRoom() {
                                     <td className="text-center">{ele.classroom_no}</td>
                                     <td className="text-center">
                                         {
-                                            ele.reservedUntil===null ? <><td className="text-center"><input type="time" name="" id="" value={time} onChange={(e) => setTime(e.target.value)} /></td></> : <><td className="text-center">{ele.reservedUntil}</td></>
+                                            ele.reservedUntil === null ? <><td className="text-center"><input type="time" name="" id="" value={time} onChange={(e) => setTime(e.target.value)} /></td></> : <><td className="text-center">{ele.reservedUntil}</td></>
                                         }
-                                        
+
                                     </td>
                                     <td className="text-center">
                                         {
-                                            ele.reservedUntil===null ? <><button class="btn btn-primary" type="button" id="button-addon2" onClick={() => allocate(ele._id)} >Allocate</button></> : <><button class="btn btn-primary" type="button" id="button-addon2" disabled onClick={() => allocate(ele._id)}>Allocate</button></>
+                                            ele.reservedUntil === null ? <><button class="btn btn-primary" type="button" id="button-addon2" onClick={() => allocate(ele._id)} >Allocate</button></> : <><button class="btn btn-primary" type="button" id="button-addon2" disabled onClick={() => allocate(ele._id)}>Allocate</button></>
                                         }
-                                        
+
                                     </td>
 
                                 </tr>
@@ -141,7 +141,7 @@ export default function ClassRoom() {
                 }
             `}</style>
 
-            
+
         </>
     )
 }

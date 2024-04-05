@@ -3,12 +3,12 @@ import Navbar from '../../Navbar'
 
 export default function Studentmanage() {
 
-    
-  return (
-    <>
-    <Navbar/>
-    <div className="container">
-    <div className="table-responsive mt-5">
+
+    return (
+        <>
+            <Navbar />
+            <div className="container">
+                <div className="table-responsive mt-5">
                     <table className="table">
                         <thead>
                             <tr>
@@ -37,12 +37,12 @@ export default function Studentmanage() {
 
                     </table>
                 </div>
-    </div>
-    <style>{`
+            </div>
+            <style>{`
     body{
         margin-top:100px
     }
     `}</style>
-    </>
-  )
+        </>
+    )
 }

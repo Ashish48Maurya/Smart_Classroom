@@ -13,7 +13,7 @@ const PrivateRoute = () => {
     }
     else {
         return <>
-                <Navigate to={"/login"} />
+            <Navigate to={"/login"} />
             {
                 notify("Please Login First")
             }

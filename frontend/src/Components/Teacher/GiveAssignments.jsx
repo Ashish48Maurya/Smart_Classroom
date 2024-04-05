@@ -97,7 +97,7 @@ export default function Assignments() {
                         color: "white"
                     }}>Preview</span>
 
-                   <iframe src={src} frameBorder="0" id="output" className='preview' />
+                    <iframe src={src} frameBorder="0" id="output" className='preview' />
                     <div className="button-block">
                         <button type="submit" href="/">Post</button>
                     </div>

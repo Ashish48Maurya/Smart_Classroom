@@ -11,12 +11,12 @@ export default function Navbar() {
   const navigate = useNavigate();
 
 
-  const handleClick=(e)=>{
+  const handleClick = (e) => {
     e.preventDefault();
-    if(userData.user === "Student"){
+    if (userData.user === "Student") {
       navigate(`/editStudent/${userData._id}`)
     }
-    else{
+    else {
       navigate(`/editTeacher/${userData._id}`)
     }
   }
@@ -46,7 +46,7 @@ export default function Navbar() {
                 {
                   userData.user === "Teacher" && (
                     <Link className="navbar-brand d-flex" to='/'>
-                      <h1 className='dname'><img src="Images/female.png"  height={"50px"} width={"50px"} alt="" /></h1>
+                      <h1 className='dname'><img src="Images/female.png" height={"50px"} width={"50px"} alt="" /></h1>
                     </Link>
                   )}
               </>
@@ -69,9 +69,9 @@ export default function Navbar() {
                         <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/attendance'>Attendance</Link>
                         </li>
-                        {/* <li className="nav-item">
+                        <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/submitted_assignments'>Past_Assignment</Link>
-                        </li> */}
+                        </li>
                       </>
                     )}
                     {userData.user === "Admin" && (
@@ -125,31 +125,31 @@ export default function Navbar() {
                 {isLoggedIn ? (
                   <>
                     <div className="btn-txt-grp">
-                      <p className='user-name' style={{marginRight:"20px"}}>{userData.fullname}</p>
+                      <p className='user-name' style={{ marginRight: "20px" }}>{userData.fullname}</p>
                       <button className="btn btn-outline-danger ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", background: "none", color: "red", padding: "5px 10px", fontSize: "15px" }} onClick={() => { LogoutUser(); navigate('/login') }}>Logout</button>
                       <span className='my-auto'>
-                      <i className="fa-solid fa-pen-to-square" onClick={handleClick}></i>
+                        <i className="fa-solid fa-pen-to-square" onClick={handleClick}></i>
                       </span>
                     </div>
                   </>
                 ) : (
-                    <>
-                      <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/aboutUs'>About Us</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/our-services'>Our Services</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/client-reviews'>Client Reviews</Link>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link active" aria-current="page" to='/contact-us'>Contact Us</Link>
-                      </li>
-                      <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", color: "#0d6efd", background: "none", padding: "4px 8px", fontSize: "15px", maxWidth: "70px" }} onClick={() => { navigate('/login') }}>Login</button>
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link active" aria-current="page" to='/aboutUs'>About Us</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link active" aria-current="page" to='/our-services'>Our Services</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link active" aria-current="page" to='/client-reviews'>Client Reviews</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link active" aria-current="page" to='/contact-us'>Contact Us</Link>
+                    </li>
+                    <button className="btn btn-outline-primary ms-2 fw-bold" type="button" style={{ maxHeight: "min-content", color: "#0d6efd", background: "none", padding: "4px 8px", fontSize: "15px", maxWidth: "70px" }} onClick={() => { navigate('/login') }}>Login</button>
                   </>
                 )}
               </form>

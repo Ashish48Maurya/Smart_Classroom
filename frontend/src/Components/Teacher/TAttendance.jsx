@@ -8,7 +8,7 @@ export default function TAttendance() {
     const [attendance, setAttendance] = useState({});
     const [loading, setLoading] = useState(true);
 
-    const { backend_api, token } = useAuth();
+    const { loggedUser, backend_api, token } = useAuth();
     const data = localStorage.getItem("USER");
     const userData = JSON.parse(data);
 

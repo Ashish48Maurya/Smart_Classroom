@@ -8,7 +8,6 @@ export default function Connect() {
     const [branch, setBranch] = useState('');
     const [msg, setMsg] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
-    const [selectedYear, setSelectedYear] = useState('');
     const { backend_api,token } = useAuth();
 
     const sendMail = async () => {
