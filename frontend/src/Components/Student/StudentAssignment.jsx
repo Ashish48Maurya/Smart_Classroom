@@ -1,11 +1,58 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../Navbar';
 import AllAssignments from './AllAssignments';
 import PendingAssignments from './PendingAssignments';
 import CompletedAssignments from './CompletedAssignments';
+import { useAuth } from '../store/auth';
 
 const StudentAssignment = () => {
     const [type, setType] = useState('All');
+    const { token } = useAuth();
+    const [liveAssignments, setLiveAssignments] = useState([]);
+    const [completedAssignments, setCompletedAssignments] = useState([]);
+    const getData = async () => {
+        try {
+            const res = await fetch(`http://localhost:8000/live_assignments`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+
+            if (res.status === 200) {
+                const data = await res.json();
+                setLiveAssignments(data.data);
+            } else {
+                console.log(res);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    const getCompleted_assignments = async () => {
+        try {
+            const res = await fetch(`http://localhost:8000/submitted_assignments`, {
+                headers: {
+                    "Authorization":`Bearer ${token}`
+                }
+            });
+
+            if (res.status === 200) {
+                const data = await res.json();
+                setCompletedAssignments(data.data);
+            } else {
+                console.log(res);
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        getData();
+        getCompleted_assignments();
+    }, []);
+
     return (
         <div>
             <Navbar />
@@ -17,9 +64,9 @@ const StudentAssignment = () => {
                 </div>
                 <div className="ass-cont">
                     {
-                        type === "All" ? <AllAssignments /> :
-                            type === "Pending" ? <PendingAssignments /> :
-                                <CompletedAssignments />
+                        type === "All" ? <AllAssignments assignments={liveAssignments} /> :
+                            type === "Pending" ? <PendingAssignments assignments={liveAssignments} /> :
+                                <CompletedAssignments assignments={completedAssignments} />
                     }
                 </div>
             </div>
