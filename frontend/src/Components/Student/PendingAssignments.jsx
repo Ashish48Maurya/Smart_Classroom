@@ -1,236 +1,195 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../store/auth';
+import Navbar from '../Navbar';
 
 const PendingAssignments = () => {
-    const navigate = useNavigate();
+    const { backend_api, token } = useAuth();
+    const [file, setFile] = useState("");
     const [assignments, setAssignments] = useState([]);
 
-    const getData = async () => {
+    const liveAssignments = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/get_assignments`);
-
-            if (res.status === 200) {
+            const res = await fetch(`${backend_api}/live_assignments`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer  ${token}`
+                },
+            });
+            if (res.ok) {
                 const data = await res.json();
-                const filteredAssignments = data.data.filter((assignment) => assignment.students_output.length <= 0);
-                setAssignments(filteredAssignments);
+                console.log(data);
+                setAssignments(data.data); // Access the 'data' property of the response
             } else {
-                console.log(res);
+                console.error('Failed to fetch assignments:', res.statusText);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching assignments:', error);
         }
-    };
+    }
+
+    const handleSubmit = async (id) => {
+        const formData = new FormData();
+        formData.append("file", file);
+        try {
+            const res = await fetch(`${backend_api}/submit_assignment/${id}`, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer  ${token}`
+                },
+                body: formData,
+            });
+            if (res.ok) {
+                const data = await res.json();
+                console.log(data.msg);
+            } else {
+                console.error('Assignment Submission Failed');
+            }
+        } catch (error) {
+            console.error('Server Error', error);
+        }
+    }
 
     useEffect(() => {
-        getData();
+        liveAssignments();
     }, []);
 
-    const handleAssignmentClick = (assignment) => {
-        navigate(`/assignment-details`, { state: { assignment } });
-    };
-
     return (
-        <div className="assignment-container">
-            <h2>Pending Assignments</h2>
-            {/* {assignments.map((assignment) => (
-                <div className="ass-card" onClick={() => handleAssignmentClick(assignment)} key={assignment._id}>
-                    <div className="ass-title">{assignment.title}</div>
-                    <div className="ass-desc">{assignment.description}</div>
-                    <div className="ass-date">{new Date(assignment.dueDate).toLocaleDateString()}</div>
-                    <div className="ass-details">
-                        <span className="ass-subject">{assignment.subject}</span>
-                        <span className="ass-yos">{assignment.yearOfStudy}</span>
-                    </div>
-                    <span className="ass-dept">{assignment.department}</span>
+        <>
+            <Navbar />
+            <div>
+                <h1>Assignments</h1>
+                <div className="table-responsive">
+                    <table id='assignments'>
+                        <thead>
+                            <tr className='text-center'>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Due Date</th>
+                                <th>Subject</th>
+                                <th>Year of Study</th>
+                                <th>Department</th>
+                                <th>Document</th>
+                                <th>Submit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {assignments.map(assignment => (
+                                <tr key={assignment._id}>
+                                    <td>{assignment.title}</td>
+                                    <td>{assignment.description}</td>
+                                    <td>{new Date(assignment.dueDate).toLocaleDateString()}</td>
+                                    <td>{assignment.subject}</td>
+                                    <td>{assignment.yearOfStudy}</td>
+                                    <td>{assignment.department}</td>
+                                    <td>{assignment.file && <a href={`http://localhost:8000/${assignment.file}`}>View File</a>}</td>
+                                    <td>
+                                        <form encType="multipart/form-data">
+                                        <input
+                                            type="file"
+                                            accept="file/*"
+                                            name="file"
+                                            onChange={(event) => setFile(event.target.files[0])}
+                                        />
+                                        <button onClick={(event) => {event.preventDefault(); handleSubmit(assignment._id)}}>Submit</button>
+                                        </form>
+                                        </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
-            ))} */}
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
             </div>
             <style>
                 {`
-                .assignment-container {
-                    display: flex;
-                    flex-direction:column;
-                    justify-content: center;
-                    gap: 20px;
-                    width:100%;
+                body{
+                    margin-top:100px;
                 }
 
-                .assignment-container h2{
-                    text-align:center;
-                }
-
-                .ass-card {
-                    display:flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    text-align:center;
-                    background-color: #fff;
-                    border-radius: 10px;
-                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-                    background: rgb(246,243,249);
-                    background: linear-gradient(163deg, rgba(246,243,249,1) 14%, rgba(112,137,174,1) 100%);
-                    padding: 20px;
-                    width: 100%;
-                    cursor:pointer;
-                    transition: all 0.3s ease;
-                }
-
-                .ass-card:hover {
-                    transform: translateY(-5px);
-                    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-                }
-
-                .ass-title {
-                    font-size: 1.2rem;
-                    font-weight: bold;
-                    margin-bottom: 10px;
-                }
-
-                .ass-desc {
-                    margin-bottom: 10px;
-                }
-
-                .ass-date {
-                    font-style: italic;
-                    margin-bottom: 10px;
-                }
-
-                .ass-details {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                }
-
-                .ass-details span{
-                    margin: 0 5px 0 5px;
-                }
-
-                .ass-subject{
-                    font-weight:bold;
-                    color:white;
-                    background: rgb(0,102,255);
-                    background: linear-gradient(163deg, rgb(255, 255, 255) 14%, rgbargb(154, 165, 183)%);
-                    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-                    padding:20px;
+                .createbtn{
+                    float:right;
+                    margin-right:100px;
                     text-align:center;
                     width:max-content;
-                    border-radius: 10%;
+                    font-size:18px;
                 }
 
-                .ass-yos,
-                .ass-dept {
-                    font-size: 0.9rem;
+                .createbtn a{
+                    display:flex;
+                    justfify-content:center;
+                    align-items:center;
+                }
+
+                .circle {
+                    width:35px;
+                    height:35px;
+                    border:2px solid #007bff;
+                    border-radius: 50%;
+                    text-align:center;
+                    color: #fff;
+                    font-size: 18px;
+                    margin-left:10px;
+                }
+
+                .plus {
+                    line-height: 0;
+                    color: #007bff;
+                }
+
+                .table-responsive{
+                    display:flex;
+                    justify-content:center;
+                    align-items:center;
+                }
+
+                #assignments {
+                    border-collapse: collapse;
+                    margin: 25px 0;
+                    border-radius: 10px;
+                    font-size: 0.9em;
+                    font-family: sans-serif;
+                    min-width: 400px;
+                    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                    width: 90%;
+                    border-collapse: collapse;   
+                    background-color:white;
+                    margin:20px;
+                }
+                #assignments thead tr{
+                    background-color: #3e79ff;
+                    color: #ffffff;
+                    text-align: left;
+                }
+
+                th, td {
+                    padding: 12px 15px;
+                }
+                #assignments tbody tr {
+                    border-bottom: 1px solid #dddddd;
+                    cursor:pointer
+                }
+
+                #assignments tbody tr:nth-of-type(even) {
+                    background-color: #f3f3f3;
+                }
+
+                #assignments tbody tr:last-of-type {
+                    border-bottom: 2px solid #3e79ff;
+                }
+
+                #assignments tbody tr.active-row {
                     font-weight: bold;
-                    text-transform: uppercase;
+                    color: #3e79ff;
                 }
 
-                @media screen and (max-width:770px){
-                    .ass-card{
-                        flex-direction:column;
-                    }
+                #assignments tbody tr:hover,
+                #assignments tbody tr:focus{
+                    font-weight: bold;
+                    background-color: #dddddd;
                 }
                 `}
             </style>
-        </div>
+        </>
     );
 }
 

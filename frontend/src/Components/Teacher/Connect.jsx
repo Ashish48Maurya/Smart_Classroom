@@ -8,11 +8,11 @@ export default function Connect() {
     const [branch, setBranch] = useState('');
     const [msg, setMsg] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
+    const [selectedYear, setSelectedYear] = useState('');
     const { backend_api,token } = useAuth();
 
     const sendMail = async () => {
-        // Use the selectedBranch state variable in your fetch request or any other logic
-        console.log('Selected Branch:', selectedBranch);
+
 
         const ans = await fetch(`${backend_api}/sendNotification`, {
             method: 'POST',

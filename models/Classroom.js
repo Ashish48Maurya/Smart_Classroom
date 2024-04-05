@@ -8,7 +8,6 @@ const classroomSchema = new Schema({
     },
     faculty_name: {
         type: String,
-        required: true
     },
     strength: {
         type: Number,
