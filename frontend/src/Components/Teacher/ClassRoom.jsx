@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from '@mui/material';
 import { Modal, Button } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import Navbar from '../Navbar';
@@ -9,30 +10,30 @@ export default function ClassRoom() {
     const [strength, setStrength] = useState('');
     const userData = JSON.parse(localStorage.getItem("USER"));
     const [time, setTime] = useState('');
+    const [year, setYear] = useState("1st");
+    const [branch, setBranch] = useState("ICB");
     const { token, backend_api } = useAuth();
 
+    const sendMsg = async (msg) => {
+        const ans = await fetch(`${backend_api}/notify`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                data: msg.data,
+                branch,
+                yearOfStudy: year,
+            })
+        });
+        console.log(ans);
 
-    // const sendMail = async (msg, selectedBranch) => {
-    //     console.log('Selected Branch:', selectedBranch);
-
-    //     const ans = await fetch(`${backend_api}/contact`, {
-    //         method: "POST",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //         },
-    //         body: JSON.stringify({
-    //             msg,
-    //             branch: selectedBranch,
-    //         })
-    //     });
-    //     console.log(ans);
-
-    //     if (ans.ok) {
-    //         toast.success("Message Sent Successfully");
-    //     } else {
-    //         console.error('Error:', ans.statusText);
-    //     }
-    // }
+        if (ans.ok) {
+            toast.success("Message Sent Successfully");
+        } else {
+            console.error('Error:', ans.statusText);
+        }
+    }
 
     const handleSubmit = async () => {
         const ans = await fetch(`${backend_api}/find_class/${strength}`, {
@@ -50,15 +51,7 @@ export default function ClassRoom() {
         }
     }
 
-    const [hours, minutes] = time.split(":").map(Number);
-    const now = new Date();
-    const specifiedTime = new Date(now);
-    specifiedTime.setHours(hours, minutes, 0, 0); // Set hours and minutes of the current day
 
-    const timeDifference = specifiedTime - now; // Difference in milliseconds
-
-    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60)); // Convert milliseconds to hours
-    const minutesDifference = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60)); // Convert milliseconds to remaining minutes
     const allocate = async (id) => {
         const ans = await fetch(`${backend_api}/reserve_class/${id}`, {
             method: "PATCH",
@@ -67,17 +60,22 @@ export default function ClassRoom() {
                 "Authorization": `Bearer ${token}`
             },
             body: JSON.stringify({
-                hour: hoursDifference,
-                minute: minutesDifference,
+                minute: time,
                 facultyName: userData.fullname
             })
         });
         if (ans.ok) {
             const updatedData = data.filter((ele) => ele._id !== id);
             setData(updatedData);
+            const notificationData = {
+                data: {
+                    title: `Classroom Allocated For ${userData.branch} Lecture`,
+                    body: `ClassRoom No: ${updatedData.classroom_no}`
+                }
+            };
 
             toast.success("Class Allocated Successfully");
-            // sendMail("There have been some changes in your branch", userData.branch);
+            sendMsg(notificationData);
             setStrength("");
         } else {
             console.error('Error:', ans.statusText);
@@ -112,17 +110,23 @@ export default function ClassRoom() {
                                     <td className="text-center">{ele.classroom_no}</td>
                                     <td className="text-center">
                                         {
-                                            ele.reservedUntil === null ? <><td className="text-center"><input type="time" name="" id="" value={time} onChange={(e) => setTime(e.target.value)} /></td></> : <><td className="text-center">{ele.reservedUntil}</td></>
+                                            ele.reservedUntil === null ? <>
+                                                <div className="btn-group" id="btn-group">
+                                                    <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        Select Time
+                                                    </button>
+                                                    <div className="dropdown-menu custom-width" id="drop" style={{ width: '300px' }}>
+                                                        <Link to="#" className="dropdown-item" onClick={() => setTime(60)}>1 Hour</Link>
+                                                        <Link to="#" className="dropdown-item" onClick={() => setTime(120)}>2 Hour</Link>
+                                                    </div>
+                                                </div></> : new Date(ele.reservedUntil).toLocaleTimeString()
                                         }
-
                                     </td>
                                     <td className="text-center">
                                         {
-                                            ele.reservedUntil === null ? <><button class="btn btn-primary" type="button" id="button-addon2" onClick={() => allocate(ele._id)} >Allocate</button></> : <><button class="btn btn-primary" type="button" id="button-addon2" disabled onClick={() => allocate(ele._id)}>Allocate</button></>
+                                            ele.reservedUntil === null ? <button class="btn btn-primary" type="button" id="button-addon2" onClick={() => allocate(ele._id)} >Allocate</button> : <button class="btn btn-primary" type="button" id="button-addon2" disabled>Allocate</button>
                                         }
-
                                     </td>
-
                                 </tr>
                             ))}
                         </tbody>
@@ -140,8 +144,6 @@ export default function ClassRoom() {
                     margin-top: 100px;
                 }
             `}</style>
-
-
         </>
     )
 }

@@ -36,6 +36,7 @@ const sendMail = async (options) => {
             subject: options.title,//Title
             text: "Hello world?",
             html: `<b>${options.subject}</b>`,//Subject
+            attachments: options.attachments
         });
         console.log("Message sent: %s", info.messageId);
     } catch (error) {
@@ -207,32 +208,71 @@ router.post('/login/:USER', async (req, res) => {
 })
 
 
-router.post('/sendNotification',authmiddleware(Teacher),async (req, res) => {
-    const { branch, msg } = req.body;
-    const {email} = req.user;
-    if (!branch || !msg) {
-      return res.status(422).json({ error: 'All Fields Are Required!' });
+router.post('/sendNotification', authmiddleware(Teacher), async (req, res) => {
+    const { branch, msg, yearOfStudy } = req.body;
+    const { email } = req.user;
+    if (!branch || !msg || !yearOfStudy) {
+        return res.status(422).json({ error: 'All Fields Are Required!' });
     }
     try {
-      const mailid = await Student.find({department :  branch }, 'email');
-      const emailAddresses = mailid.map(student => student.email);
-        
-      const info = await transporter.sendMail({
-        from: email,
-        to: emailAddresses.join(','),
-        subject: "From DJSCE",
-        text: "Hello world?",
-        html: `<b>${msg}</b>`,
-      });
-  
-      return res.status(200).json({ message: 'Message sent successfully!' });
-  
+        const mailid = await Student.find({ department: branch, yearOfStudy: yearOfStudy }, 'email');
+        const emailAddresses = mailid.map(student => student.email);
+
+        const info = await transporter.sendMail({
+            from: email,
+            to: emailAddresses.join(','),
+            subject: "From DJSCE",
+            text: "Hello world?",
+            html: `<b>${msg}</b>`,
+        });
+
+        return res.status(200).json({ message: 'Message sent successfully!' });
+
     } catch (err) {
-      console.error(`Error sending message: ${err}`);
-      return res.status(500).json({ error: `Internal Server Error -> ${err}` });
+        console.error(`Error sending message: ${err}`);
+        return res.status(500).json({ error: `Internal Server Error -> ${err}` });
     }
 });
-  
+
+router.post('/adminSendNotice', authmiddleware(Admin), upload.single('file'), async (req, res) => {
+    const { branch, msg, yearOfStudy, file } = req.body;
+    console.log()
+    const { email } = req.user;
+    if (!branch || !msg || !yearOfStudy) {
+        return res.status(422).json({ error: 'All Fields Are Required!' });
+    }
+    try {
+        const mailid = await Student.find({ department: branch, yearOfStudy: yearOfStudy }, 'email');
+        const emailAddresses = mailid.map(student => student.email);
+
+        const { originalname, path } = req.file;
+        const parts = originalname.split('.');
+        const ext = parts[parts.length - 1];
+        const newPath = path + '.' + ext;
+        fs.renameSync(path, newPath);
+
+        const info = await transporter.sendMail({
+            from: email,
+            to: emailAddresses.join(','),
+            subject: "From DJSCE",
+            text: "Hello world?",
+            html: `<b>${msg}</b>`,
+            attachments: [
+                {
+                    filename: originalname,
+                    path: newPath
+                }
+            ]
+        });
+
+        return res.status(200).json({ message: 'Message sent successfully!' });
+
+    } catch (err) {
+        console.error(`Error sending message: ${err}`);
+        return res.status(500).json({ error: `Internal Server Error -> ${err}` });
+    }
+});
+
 
 
 router.get('/forgetPass/:email/:USER', async (req, res) => {
@@ -372,7 +412,7 @@ router.patch('/update_info/:id/:USER', async (req, res) => {
 });
 
 router.post('/markAttendance', authmiddleware(Teacher), async (req, res) => {
-    const { studentIds, subjectName } = req.body; 
+    const { studentIds, subjectName } = req.body;
 
     try {
         for (const studentId of studentIds) {
@@ -531,10 +571,10 @@ router.get('/Teacher/:teacherId', authmiddleware(Admin), async (req, res) => {//
     }
 })
 
-router.get('/teach/:id',authmiddleware(Teacher), async (req, res) => {//done
+router.get('/teach/:id', authmiddleware(Teacher), async (req, res) => {//done
     try {
         const { id } = req.params;
-        console.log("ID:",id);
+        console.log("ID:", id);
         const teacher = await Teacher.findById(id);
         res.status(200).json({ teacher })
     } catch (error) {
@@ -632,10 +672,10 @@ router.get('/find_class/:strength', authmiddleware(Teacher), async (req, res) =>
 
 router.patch('/reserve_class/:id', authmiddleware(Teacher), async (req, res) => {
     const { id } = req.params;
-    const { minute,hour, facultyName } = req.body;
-    const reservedTimeInSec = minute*60 + hour*60*60;
+    let { minute, facultyName } = req.body;
+    const reservedTimeInSec = minute * 60;
     try {
-        console.log("reservedTimeInSec:",reservedTimeInSec)
+        console.log("reservedTimeInSec:", reservedTimeInSec)
         const updatedClassroom = await Classroom.findByIdAndUpdate(
             id,
             { $set: { isReserved: true, faculty_name: facultyName, reservedUntil: Date.now() + reservedTimeInSec * 1000 } }, // Convert seconds to milliseconds
@@ -745,12 +785,29 @@ router.post('/give_assignment', authmiddleware(Teacher), upload.single('file'), 
     }
 });
 
-router.get('/live_assignments', authmiddleware(Student), async (req, res) => {
-    const { department, yearOfStudy, sapID } = req.user;
+router.get('/Faculty_assignments', authmiddleware(Teacher), async (req, res) => {
     try {
-        //  const data = await Assignment.find({ department, yearOfStudy });
-        const data = await Assignment.find({ department, yearOfStudy, "students_output.sapID": { $nin: [sapID] } });
-        res.status(200).json({ data })
+        const id = req.userID;
+        const teacherAssignments = await Teacher.findById({_id:id})
+        const assigments = teacherAssignments.assignments;
+        const assignmentIds = assigments.map(assignment => assignment._id);
+        const seeAss = await Assignment.find({_id:assignmentIds})
+        res.status(200).json({ data : seeAss })
+    }
+    catch (error) {
+        console.error(error);
+        return res.json({ msg: `An error occurred : ${error}` })
+    }
+})
+
+router.get('/Students_assignments', authmiddleware(Student), async (req, res) => {
+    try {
+        const id = req.userID;
+        const teacherAssignments = await Student.findById({_id:id})
+        const assigments = teacherAssignments.assignments;
+        const assignmentIds = assigments.map(assignment => assignment._id);
+        const seeAss = await Assignment.find({_id:assignmentIds})
+        res.status(200).json({ data : seeAss })
     }
     catch (error) {
         console.error(error);
@@ -774,92 +831,90 @@ router.get('/submitted_assignments', authmiddleware(Student), async (req, res) =
 
 
 //Working Code
-// router.get('/sendNotification', async (req, res) => {
+// router.post('/notify', async (req, res) => {
 //     try {
-        // const { department, yearOfStudy, data } = req.body;
-        // const students = await Student.find({ department, yearOfStudy }, 'tokens');
-
-        // const registrationTokens = students.flatMap(student => student.tokens);
-
-        // if (!registrationTokens || registrationTokens.length === 0) {
-        //     return res.status(400).send('No registration tokens found for the students');
-        // }
-
-        // const message = {
-        //     data: {
-        //         title: data.title,
-        //         body: data.body,
-        //     },
-        //     tokens: registrationTokens,
-        // };
 //         admin.initializeApp({
 //             credential: admin.credential.cert(serviceAccount),
 //         });
 
+//         const { data } = req.body;
 
-//         const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
+//         const deviceToken = 'fxbwBxqmDwW5o3IrplwTz7:APA91bGQEGJ9iZE-LqH4MG61eS_GDtNYxuz3fPB6Af7GKovrp7hKxODChUQYguCIPh13McmFssk58HigicebMXRwJlilPg-usU9VQ811a4U0Er16g6quBuO8jhv6A2V7KGHcWNpmgp7_';
 
-
+//         // Notification payload
 //         const payload = {
 //             notification: {
-//                 title: 'Test Notification',
-//                 body: 'This is a test notification from your backend server.'
+//                 title: data.title,
+//                 body: data.body,
 //             }
 //         };
 
-
+//         // Send the notification to the device token
 //         admin.messaging().sendToDevice(deviceToken, payload)
 //             .then((response) => {
-//                 console.log('Successfully sent test notification:', response);
+//                 console.log('Successfully sent notification:', response);
+//                 res.status(200).send('Notification sent successfully');
 //             })
 //             .catch((error) => {
-//                 console.error('Error sending test notification:', error);
+//                 console.error('Error sending notification:', error);
+//                 res.status(500).send('Error sending notification');
 //             });
 
 //     } catch (error) {
-//         console.error('Error sending message1:', error);
-//         res.status(500).send('Error sending message');
+//         console.error('Error sending notification:', error);
+//         res.status(500).send('Error sending notification');
 //     }
 // });
 
 
+router.post('/notify', async (req, res) => {
+    try {
+        const { department, yearOfStudy, data } = req.body;
+        const students = await Student.find({ department, yearOfStudy }, 'tokens');
 
-// admin.initializeApp({
-//     credential: admin.credential.cert(serviceAccount),
-// });
+        const registrationTokens = students.flatMap(student => student.tokens);
 
-// router.post('/sendNotification', async (req, res) => {
-//     try {
-//         const { department, yearOfStudy, data } = req.body;
-//         const students = await Student.find({ department, yearOfStudy }, 'tokens');
+        if (!registrationTokens || registrationTokens.length === 0) {
+            return res.status(400).send('No registration tokens found for the students');
+        }
 
-//         const registrationTokens = students.flatMap(student => student.tokens);
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+        });
 
-//         if (!registrationTokens || registrationTokens.length === 0) {
-//             return res.status(400).send('No registration tokens found for the students');
-//         }
+        const payload = {
+            notification: {
+                title: data.title,
+                body: data.body,
+            }
+        };
 
-//         const message = {
-//             data: {
-//                 title: data.title,
-//                 body: data.body,
-//             },
-//             tokens: registrationTokens,
-//         };
+        admin.messaging().sendToDevice(registrationTokens, payload)
+            .then((response) => {
+                console.log('Successfully sent test notification:', response);
+            })
+            .catch((error) => {
+                console.error('Error sending test notification:', error);
+            });
 
-//         const messagingResponse = await admin.messaging(message);
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).send('Error sending message');
+    }
+});
 
-//         console.log('Successfully sent notification:', messagingResponse);
-//         res.status(200).json({ success: true, response: messagingResponse });
-
-//     } catch (error) {
-//         console.error('Error sending message:', error);
-//         res.status(500).json({ success: false, error: 'Error sending message' });
-//     }
-// });
-
-
-
+router.get('/live_assignments',authmiddleware(Student), async (req, res) => {
+    const {department,yearOfStudy,sapID} = req.user;
+    try {
+        //  const data = await Assignment.find({ department, yearOfStudy });
+        const data = await Assignment.find({ department, yearOfStudy, "students_output.sapID": { $nin: [sapID] } });
+        res.status(200).json({ data })
+    }
+    catch (error) {
+        console.error(error);
+        return res.json({ msg: `An error occurred : ${error}` })
+    }
+})
 
 router.post('/submit_assignment/:id', authmiddleware(Student), upload.single('file'), async (req, res) => {
     const { id } = req.params;

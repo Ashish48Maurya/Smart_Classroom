@@ -43,12 +43,12 @@ const AllAssignments = () => {
                 const filteredAssignments = data.data.filter((assignment) => assignment.students_output.length > 0);
                 setAssignments(filteredAssignments);
             } else {
-                console.log(res);
+                console.error('Failed to fetch assignments:', res.statusText);
             }
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching assignments:', error);
         }
-    };
+    }
 
     useEffect(() => {
         getLiveAssignments();

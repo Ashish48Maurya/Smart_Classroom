@@ -35,6 +35,7 @@ import StudentAssignments from './Components/Student/StudentAssignments';
 import SubmittedAssignment from './Components/Student/SubmittedAssignment';
 import EditTeacher from './Components/Teacher/EditTeacher';
 import EditStudent from './Components/Student/EditStudent';
+import Aconnect from './Components/Admin/Students/Aconnect';
 
 
 function App() {
@@ -49,9 +50,10 @@ function App() {
     <>
       <Routes>
         <Route exact path='/navbar' element={<Navbar />} />
-        <Route exact path='/connect' element={<Connect />} />
+        <Route exact path='/Aconnect' element={<Aconnect />} />
         <Route exact path='/' element={<Home />} />
         <Route exact path='/our-services' element={<OurServices />} />
+        <Route exact path='/connect' element={<Connect />} />
         <Route exact path='/aboutUs' element={<AboutUs />} />
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/client-reviews' element={<ClientReviews />} />

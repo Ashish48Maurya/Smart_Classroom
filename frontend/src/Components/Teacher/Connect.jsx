@@ -8,11 +8,11 @@ export default function Connect() {
     const [branch, setBranch] = useState('');
     const [msg, setMsg] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
-    const { backend_api, token } = useAuth();
+    const [selectedYear, setSelectedYear] = useState('');
+    const { backend_api,token } = useAuth();
 
     const sendMail = async () => {
-        // Use the selectedBranch state variable in your fetch request or any other logic
-        console.log('Selected Branch:', selectedBranch);
+
 
         const ans = await fetch(`${backend_api}/sendNotification`, {
             method: 'POST',
@@ -23,6 +23,7 @@ export default function Connect() {
             body: JSON.stringify({
                 msg,
                 branch: selectedBranch,
+                yearOfStudy:selectedYear
             }),
         });
 
@@ -39,7 +40,7 @@ export default function Connect() {
         <>
             <Navbar />
             <div className="container  mt-5">
-                <div className="input-group mb-3">
+                <div className="input-group mb-3 d-flex justify-content-between">
                     <div className="btn-group" id="btn-group">
                         <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {selectedBranch ? selectedBranch : 'Select Branch'}
@@ -49,6 +50,18 @@ export default function Connect() {
                             <Link to="#" className="dropdown-item" onClick={() => setSelectedBranch('ICB')}>ICB</Link>
                             <Link to="#" className="dropdown-item" onClick={() => setSelectedBranch('DS')}>DS</Link>
                             <Link to="#" className="dropdown-item" onClick={() => setSelectedBranch('IT')}>IT</Link>
+                        </div>
+                    </div>
+
+                    <div className="btn-group" id="btn-group">
+                        <button type="button" className="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {selectedYear ? selectedYear : 'Select Year'}
+                        </button>
+                        <div className="dropdown-menu custom-width" id="drop" style={{ width: '300px' }}>
+                            <Link to="#" className="dropdown-item" onClick={() => setSelectedYear('1st')}>First</Link>
+                            <Link to="#" className="dropdown-item" onClick={() => setSelectedYear('2nd')}>Second</Link>
+                            <Link to="#" className="dropdown-item" onClick={() => setSelectedYear('3rd')}>Third</Link>
+                            <Link to="#" className="dropdown-item" onClick={() => setSelectedYear('4th')}>Fourth</Link>
                         </div>
                     </div>
                 </div>

@@ -14,15 +14,15 @@ export default function Home() {
               <div className="hero-content">
 
                 <h1 className="h1 section-title">
-                  The Best Program to <span className="span">Enroll</span> for Exchange
+                Welcome to - <span className="span">AcademiaHub</span> 
                 </h1>
 
-                <p className="hero-text">
-                  Excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit.
-                </p>
+                <h2 className="hero-text">
+                Your Ultimate Classroom Management Solution
+                </h2>
 
                 <a href="#" className="btn has-before">
-                  <span className="span">Find courses</span>
+                  <span className="span">Eplore More</span>
 
                   <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                 </a>
@@ -54,15 +54,9 @@ export default function Home() {
       <section className="section category" aria-label="category">
         <div className="container1">
 
-          <p className="section-subtitle">Categories</p>
-
           <h2 className="h2 section-title">
-            Online <span className="span">Classes</span> For Remote Learning.
+          Innovative <span className="span">Features</span> Redefining<span className="span">Technology</span>
           </h2>
-
-          <p className="section-text">
-            Consectetur adipiscing elit sed do eiusmod tempor.
-          </p>
 
           <ul className="grid-list">
 
@@ -75,11 +69,11 @@ export default function Home() {
                 </div>
 
                 <h3 className="h3">
-                  <a href="#" className="card-title">Online Degree Programs</a>
+                  <a href="#" className="card-title">Automated Classroom Allocation</a>
                 </h3>
 
                 <p className="card-text">
-                  Lorem ipsum dolor consec tur elit adicing sed umod tempor.
+                AcademiaHub utilizes advanced algorithms to automate the allocation of classrooms based on factors such as class size, subject requirements, and facility availability. This feature saves time for educators and administrators and ensures efficient use of resources.
                 </p>
 
                 <span className="card-badge">7 Courses</span>
@@ -96,11 +90,11 @@ export default function Home() {
                 </div>
 
                 <h3 className="h3">
-                  <a href="#" className="card-title">Non-Degree Programs</a>
+                  <a href="#" className="card-title">Real-time Updates and Notifications</a>
                 </h3>
 
                 <p className="card-text">
-                  Lorem ipsum dolor consec tur elit adicing sed umod tempor.
+                AcademiaHub provides real-time updates and notifications to keep stakeholders informed about any changes or updates related to class schedules, exam timings, or resource availability. This ensures smooth communication and minimizes disruptions during the educational process. 
                 </p>
 
                 <span className="card-badge">4 Courses</span>
@@ -117,11 +111,11 @@ export default function Home() {
                 </div>
 
                 <h3 className="h3">
-                  <a href="#" className="card-title">Off-Campus Programs</a>
+                  <a href="#" className="card-title">Integrated Student Attendance Tracking</a>
                 </h3>
 
                 <p className="card-text">
-                  Lorem ipsum dolor consec tur elit adicing sed umod tempor.
+                AcademiaHub offers integrated student attendance tracking, allowing educators to easily monitor and track attendance records. Students can also view their attendance percentages, promoting accountability and engagement in their academic journey.
                 </p>
 
                 <span className="card-badge">8 Courses</span>
@@ -138,11 +132,11 @@ export default function Home() {
                 </div>
 
                 <h3 className="h3">
-                  <a href="#" className="card-title">Hybrid Distance Programs</a>
+                  <a href="#" className="card-title">Data Analysis and Insights</a>
                 </h3>
 
                 <p className="card-text">
-                  Lorem ipsum dolor consec tur elit adicing sed umod tempor.
+                AcademiaHub includes features for data analysis and insights, providing administrators with valuable information about historical class allocation data, attendance trends, and exam performance. This data-driven approach helps institutions make informed decisions to optimize future scheduling and resource allocation.
                 </p>
 
                 <span className="card-badge">8 Courses</span>
@@ -156,68 +150,7 @@ export default function Home() {
       </section>
 
       <section className="section about" id="about" aria-label="about">
-        <div className="container1">
-
-          <figure className="about-banner">
-
-            <div className="img-holder" style={{ "--width": "520; --height: 370;" }}>
-              <img src="Images/about-banner.jpg" width="520" height="370" loading="lazy" alt="about banner"
-                className="img-cover" />
-            </div>
-
-            <img src="Images/about-shape-1.svg" width="360" height="420" loading="lazy" alt=""
-              className="shape about-shape-1" />
-
-            <img src="Images/about-shape-2.svg" width="371" height="220" loading="lazy" alt=""
-              className="shape about-shape-2" />
-
-            <img src="Images/about-shape-3.png" width="722" height="528" loading="lazy" alt=""
-              className="shape about-shape-3" />
-
-          </figure>
-
-          <div className="about-content">
-
-            <p className="section-subtitle">About Us</p>
-
-            <h2 className="h2 section-title">
-              Over 10 Years in <span className="span">Distant learning</span> for Skill Development
-            </h2>
-
-            <p className="section-text">
-              Lorem ipsum dolor sit amet consectur adipiscing elit sed eiusmod ex tempor incididunt labore dolore magna
-              aliquaenim ad
-              minim.
-            </p>
-
-            <ul className="about-list">
-
-              <li className="about-item">
-                <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
-
-                <span className="span">Expert Trainers</span>
-              </li>
-
-              <li className="about-item">
-                <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
-
-                <span className="span">Online Remote Learning</span>
-              </li>
-
-              <li className="about-item">
-                <ion-icon name="checkmark-done-outline" aria-hidden="true"></ion-icon>
-
-                <span className="span">Lifetime Access</span>
-              </li>
-
-            </ul>
-
-            <img src="Images/about-shape-4.svg" width="100" height="100" loading="lazy" alt=""
-              className="shape about-shape-4" />
-
-          </div>
-
-        </div>
+        
       </section>
 
 
@@ -245,30 +178,13 @@ export default function Home() {
                     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                   </a>
 
-                  <a href="#" className="card-subtitle">Online</a>
-
                   <h3 className="h3">
-                    <a href="#" className="card-title">Become A Better Blogger: Content Planning</a>
+                    <a href="#" className="card-title">Intuitive Interface</a>
                   </h3>
 
-                  <ul className="card-meta-list">
-
-                    <li className="card-meta-item">
-                      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-
-                      <span className="span">Oct 10, 2021</span>
-                    </li>
-
-                    <li className="card-meta-item">
-                      <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
-
-                      <span className="span">Com 09</span>
-                    </li>
-
-                  </ul>
 
                   <p className="card-text">
-                    Lorem Ipsum Dolor Sit Amet Cons Tetur Adipisicing Sed.
+                  Enjoy a user-friendly interface for seamless navigation and efficient task execution.
                   </p>
 
                 </div>
@@ -290,30 +206,15 @@ export default function Home() {
                     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                   </a>
 
-                  <a href="#" className="card-subtitle">Online</a>
-
+                
                   <h3 className="h3">
-                    <a href="#" className="card-title">Become A Better Blogger: Content Planning</a>
+                    <a href="#" className="card-title">Customized Preferences</a>
                   </h3>
 
-                  <ul className="card-meta-list">
-
-                    <li className="card-meta-item">
-                      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-
-                      <span className="span">Oct 10, 2021</span>
-                    </li>
-
-                    <li className="card-meta-item">
-                      <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
-
-                      <span className="span">Com 09</span>
-                    </li>
-
-                  </ul>
+                  
 
                   <p className="card-text">
-                    Lorem Ipsum Dolor Sit Amet Cons Tetur Adipisicing Sed.
+                  Personalize your experience with customizable settings tailored to your specific needs and workflow.
                   </p>
 
                 </div>
@@ -335,30 +236,16 @@ export default function Home() {
                     <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                   </a>
 
-                  <a href="#" className="card-subtitle">Online</a>
+                  
 
                   <h3 className="h3">
-                    <a href="#" className="card-title">Become A Better Blogger: Content Planning</a>
+                    <a href="#" className="card-title">Robust Security Measures</a>
                   </h3>
 
-                  <ul className="card-meta-list">
-
-                    <li className="card-meta-item">
-                      <ion-icon name="calendar-outline" aria-hidden="true"></ion-icon>
-
-                      <span className="span">Oct 10, 2021</span>
-                    </li>
-
-                    <li className="card-meta-item">
-                      <ion-icon name="chatbubbles-outline" aria-hidden="true"></ion-icon>
-
-                      <span className="span">Com 09</span>
-                    </li>
-
-                  </ul>
+                 
 
                   <p className="card-text">
-                    Lorem Ipsum Dolor Sit Amet Cons Tetur Adipisicing Sed.
+                  Trust in AcademiaHub's secure data management protocols for safeguarding sensitive information.
                   </p>
 
                 </div>

@@ -80,6 +80,9 @@ export default function Navbar() {
                           <Link className="nav-link active" aria-current="page" to='/'>Home</Link>
                         </li>
                         <li className="nav-item">
+                          <Link className="nav-link active" aria-current="page" to='/Aconnect'>Connect</Link>
+                        </li>
+                        <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/manage'>Classrooms</Link>
                         </li>
                         <li className="nav-item">
