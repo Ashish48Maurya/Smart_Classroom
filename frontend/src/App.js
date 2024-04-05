@@ -36,6 +36,7 @@ import SubmittedAssignment from './Components/Student/SubmittedAssignment';
 import EditTeacher from './Components/Teacher/EditTeacher';
 import EditStudent from './Components/Student/EditStudent';
 import Aconnect from './Components/Admin/Students/Aconnect';
+import Allocator from "./Components/Admin/Classrooms/Allocator"
 
 
 function App() {
@@ -66,6 +67,7 @@ function App() {
         <Route exact path='/editTeacher/:id' element={<EditTeacher />} />
         <Route exact path='/editStudent/:id' element={<EditStudent />} />
         <Route exact path='/classroom' element={<ClassRoom />} />
+        <Route exact path='/exam-allocator' element={<Allocator />} />
         <Route exact path='/give-assignment' element={<GiveAssignments />} />
         <Route exact path='/get-assignments' element={<StudentAssignment />} />
         {/* <Route exact path='/see_assignments' element={<StudentAssignments />} /> */}

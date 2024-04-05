@@ -69,9 +69,6 @@ export default function Navbar() {
                         <li className="nav-item">
                           <Link className="nav-link active" aria-current="page" to='/attendance'>Attendance</Link>
                         </li>
-                        <li className="nav-item">
-                          <Link className="nav-link active" aria-current="page" to='/submitted_assignments'>Past_Assignment</Link>
-                        </li>
                       </>
                     )}
                     {userData.user === "Admin" && (
@@ -96,6 +93,9 @@ export default function Navbar() {
                         </li>
                         <li className="nav-item">
                           <Link className="nav-link active" type="button" style={{ maxHeight: "min-content" }} to='/teacherregister'>Register Teacher</Link>
+                        </li>
+                        <li className="nav-item">
+                          <Link className="nav-link active" type="button" style={{ maxHeight: "min-content" }} to='/exam-allocator'>Smart Allocator</Link>
                         </li>
                       </>
                     )}

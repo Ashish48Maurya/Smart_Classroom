@@ -6,7 +6,6 @@ const PendingAssignments = () => {
     const { backend_api, token } = useAuth();
     const [file, setFile] = useState("");
     const [assignments, setAssignments] = useState([]);
-    const { token } = useAuth();
 
     const liveAssignments = async () => {
         try {

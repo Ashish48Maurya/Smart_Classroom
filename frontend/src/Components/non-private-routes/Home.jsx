@@ -22,7 +22,7 @@ export default function Home() {
                 </h2>
 
                 <a href="#" className="btn has-before">
-                  <span className="span">Eplore More</span>
+                  <span className="span">Explore More</span>
 
                   <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                 </a>
@@ -76,8 +76,6 @@ export default function Home() {
                 AcademiaHub utilizes advanced algorithms to automate the allocation of classrooms based on factors such as class size, subject requirements, and facility availability. This feature saves time for educators and administrators and ensures efficient use of resources.
                 </p>
 
-                <span className="card-badge">7 Courses</span>
-
               </div>
             </li>
 
@@ -96,8 +94,6 @@ export default function Home() {
                 <p className="card-text">
                 AcademiaHub provides real-time updates and notifications to keep stakeholders informed about any changes or updates related to class schedules, exam timings, or resource availability. This ensures smooth communication and minimizes disruptions during the educational process. 
                 </p>
-
-                <span className="card-badge">4 Courses</span>
 
               </div>
             </li>
@@ -118,8 +114,6 @@ export default function Home() {
                 AcademiaHub offers integrated student attendance tracking, allowing educators to easily monitor and track attendance records. Students can also view their attendance percentages, promoting accountability and engagement in their academic journey.
                 </p>
 
-                <span className="card-badge">8 Courses</span>
-
               </div>
             </li>
 
@@ -138,8 +132,6 @@ export default function Home() {
                 <p className="card-text">
                 AcademiaHub includes features for data analysis and insights, providing administrators with valuable information about historical class allocation data, attendance trends, and exam performance. This data-driven approach helps institutions make informed decisions to optimize future scheduling and resource allocation.
                 </p>
-
-                <span className="card-badge">8 Courses</span>
 
               </div>
             </li>
@@ -601,6 +593,7 @@ export default function Home() {
     padding: 50px 30px;
     text-align: center;
     border-radius: var(--radius-5);
+    height:80vh;
   }
   
   .category-card .card-icon {
@@ -629,6 +622,12 @@ export default function Home() {
     max-width: max-content;
     margin-inline: auto;
     border-radius: var(--radius-5);
+  }
+
+  @media screen and (max-width:770px){
+    .category-card{
+      height:auto;
+    }
   }
   
   

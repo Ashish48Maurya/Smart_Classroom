@@ -8,6 +8,10 @@ const AssignmentDetail = () => {
     const location = useLocation();
     const assignment = location.state.assignment;
 
+    const formatDate = () => {
+        
+    }
+
     return (
         <div className="container mt-5">
             <Navbar />
@@ -28,7 +32,13 @@ const AssignmentDetail = () => {
 
             <h2>File</h2>
                 <iframe title="PDF Viewer" src={`http://localhost:8000/${assignment.file}`} width="100%" height="500px"></iframe>
-            
+            <style>
+                {`
+                body{
+                    margin-top:100px;
+                }
+                `}
+            </style>
         </div>
     );
 };
