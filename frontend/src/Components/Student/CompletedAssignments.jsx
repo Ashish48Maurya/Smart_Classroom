@@ -7,12 +7,12 @@ const CompletedAssignments = () => {
 
     const getData = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/submitted_assignments`);
+            const res = await fetch(`http://localhost:8000/get_assignments`);
 
             if (res.status === 200) {
                 const data = await res.json();
                 const filteredAssignments = data.data.filter((assignment) => assignment.students_output.length > 0);
-                setAssignments(data.data);
+                setAssignments(filteredAssignments);
             } else {
                 console.log(res);
             }
@@ -32,7 +32,7 @@ const CompletedAssignments = () => {
     return (
         <div className="assignment-container">
             <h2>Completed Assignments</h2>
-            {assignments.map((assignment) => (
+            {/* {assignments.map((assignment) => (
                 <div className="ass-card" onClick={() => handleAssignmentClick(assignment)} key={assignment._id}>
                     <div className="ass-title">{assignment.title}</div>
                     <div className="ass-desc">{assignment.description}</div>
@@ -43,27 +43,7 @@ const CompletedAssignments = () => {
                     </div>
                     <span className="ass-dept">{assignment.department}</span>
                 </div>
-            ))}
-            {/* <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
+            ))} */}
             <div className="ass-card">
                 <div className="ass-title">CN Assignment 1</div>
                 <div className="ass-desc">This is your CN Assignment 1</div>
@@ -143,7 +123,27 @@ const CompletedAssignments = () => {
                     <span className="ass-dept">ICB</span>
                 </div>
                 <span className="ass-subject">DAA</span>
-            </div> */}
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">CN Assignment 1</div>
+                <div className="ass-desc">This is your CN Assignment 1</div>
+                <div className="ass-date">05-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">CN</span>
+            </div>
+            <div className="ass-card">
+                <div className="ass-title">DAA Assignment</div>
+                <div className="ass-desc">This is your DAA Assignment</div>
+                <div className="ass-date">06-04-24</div>
+                <div className="ass-details">
+                    <span className="ass-yos">1st</span>
+                    <span className="ass-dept">ICB</span>
+                </div>
+                <span className="ass-subject">DAA</span>
+            </div>
             <style>
                 {`
                 .assignment-container {

@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 export default function ForgetPasswordEmail() {
     const { backend_api } = useAuth();
     const [mail, setMail] = useState('');
-    const [person,setPerson] = useState('');
+    const [person, setPerson] = useState('');
     const handleSubmit = async (e) => {
         e.preventDefault();
 

@@ -8,25 +8,27 @@ export const options = {
 };
 
 export default function Attendance() {
-    const { token, backend_api } = useAuth();
-    const data = localStorage.getItem("USER");
-    const userData = JSON.parse(data);
+    const { token, backend_api, loggedUser } = useAuth();
     const [attendanceData, setAttendanceData] = useState([]);
     const [totalAttendancePercentage, setTotalAttendancePercentage] = useState("");
     const [selectedSubject, setSelectedSubject] = useState(null);
 
-    const getAttendance = () => {
-        // Fetch attendance data from localStorage
-        const attendanceData = userData.subjects.map(subject => ({
-            name: subject.name,
-            attendance: subject.attendance || [], // If attendance is not available, default to an empty array
-        }));
-        setAttendanceData(attendanceData);
-
-        // Calculate total attendance percentage
-        const totalAttendanceCount = attendanceData.reduce((total, subject) => total + subject.attendance.length, 0);
-        const totalAttendancePercentage = (totalAttendanceCount / attendanceData.length) * 100;
-        setTotalAttendancePercentage(totalAttendancePercentage.toFixed(2));
+    const getAttendance = async () => {
+        try {
+            const response = await fetch(`${backend_api}/studentAttendance/${loggedUser._id}`, {
+                method: 'GET'
+            });
+            if (response.status === 200) {
+                const parsedData = await response.json();
+                // console.log(parsedData);
+                setAttendanceData(parsedData.attendanceData);
+                setTotalAttendancePercentage(parsedData.totalAttendancePercentage);
+            } else {
+                console.error('Failed to fetch attendance history:', response.status);
+            }
+        } catch (error) {
+            console.error('Error fetching attendance history:', error);
+        }
     };
 
     const handleSubjectClick = (subject) => {
@@ -35,7 +37,7 @@ export default function Attendance() {
 
     useEffect(() => {
         getAttendance();
-    }, [userData]);
+    }, [loggedUser]);
 
     return (
         <>

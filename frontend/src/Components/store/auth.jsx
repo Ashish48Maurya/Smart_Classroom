@@ -67,8 +67,8 @@ export const AuthProvider = ({ children }) => {
     }, [token, loggedUser]);
 
     const getClassData = useCallback(async () => {
-        
-    },[]);
+
+    }, []);
 
     useEffect(() => {
         const authenticateUser = async () => {

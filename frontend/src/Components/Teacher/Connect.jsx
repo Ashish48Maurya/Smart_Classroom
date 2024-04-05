@@ -8,7 +8,7 @@ export default function Connect() {
     const [branch, setBranch] = useState('');
     const [msg, setMsg] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
-    const { backend_api,token } = useAuth();
+    const { backend_api, token } = useAuth();
 
     const sendMail = async () => {
         // Use the selectedBranch state variable in your fetch request or any other logic

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useAuth } from '../store/auth';
 import Navbar from '../Navbar';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 
 const EditTeacher = () => {
     const { backend_api, token, loggedUser } = useAuth();
