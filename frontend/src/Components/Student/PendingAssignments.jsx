@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../store/auth';
 
 const PendingAssignments = () => {
     const navigate = useNavigate();
     const [assignments, setAssignments] = useState([]);
+    const { token } = useAuth();
 
     const getData = async () => {
         try {
-            const res = await fetch(`http://localhost:8000/get_assignments`);
+            const res = await fetch(`http://localhost:8000/live_assignments`, {
+                method: "get",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            });
 
             if (res.status === 200) {
                 const data = await res.json();
@@ -32,118 +39,18 @@ const PendingAssignments = () => {
     return (
         <div className="assignment-container">
             <h2>Pending Assignments</h2>
-            {/* {assignments.map((assignment) => (
+            {assignments.map((assignment) => (
                 <div className="ass-card" onClick={() => handleAssignmentClick(assignment)} key={assignment._id}>
                     <div className="ass-title">{assignment.title}</div>
                     <div className="ass-desc">{assignment.description}</div>
                     <div className="ass-date">{new Date(assignment.dueDate).toLocaleDateString()}</div>
                     <div className="ass-details">
-                        <span className="ass-subject">{assignment.subject}</span>
                         <span className="ass-yos">{assignment.yearOfStudy}</span>
-                    </div>
                     <span className="ass-dept">{assignment.department}</span>
+                    </div>
+                        <span className="ass-subject">{assignment.subject}</span>
                 </div>
-            ))} */}
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">CN Assignment 1</div>
-                <div className="ass-desc">This is your CN Assignment 1</div>
-                <div className="ass-date">05-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">CN</span>
-            </div>
-            <div className="ass-card">
-                <div className="ass-title">DAA Assignment</div>
-                <div className="ass-desc">This is your DAA Assignment</div>
-                <div className="ass-date">06-04-24</div>
-                <div className="ass-details">
-                    <span className="ass-yos">1st</span>
-                    <span className="ass-dept">ICB</span>
-                </div>
-                <span className="ass-subject">DAA</span>
-            </div>
+            ))}
             <style>
                 {`
                 .assignment-container {

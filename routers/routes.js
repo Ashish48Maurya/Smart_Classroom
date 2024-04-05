@@ -745,7 +745,6 @@ router.post('/give_assignment', authmiddleware(Teacher), upload.single('file'), 
     }
 });
 
-//find by department and yearOfStudy
 router.get('/live_assignments', authmiddleware(Student), async (req, res) => {
     const { department, yearOfStudy, sapID } = req.user;
     try {
