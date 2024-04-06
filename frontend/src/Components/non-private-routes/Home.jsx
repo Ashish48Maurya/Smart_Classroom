@@ -76,8 +76,6 @@ export default function Home() {
                 AcademiaHub utilizes advanced algorithms to automate the allocation of classrooms based on factors such as class size, subject requirements, and facility availability. This feature saves time for educators and administrators and ensures efficient use of resources.
                 </p>
 
-                <span className="card-badge">7 Courses</span>
-
               </div>
             </li>
 
@@ -97,7 +95,6 @@ export default function Home() {
                 AcademiaHub provides real-time updates and notifications to keep stakeholders informed about any changes or updates related to class schedules, exam timings, or resource availability. This ensures smooth communication and minimizes disruptions during the educational process. 
                 </p>
 
-                <span className="card-badge">4 Courses</span>
 
               </div>
             </li>
@@ -118,8 +115,6 @@ export default function Home() {
                 AcademiaHub offers integrated student attendance tracking, allowing educators to easily monitor and track attendance records. Students can also view their attendance percentages, promoting accountability and engagement in their academic journey.
                 </p>
 
-                <span className="card-badge">8 Courses</span>
-
               </div>
             </li>
 
@@ -139,7 +134,6 @@ export default function Home() {
                 AcademiaHub includes features for data analysis and insights, providing administrators with valuable information about historical class allocation data, attendance trends, and exam performance. This data-driven approach helps institutions make informed decisions to optimize future scheduling and resource allocation.
                 </p>
 
-                <span className="card-badge">8 Courses</span>
 
               </div>
             </li>
