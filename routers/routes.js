@@ -830,57 +830,16 @@ router.get('/submitted_assignments', authmiddleware(Student), async (req, res) =
 
 
 
-//Working Code
-// router.post('/notify', async (req, res) => {
-//     try {
-//         admin.initializeApp({
-//             credential: admin.credential.cert(serviceAccount),
-//         });
-
-//         const { data } = req.body;
-
-//         const deviceToken = 'fxbwBxqmDwW5o3IrplwTz7:APA91bGQEGJ9iZE-LqH4MG61eS_GDtNYxuz3fPB6Af7GKovrp7hKxODChUQYguCIPh13McmFssk58HigicebMXRwJlilPg-usU9VQ811a4U0Er16g6quBuO8jhv6A2V7KGHcWNpmgp7_';
-
-//         // Notification payload
-//         const payload = {
-//             notification: {
-//                 title: data.title,
-//                 body: data.body,
-//             }
-//         };
-
-//         // Send the notification to the device token
-//         admin.messaging().sendToDevice(deviceToken, payload)
-//             .then((response) => {
-//                 console.log('Successfully sent notification:', response);
-//                 res.status(200).send('Notification sent successfully');
-//             })
-//             .catch((error) => {
-//                 console.error('Error sending notification:', error);
-//                 res.status(500).send('Error sending notification');
-//             });
-
-//     } catch (error) {
-//         console.error('Error sending notification:', error);
-//         res.status(500).send('Error sending notification');
-//     }
-// });
-
-
+// Working Code
 router.post('/notify', async (req, res) => {
     try {
-        const { department, yearOfStudy, data } = req.body;
-        const students = await Student.find({ department, yearOfStudy }, 'tokens');
-
-        const registrationTokens = students.flatMap(student => student.tokens);
-
-        if (!registrationTokens || registrationTokens.length === 0) {
-            return res.status(400).send('No registration tokens found for the students');
-        }
-
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
         });
+
+        const { data } = req.body;
+
+        const deviceToken = 'fewnVqTezpg5lz-n1ImvYG:APA91bFLYknDYgl_D3uvGG-x3kLdLEYOKso2U3vXNTX-sUlSXux7a4NlQv4V3s-yodVq01i99ZIK0pwLTAChBXiYXUSXYjXcWbjESrrRYXnBQXzqMr7FHpieTDdOuBNm1F4xF-4eyYLO';
 
         const payload = {
             notification: {
@@ -889,19 +848,59 @@ router.post('/notify', async (req, res) => {
             }
         };
 
-        admin.messaging().sendToDevice(registrationTokens, payload)
+        // Send the notification to the device token
+        admin.messaging().sendToDevice(deviceToken, payload)
             .then((response) => {
-                console.log('Successfully sent test notification:', response);
+                console.log('Successfully sent notification:', response);
+                res.status(200).send('Notification sent successfully');
             })
             .catch((error) => {
-                console.error('Error sending test notification:', error);
+                console.error('Error sending notification:', error);
+                res.status(500).send('Error sending notification');
             });
 
     } catch (error) {
-        console.error('Error sending message:', error);
-        res.status(500).send('Error sending message');
+        console.error('Error sending notification:', error);
+        res.status(500).send('Error sending notification');
     }
 });
+
+
+// router.post('/notify', async (req, res) => {
+//     try {
+//         const { department, yearOfStudy, data } = req.body;
+//         const students = await Student.find({ department, yearOfStudy }, 'tokens');
+
+//         const registrationTokens = students.flatMap(student => student.tokens);
+
+//         if (!registrationTokens || registrationTokens.length === 0) {
+//             return res.status(400).send('No registration tokens found for the students');
+//         }
+
+//         admin.initializeApp({
+//             credential: admin.credential.cert(serviceAccount),
+//         });
+
+//         const payload = {
+//             notification: {
+//                 title: data.title,
+//                 body: data.body,
+//             }
+//         };
+
+//         admin.messaging().sendToDevice(registrationTokens, payload)
+//             .then((response) => {
+//                 console.log('Successfully sent test notification:', response);
+//             })
+//             .catch((error) => {
+//                 console.error('Error sending test notification:', error);
+//             });
+
+//     } catch (error) {
+//         console.error('Error sending message:', error);
+//         res.status(500).send('Error sending message');
+//     }
+// });
 
 router.get('/live_assignments',authmiddleware(Student), async (req, res) => {
     const {department,yearOfStudy,sapID} = req.user;

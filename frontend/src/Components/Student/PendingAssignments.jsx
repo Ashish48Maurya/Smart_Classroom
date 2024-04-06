@@ -18,7 +18,6 @@ const PendingAssignments = () => {
             });
             if (res.ok) {
                 const data = await res.json();
-                console.log(data);
                 setAssignments(data.data); // Access the 'data' property of the response
             } else {
                 console.error('Failed to fetch assignments:', res.statusText);
@@ -59,89 +58,61 @@ const PendingAssignments = () => {
             <Navbar />
             <div>
                 <h1>Assignments</h1>
-                <div className="table-responsive">
-                    <table id='assignments'>
-                        <thead>
-                            <tr className='text-center'>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Due Date</th>
-                                <th>Subject</th>
-                                <th>Year of Study</th>
-                                <th>Department</th>
-                                <th>Document</th>
-                                <th>Submit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {assignments.map(assignment => (
-                                <tr key={assignment._id}>
-                                    <td>{assignment.title}</td>
-                                    <td>{assignment.description}</td>
-                                    <td>{new Date(assignment.dueDate).toLocaleDateString()}</td>
-                                    <td>{assignment.subject}</td>
-                                    <td>{assignment.yearOfStudy}</td>
-                                    <td>{assignment.department}</td>
-                                    <td>{assignment.file && <a href={`http://localhost:8000/${assignment.file}`}>View File</a>}</td>
-                                    <td>
-                                        <form encType="multipart/form-data">
-                                        <input
-                                            type="file"
-                                            accept="file/*"
-                                            name="file"
-                                            onChange={(event) => setFile(event.target.files[0])}
-                                        />
-                                        <button onClick={(event) => {event.preventDefault(); handleSubmit(assignment._id)}}>Submit</button>
-                                        </form>
-                                        </td>
+                {assignments.length === 0 ? (
+                    <p>No pending assignments</p>
+                ) : (
+                    <div className="table-responsive">
+                        <table id='assignments'>
+                            <thead>
+                                <tr className='text-center'>
+                                    <th>Title</th>
+                                    <th>Description</th>
+                                    <th>Due Date</th>
+                                    <th>Subject</th>
+                                    <th>Year of Study</th>
+                                    <th>Department</th>
+                                    <th>Document</th>
+                                    <th>Submit</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                                {assignments.map(assignment => (
+                                    <tr key={assignment._id}>
+                                        <td>{assignment.title}</td>
+                                        <td>{assignment.description}</td>
+                                        <td>{new Date(assignment.dueDate).toLocaleDateString()}</td>
+                                        <td>{assignment.subject}</td>
+                                        <td>{assignment.yearOfStudy}</td>
+                                        <td>{assignment.department}</td>
+                                        <td>{assignment.file && <a href={`http://localhost:8000/${assignment.file}`}>View File</a>}</td>
+                                        <td>
+                                            <form encType="multipart/form-data">
+                                                <input
+                                                    type="file"
+                                                    accept="file/*"
+                                                    name="file"
+                                                    onChange={(event) => setFile(event.target.files[0])}
+                                                />
+                                                <button onClick={(event) => { event.preventDefault(); handleSubmit(assignment._id) }}>Submit</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
             </div>
             <style>
                 {`
                 body{
                     margin-top:100px;
                 }
-
-                .createbtn{
-                    float:right;
-                    margin-right:100px;
-                    text-align:center;
-                    width:max-content;
-                    font-size:18px;
-                }
-
-                .createbtn a{
-                    display:flex;
-                    justfify-content:center;
-                    align-items:center;
-                }
-
-                .circle {
-                    width:35px;
-                    height:35px;
-                    border:2px solid #007bff;
-                    border-radius: 50%;
-                    text-align:center;
-                    color: #fff;
-                    font-size: 18px;
-                    margin-left:10px;
-                }
-
-                .plus {
-                    line-height: 0;
-                    color: #007bff;
-                }
-
                 .table-responsive{
                     display:flex;
                     justify-content:center;
                     align-items:center;
                 }
-
                 #assignments {
                     border-collapse: collapse;
                     margin: 25px 0;
@@ -160,7 +131,6 @@ const PendingAssignments = () => {
                     color: #ffffff;
                     text-align: left;
                 }
-
                 th, td {
                     padding: 12px 15px;
                 }
@@ -168,20 +138,16 @@ const PendingAssignments = () => {
                     border-bottom: 1px solid #dddddd;
                     cursor:pointer
                 }
-
                 #assignments tbody tr:nth-of-type(even) {
                     background-color: #f3f3f3;
                 }
-
                 #assignments tbody tr:last-of-type {
                     border-bottom: 2px solid #3e79ff;
                 }
-
                 #assignments tbody tr.active-row {
                     font-weight: bold;
                     color: #3e79ff;
                 }
-
                 #assignments tbody tr:hover,
                 #assignments tbody tr:focus{
                     font-weight: bold;

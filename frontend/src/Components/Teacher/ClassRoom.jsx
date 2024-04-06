@@ -15,23 +15,27 @@ export default function ClassRoom() {
     const { token, backend_api } = useAuth();
 
     const sendMsg = async (msg) => {
-        const ans = await fetch(`${backend_api}/notify`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                data: msg.data,
-                branch,
-                yearOfStudy: year,
-            })
-        });
-        console.log(ans);
+        try {
+            const ans = await fetch(`${backend_api}/notify`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    data: msg.data,
+                    branch,
+                    yearOfStudy: year,
+                })
+            });
+            console.log(ans);
 
-        if (ans.ok) {
-            toast.success("Message Sent Successfully");
-        } else {
-            console.error('Error:', ans.statusText);
+            if (ans.ok) {
+                toast.success("Message Sent Successfully");
+            } else {
+                console.error('Error:', ans.statusText);
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 
@@ -45,7 +49,8 @@ export default function ClassRoom() {
         if (ans.ok) {
             const dataa = await ans.json();
             console.log("Response:", dataa);
-            setData(dataa.classrooms);
+            const sortedData = dataa.classrooms.sort((a, b) => b.strength - a.strength);
+            setData(sortedData);
         } else {
             console.error('Error:', ans.statusText);
         }
@@ -65,11 +70,13 @@ export default function ClassRoom() {
             })
         });
         if (ans.ok) {
-            const updatedData = data.filter((ele) => ele._id !== id);
+            const updatedData = data.find((ele) => ele._id !== id);
             setData(updatedData);
+            console.log(updatedData);
+            console.log(updatedData.classroom_no);
             const notificationData = {
                 data: {
-                    title: `Classroom Allocated For ${userData.branch} Lecture`,
+                    title: `Classroom Allocated to ${userData.department} Lecture For ${userData.fullname}`,
                     body: `ClassRoom No: ${updatedData.classroom_no}`
                 }
             };
@@ -116,7 +123,7 @@ export default function ClassRoom() {
                                                         Select Time
                                                     </button>
                                                     <div className="dropdown-menu custom-width" id="drop" style={{ width: '300px' }}>
-                                                        <Link to="#" className="dropdown-item" onClick={() => setTime(60)}>1 Hour</Link>
+                                                        <Link to="#" className="dropdown-item" onClick={() => setTime(1)}>1 minute</Link>
                                                         <Link to="#" className="dropdown-item" onClick={() => setTime(120)}>2 Hour</Link>
                                                     </div>
                                                 </div></> : new Date(ele.reservedUntil).toLocaleTimeString()

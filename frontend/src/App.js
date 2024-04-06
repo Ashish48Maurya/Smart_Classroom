@@ -64,6 +64,7 @@ function App() {
         <Route exact path='/attendance' element={<Attendance />} />
         <Route exact path='/tattendance' element={<TAttendance />} />
         <Route exact path='/manage' element={<Manage />} />
+        <Route exact path='/edit-class' element={<Edit />} />
         <Route exact path='/editTeacher/:id' element={<EditTeacher />} />
         <Route exact path='/editStudent/:id' element={<EditStudent />} />
         <Route exact path='/classroom' element={<ClassRoom />} />

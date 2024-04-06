@@ -78,7 +78,7 @@ export default function StudentRegister() {
         <>
             <Navbar />
             <div className="main-block col-12 col-lg-6 col-md-8 col-sm-10">
-                <h1>Student Registration</h1>
+                <h2>Student Registration</h2>
                 <form onSubmit={postDetails} encType="multipart/form-data">
                     <label id="icon" htmlFor="name"><i className="fas fa-user"></i></label>
                     <input type="text" name="name" id="name" placeholder="Name" value={username}
@@ -175,7 +175,7 @@ export default function StudentRegister() {
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        margin: 100px auto;
+        margin: 130px auto;
         background: rgb(246,243,249);
         background: linear-gradient(163deg, rgba(246,243,249,1) 14%, rgba(112,137,174,1) 100%);
         border-radius: 50px;

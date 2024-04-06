@@ -9,7 +9,33 @@ export default function Connect() {
     const [msg, setMsg] = useState('');
     const [selectedBranch, setSelectedBranch] = useState('');
     const [selectedYear, setSelectedYear] = useState('');
-    const { backend_api,token } = useAuth();
+    const { backend_api, token } = useAuth();
+    const userData = JSON.parse(localStorage.getItem("USER"));
+    
+    const sendMsg = async (msg) => {
+        try {
+            const ans = await fetch(`${backend_api}/notify`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    data: msg.data,
+                    branch: setSelectedBranch,
+                    yearOfStudy: selectedYear,
+                })
+            });
+            console.log(ans);
+
+            if (ans.ok) {
+                toast.success("Message Sent Successfully");
+            } else {
+                console.error('Error:', ans.statusText);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const sendMail = async () => {
 
@@ -28,6 +54,13 @@ export default function Connect() {
         });
 
         if (ans.ok) {
+            const notificationData = {
+                data: {
+                    title: msg,
+                    body: `Message from ${userData.fullname}`
+                }
+            };
+            sendMsg(notificationData);
             toast.success("Message Sent Successfully");
             setBranch('');
             setMsg('');
@@ -69,7 +102,7 @@ export default function Connect() {
                     <input type="text" className="form-control" placeholder="Enter Message" aria-label="Recipient's username" aria-describedby="basic-addon2" value={msg} onChange={(e) => { setMsg(e.target.value) }} />
                 </div>
                 <div className='text-center'>
-                    <button className='btn btn-primary' onClick={sendMail}>Send Mail</button>
+                    <button className='btn btn-primary' onClick={sendMail}>Notify</button>
                 </div>
             </div>
             <style>
