@@ -72,13 +72,13 @@ const AboutUs = () => {
               <div className="card__overlay">
                 <div className="card__header">
                   <svg className="card__arc" xmlns="http://www.w3.org/2000/svg"><path /></svg>
-                  <img className="card__thumb" src="https://avatars.githubusercontent.com/u/112983519?v=4g" alt="" />
+                  <img className="card__thumb" src="../Images/Ayush.jpeg" alt="" />
                   <div className="card__header-text">
-                    <h3 className="card__title">Kaushal Shambhusharan Jha</h3>
+                    <h3 className="card__title">Ayush Kamlesh Mutha</h3>
                     <span className="card__status">App Developer</span>
                   </div>
                 </div>
-                <p className="card__description">Kaushal Shambhusharan Jha is student at Dwarkadas.J.Sanghvi College of Engineering Vile Parle , currently pursuing B.Tech in CSE(IOT and Cybersecurity with Blockchain Technology).</p>
+                <p className="card__description">Ayush Kamlesh Mutha is student at Dwarkadas.J.Sanghvi College of Engineering Vile Parle , currently pursuing B.Tech in CSE(IOT and Cybersecurity with Blockchain Technology).</p>
               </div>
             </a>
           </li>

@@ -1,13 +1,15 @@
-import React,{useEffect, useState} from 'react'
-import Navbar from '../Navbar'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import Navbar from '../Navbar';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../store/auth';
 
 const Assignments = () => {
-    const [assignments,setAssignments] = useState([]);
-    const {backend_api,token} = useAuth();
+    const [assignments, setAssignments] = useState([]);
+    const { backend_api, token } = useAuth();
+    const navigate = useNavigate();
+    const userData = JSON.parse(localStorage.getItem("USER"));
 
-    const Assignments = async () => {
+    const fetchAssignments = async () => {
         try {
             const res = await fetch(`${backend_api}/Faculty_assignments`, {
                 method: "GET",
@@ -18,19 +20,23 @@ const Assignments = () => {
             });
             if (res.ok) {
                 const data = await res.json();
-                setAssignments(data.data);
+                const filteredAssignments = data.data.filter(assignment => assignment.subject === userData.subject);
+                setAssignments(filteredAssignments);
             } else {
                 console.error('Failed to fetch assignments:', res.statusText);
             }
         } catch (error) {
             console.error('Error fetching assignments:', error);
         }
-    }
+    };
 
-    useEffect(()=>{
-        Assignments();
-    },[])
+    const handleAssignmentClick = (assignment) => {
+        navigate(`/assignment-details`, { state: { assignment } });
+    };
 
+    useEffect(() => {
+        fetchAssignments();
+    }, []);
 
     return (
         <>
@@ -42,21 +48,21 @@ const Assignments = () => {
                 </div>
                 <div className="assignment-container">
                     {assignments.map((assignment) => (
-                        // <div className="ass-card" onClick={() => handleAssignmentClick(assignment._id)} key={assignment._id}>
-                        <div className="ass-card" key={assignment._id}>
+                        <div className="ass-card" onClick={() => handleAssignmentClick(assignment)} key={assignment._id}>
                             <div className="ass-title">{assignment.title}</div>
                             <div className="ass-desc">{assignment.description}</div>
                             <div className="ass-date">{new Date(assignment.dueDate).toLocaleDateString()}</div>
                             <div className="ass-details">
-                            <span className="ass-dept mx-5">{assignment.department}</span>
-                            <span className="ass-yos mx-5">{assignment.yearOfStudy}</span>
+                                <span className="ass-dept mx-5">{assignment.department}</span>
+                                <span className="ass-yos mx-5">{assignment.yearOfStudy}</span>
                             </div>
-                                <span className="ass-subject">{assignment.subject}</span>
+                            <span className="ass-subject">{assignment.subject}</span>
                         </div>
                     ))}
-
-                    <style>
-                        {`
+                </div>
+            </div>
+            <style>
+                {`
 
                 body{
                     margin-top:100px;
@@ -179,9 +185,7 @@ const Assignments = () => {
                     }
                 }
                 `}
-                    </style>
-                </div>
-            </div>
+            </style>
         </>
     )
 }
