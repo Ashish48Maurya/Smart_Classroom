@@ -1,25 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import Navbar from "../Navbar";
+import { useAuth } from '../store/auth';
+import { toast } from 'react-toastify';
 
 const AssignmentDetail = () => {
     const location = useLocation();
     const assignment = location.state.assignment;
 
+    const formatDate = () => {
+        
+    }
+
     return (
-        <div>
-            <h1>Assignment Detail</h1>
-            <p>Title: {assignment.title}</p>
-            <p>Description: {assignment.description}</p>
-            <p>Due Date: {assignment.dueDate}</p>
-            <p>Subject: {assignment.subject}</p>
-            <p>Year of Study: {assignment.yearOfStudy}</p>
-            <p>Department: {assignment.department}</p>
+        <div className="container mt-5">
+            <Navbar />
+            <div className="card">
+                <h5 className="card-header">Assignment Detail</h5>
+                <div className="card-body">
+                    <h5 className="card-title">{assignment.title}</h5>
+                    <p className="card-text">
+                        <strong>Description:</strong> {assignment.description}<br />
+                        <strong>Due Date:</strong> {formatDate(assignment.dueDate)}<br />
+                        <strong>Subject:</strong> {assignment.subject}<br />
+                        <strong>Year of Study:</strong> {assignment.yearOfStudy}<br />
+                        <strong>Department:</strong> {assignment.department}
+                    </p>
+                </div>
+            </div>
 
 
             <h2>File</h2>
                 <iframe title="PDF Viewer" src={`http://localhost:8000/${assignment.file}`} width="100%" height="500px"></iframe>
-
-            
+            <style>
+                {`
+                body{
+                    margin-top:100px;
+                }
+                `}
+            </style>
         </div>
     );
 };

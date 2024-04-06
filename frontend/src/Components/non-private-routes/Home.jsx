@@ -22,7 +22,7 @@ export default function Home() {
                 </h2>
 
                 <a href="#" className="btn has-before">
-                  <span className="span">Eplore More</span>
+                  <span className="span">Explore More</span>
 
                   <ion-icon name="arrow-forward-outline" aria-hidden="true"></ion-icon>
                 </a>
@@ -95,7 +95,6 @@ export default function Home() {
                 AcademiaHub provides real-time updates and notifications to keep stakeholders informed about any changes or updates related to class schedules, exam timings, or resource availability. This ensures smooth communication and minimizes disruptions during the educational process. 
                 </p>
 
-
               </div>
             </li>
 
@@ -133,7 +132,6 @@ export default function Home() {
                 <p className="card-text">
                 AcademiaHub includes features for data analysis and insights, providing administrators with valuable information about historical class allocation data, attendance trends, and exam performance. This data-driven approach helps institutions make informed decisions to optimize future scheduling and resource allocation.
                 </p>
-
 
               </div>
             </li>
@@ -595,6 +593,7 @@ export default function Home() {
     padding: 50px 30px;
     text-align: center;
     border-radius: var(--radius-5);
+    height:80vh;
   }
   
   .category-card .card-icon {
@@ -623,6 +622,12 @@ export default function Home() {
     max-width: max-content;
     margin-inline: auto;
     border-radius: var(--radius-5);
+  }
+
+  @media screen and (max-width:770px){
+    .category-card{
+      height:auto;
+    }
   }
   
   

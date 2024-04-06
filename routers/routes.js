@@ -785,8 +785,6 @@ router.post('/give_assignment', authmiddleware(Teacher), upload.single('file'), 
     }
 });
 
-
-
 router.get('/Faculty_assignments', authmiddleware(Teacher), async (req, res) => {
     try {
         const id = req.userID;
