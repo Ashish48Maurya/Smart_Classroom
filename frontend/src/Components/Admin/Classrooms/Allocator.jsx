@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import Navbar from '../../Navbar';
+import * as XLSX from 'xlsx';
 
 class ClassData {
     constructor(subject, branch, students) {
@@ -9,101 +10,84 @@ class ClassData {
     }
 }
 
-class Main extends Component {
+class Allocate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            noOfClasses: 0,
             classRoomNoAlongWithCapacity: [],
-            classes: [
-                new ClassData("Maths", "CSE", 60),
-                new ClassData("DAA", "CSE", 60),
-                new ClassData("WADL", "CSE", 60),
-                new ClassData("WADL", "IOT", 60)
-            ],
+            classes: [],
             mapData: new Map(),
-            showInput: false
-        }
+            subject: '',
+            branch: '',
+            students: '',
+            year: ''
+        };
     }
 
-    componentDidMount() {
-        this.fetchClassrooms();
-    }
+    handleFileUpload = (e, type) => {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+            const bstr = evt.target.result;
+            const wb = XLSX.read(bstr, { type: 'binary' });
+            const wsname = wb.SheetNames[0];
+            const ws = wb.Sheets[wsname];
+            const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
-    fetchClassrooms = () => {
-        fetch('http://localhost:8000/get_classrooms')
-            .then(response => response.json())
-            .then(data => {
-                // Assuming the response is an array of objects with classroom number and capacity
-                const classRoomNoAlongWithCapacity = data.map(item => [item.classroomNumber, 2 * item.capacity]);
-                this.setState({ classRoomNoAlongWithCapacity, noOfClasses: data.length });
-            })
-            .catch(error => console.error('Error fetching classrooms:', error));
-    }
-
-    allocateClasses = () => {
-        const { classes, classRoomNoAlongWithCapacity, mapData } = this.state;
-
-        for (let i = 0; i < classes.length; i++) {
-            let firstHalf = Math.floor(classes[i].students / 3);
-            let secondHalf = firstHalf;
-            let thirdHalf = classes[i].students - 2 * firstHalf;
-
-            for (let [ele, capacity] of classRoomNoAlongWithCapacity) {
-                if (capacity >= firstHalf) {
-                    let subjectNotPresent = true;
-                    for (let data of (mapData.get(ele) || [])) {
-                        if (data.subject === classes[i].subject) {
-                            subjectNotPresent = false;
-                            break;
-                        }
-                    }
-                    if (subjectNotPresent) {
-                        let dataList = mapData.get(ele) || [];
-                        dataList.push(new ClassData(classes[i].subject, classes[i].branch, firstHalf));
-                        mapData.set(ele, dataList);
-                        capacity -= firstHalf;
-                        classRoomNoAlongWithCapacity[classRoomNoAlongWithCapacity.findIndex(([k]) => k === ele)][1] = capacity;
-                        break;
-                    }
-                }
+            if (type === 'classrooms') {
+                this.setState({
+                    classRoomNoAlongWithCapacity: data[0].slice(1).map(row => [row[0], [row[1], row[2]]])
+                }, () => {
+                    this.populateMapData();
+                });
+            } else if (type === 'students') {
+                this.setState({
+                    classes: data[0].slice(1).map(row => new ClassData(row[0], row[1], parseInt(row[2]), row[3]))
+                }, () => {
+                    this.populateMapData();
+                });
             }
+        };
+        reader.readAsBinaryString(file);
+    }
 
-            for (let [ele, capacity] of classRoomNoAlongWithCapacity) {
-                if (capacity >= secondHalf) {
-                    let subjectNotPresent = true;
-                    for (let data of (mapData.get(ele) || [])) {
-                        if (data.subject === classes[i].subject) {
-                            subjectNotPresent = false;
-                            break;
-                        }
-                    }
-                    if (subjectNotPresent) {
-                        let dataList = mapData.get(ele) || [];
-                        dataList.push(new ClassData(classes[i].subject, classes[i].branch, secondHalf));
-                        mapData.set(ele, dataList);
-                        capacity -= secondHalf;
-                        classRoomNoAlongWithCapacity[classRoomNoAlongWithCapacity.findIndex(([k]) => k === ele)][1] = capacity;
-                        break;
-                    }
-                }
-            }
+    handleChange = (e) => {
+        this.setState({ [e.target.name]: e.target.value });
+    }
 
-            for (let [ele, capacity] of classRoomNoAlongWithCapacity) {
-                if (capacity >= thirdHalf) {
-                    let subjectNotPresent = true;
-                    for (let data of (mapData.get(ele) || [])) {
-                        if (data.subject === classes[i].subject) {
-                            subjectNotPresent = false;
-                            break;
+    handleSubmit = (e) => {
+        e.preventDefault();
+        const { classes, subject, branch, students, year } = this.state;
+        const newClass = new ClassData(subject, branch, parseInt(students), year);
+        this.setState({ classes: [...classes, newClass], subject: '', branch: '', students: '', year: '' }, () => {
+            this.populateMapData();
+        });
+    }
+
+    populateMapData = () => {
+        const { classRoomNoAlongWithCapacity, classes } = this.state;
+        const mapData = new Map();
+
+        // Group classes by the first character of the subject
+        const groupedClasses = classes.reduce((acc, classData) => {
+            const key = classData.subject[0];
+            if (!acc[key]) acc[key] = [];
+            acc[key].push(classData);
+            return acc;
+        }, {});
+
+        // Assign classes to classrooms based on capacity and branch restrictions
+        for (const [key, classList] of Object.entries(groupedClasses)) {
+            for (const classData of classList) {
+                for (let i = 0; i < classRoomNoAlongWithCapacity.length; i++) {
+                    const [classroomNo, [capacity, branchRestriction]] = classRoomNoAlongWithCapacity[i];
+                    if (capacity >= classData.students && (branchRestriction === 1 || branchRestriction === -1)) {
+                        if (!mapData.has(classroomNo)) {
+                            mapData.set(classroomNo, []);
                         }
-                    }
-                    if (subjectNotPresent) {
-                        let dataList = mapData.get(ele) || [];
-                        dataList.push(new ClassData(classes[i].subject, classes[i].branch, thirdHalf));
-                        mapData.set(ele, dataList);
-                        capacity -= thirdHalf;
-                        classRoomNoAlongWithCapacity[classRoomNoAlongWithCapacity.findIndex(([k]) => k === ele)][1] = capacity;
+                        mapData.get(classroomNo).push(classData);
+                        classRoomNoAlongWithCapacity[i][1][0] -= classData.students;
+                        classRoomNoAlongWithCapacity[i][1][1] = -1; // Mark as assigned
                         break;
                     }
                 }
@@ -113,37 +97,84 @@ class Main extends Component {
         this.setState({ mapData });
     }
 
+    componentDidMount() {
+        this.populateMapData();
+    }
+
     render() {
-        const { mapData } = this.state;
+        const { mapData, subject, branch, students, year } = this.state;
 
         return (
-            <div>
-                <Navbar />
-                <button onClick={this.allocateClasses}>Allocate Classes</button>
-                {
-                    Array.from(mapData.entries()).map(([key, value]) => (
-                        <div key={key}>
-                            <h3>Classroom Number: {key}</h3>
-                            {
-                                value.map((data, index) => (
-                                    <div key={index}>
-                                        <p>Subject: {data.subject}, Branch: {data.branch}, Students: {data.students}</p>
-                                    </div>
-                                ))
-                            }
-                        </div>
-                    ))
-                }
-                <style>
-                    {`
-                    body{
+            <div className='body'>
+                <Navbar/>
+                <h2 className='text-center'>Classroom Allocation</h2>
+                <form onSubmit={this.handleSubmit}>
+                    {/* <div className="form-group">
+                        <label>Subject:</label>
+                        <input type="text" className="form-control" name="subject" value={subject} onChange={this.handleChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label>Branch:</label>
+                        <input type="text" className="form-control" name="branch" value={branch} onChange={this.handleChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label>No Of Students:</label>
+                        <input type="number" className="form-control" name="students" value={students} onChange={this.handleChange} required />
+                    </div>
+                    <div className="form-group">
+                        <label>Year:</label>
+                        <input type="text" className="form-control" name="year" value={year} onChange={this.handleChange} required />
+                    </div> */}
+                    <div className="form-group">
+                        <label>Upload Excel File for Classrooms:</label>
+                        <input type="file" onChange={(e) => this.handleFileUpload(e, 'classrooms')} required />
+                    </div>
+                    <div className="form-group">
+                        <label>Upload Excel File for Students:</label>
+                        <input type="file" onChange={(e) => this.handleFileUpload(e, 'students')} required />
+                    </div>
+                    <button type="submit" className="btn btn-primary">Add Class</button>
+                </form>
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ClassRoom No.</th>
+                            <th scope="col">Subject</th>
+                            <th scope="col">Branch</th>
+                            <th scope="col">No Of Students</th>
+                            <th scope="col">Year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Array.from(mapData).map(([classroomNo, data]) => (
+                            data.map((classData, index) => (
+                                <tr key={`${classroomNo}-${index}`}>
+                                    {index === 0 && <td rowSpan={data.length}>{classroomNo}</td>}
+                                    <td>{classData.subject}</td>
+                                    <td>{classData.branch}</td>
+                                    <td>{classData.students}</td>
+                                    <td>{classData.year}</td>
+                                </tr>
+                            ))
+                        ))}
+                    </tbody>
+                </table>
+                <style>{`
+                    th, td {
+                        text-align: center;
+                    }
+                    .body {
+                        margin-left: 100px;
+                        margin-right: 100px;
                         margin-top:100px;
                     }
-                    `}
-                </style>
-            </div>
+                    input[type=file]{
+                        margin-left:30px;
+                    }
+                `}</style>
+            </div >
         );
     }
 }
 
-export default Main;
+export default Allocate;
